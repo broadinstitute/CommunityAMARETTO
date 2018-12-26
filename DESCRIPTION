@@ -1,14 +1,15 @@
 Package: CommunityAMARETTO
-Title: What the Package Does (One Line, Title Case)
+Type: Package
+Title: Calculating and visualising communities over AMARETTO runs and genesets.
 Version: 0.0.0.9000
-Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com")
+Author: Celine Everaert, Mohsen Nabian, Olivier Gevaert and Nathalie Pochet
+Maintainer: Nathalie Pochet <npochet@broadinstitute.org>
+Depends: R (>= 3.5), tidyverse, ComplexHeatmap, circlize, doParallel, gtools, igraph, randomcolR
 Description: What the package does (one paragraph).
-License: What license it uses
+License: MIT + file LICENSE
+LazyLoad: yes
 Encoding: UTF-8
+NeedsCompilation: no
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
