@@ -80,6 +80,7 @@ cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,nrCores=1,out
 #' @return Creates a gmt file for a AMARETTO run
 #'
 #' @import tidyverse
+#' @export
 
 GmtFromModules <- function(AMARETTOinit,AMARETTOresults,gmt_file,run){
   
