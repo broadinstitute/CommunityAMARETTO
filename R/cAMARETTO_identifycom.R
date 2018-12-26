@@ -13,8 +13,6 @@
 #' @import randomcoloR
 #' @import tidyverse
 #' @import igraph
-#'
-#'
 cAMARETTO_IdentifyCom<-function(cAMARETTOnetworkM,color_list=NULL,ratioCommSize=0.01,MinCancer=2,ratioCancerSize=0.1,ratioEdgesInOut=0.5){
   
   comm <- edge.betweenness.community(cAMARETTOnetworkM$module_network,directed=FALSE,merges=TRUE,modularity=TRUE, membership=TRUE)
