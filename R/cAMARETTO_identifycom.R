@@ -1,4 +1,4 @@
-#' cAMARETTO_IdentifyCom
+#' @title cAMARETTO_IdentifyCom
 #'
 #' @param cAMARETTOnetworkM
 #' @param color_list An optional list with colors

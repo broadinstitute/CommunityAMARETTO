@@ -1,4 +1,4 @@
-#' cAMARETTO_heatmap
+#' @title cAMARETTO_heatmap
 #'
 #' @param cAMARETTOresults cAMARETTO_Run output
 #' @param run1 name of run 1

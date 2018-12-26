@@ -1,4 +1,4 @@
-#' cAMARETTO_Results
+#' @title cAMARETTO_Results
 #'
 #' @param AMARETTOinit_all A list of multiple AMARETTO_Initialize outputs. The names are run names.
 #' @param AMARETTOresults_all A list of multiple AMARETTO_Run outputs. The names are run names.
@@ -70,7 +70,7 @@ cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,nrCores=1,out
   return(list(runnames=runnames, hgt_modules=output_hgt_allcombinations, nrCores))
 }
 
-#' GmtFromModules
+#' @title GmtFromModules
 #'
 #' @param AMARETTOinit_all A list of multiple AMARETTO_Initialize outputs. The names are run names.
 #' @param AMARETTOresults_all A list of multiple AMARETTO_Run outputs. The names are run names.
@@ -93,7 +93,7 @@ GmtFromModules <- function(AMARETTOinit,AMARETTOresults,gmt_file,run){
   write.table(sapply(names(ModuleMembers_list),function(x) paste(x,paste(ModuleMembers_list[[x]],collapse="\t"),sep="\t")),gmt_file,quote = FALSE,row.names = TRUE,col.names = FALSE,sep='\t')
 }
 
-#' readGMT
+#' @title readGMT
 #'
 #' @param filename A gmtfilename
 #' @examples
@@ -107,7 +107,7 @@ readGMT<-function(filename){
   return(gmtLines_genes)
 }
 
-#' GmtFromModules
+#' @title GmtFromModules
 #'
 #' @param gmtfile1 A gmtfilename that you want to compare
 #' @param gmtfile2 A second gmtfile to compare with.

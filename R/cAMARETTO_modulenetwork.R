@@ -1,4 +1,4 @@
-#' cAMARETTO_ModuleNetwork
+#' @title cAMARETTO_ModuleNetwork
 #'
 #' @param cAMARETTOresults 
 #' @param pvalue pvalue cut-off for each gene set
