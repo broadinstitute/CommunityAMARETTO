@@ -8,6 +8,7 @@
 #' @import ComplexHeatmap
 #' @import tidyverse
 #' @import circlize
+#' @export
 cAMARETTO_heatmap<-function(cAMARETTOresults,run1,run2){
   results_filtered<-cAMARETTOresults$hgt_modules %>% filter((grepl(run1,Testset)|grepl(run2,Testset))&(grepl(run1,Geneset)|grepl(run2,Geneset)))
   pvalue_matrix<-spread(results_filtered %>% select(Testset,Geneset,p_value),key=Geneset,value=p_value)

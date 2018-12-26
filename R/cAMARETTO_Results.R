@@ -8,7 +8,7 @@
 #' @return a list with AMARETTOinit and AMARETTOresults data objects from multiple runs
 #' @import gtools
 #' @import tidyverse
-
+#' @export
 cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,nrCores=1,output_dir="./",gmt_filelist=NULL){
   
   #test if names are matching
@@ -99,7 +99,7 @@ GmtFromModules <- function(AMARETTOinit,AMARETTOresults,gmt_file,run){
 #' @examples
 #' readGMT("file.gmt")
 #' @return Reads a gmt file
-
+#' @export
 readGMT<-function(filename){
   gmtLines<-strsplit(readLines(filename),"\t")
   gmtLines_genes <- lapply(gmtLines, tail, -2)
@@ -116,7 +116,7 @@ readGMT<-function(filename){
 #' @return Creates resultfile with p-values and padj when comparing two gmt files with a hyper geometric test.
 #'
 #' @import doParallel
-
+#' @export
 HyperGTestGeneEnrichment<-function(gmtfile,testgmtfile,NrCores,ref.numb.genes=45956){
   
   test.gmt<-readGMT(testgmtfile) # our gmt_file_output_from Amaretto

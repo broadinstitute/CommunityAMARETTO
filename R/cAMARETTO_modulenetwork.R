@@ -11,7 +11,7 @@
 #' @import randomcoloR
 #' @import tidyverse
 #' @import igraph
-
+#' @export
 cAMARETTO_ModuleNetwork<-function(cAMARETTOresults,pvalue,inter,color_list=NULL,edge_method="pvalue"){
   
   output_hgt_allcombinations_filtered <- cAMARETTOresults$hgt_modules %>% 
