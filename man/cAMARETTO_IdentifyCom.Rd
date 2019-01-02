@@ -5,8 +5,8 @@
 \title{cAMARETTO_IdentifyCom}
 \usage{
 cAMARETTO_IdentifyCom(cAMARETTOnetworkM, color_list = NULL,
-  ratioCommSize = 0.01, MinCancer = 2, ratioCancerSize = 0.1,
-  ratioEdgesInOut = 0.5)
+  filterComm = TRUE, ratioCommSize = 0.01, MinRuns = 2,
+  ratioRunSize = 0.1, ratioEdgesInOut = 0.5)
 }
 \arguments{
 \item{color_list}{An optional list with colors}
