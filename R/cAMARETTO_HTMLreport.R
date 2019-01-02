@@ -10,12 +10,13 @@
 #' @import igraph
 #' @import DT
 #' @import tidyverse
+#' @import reshape2
 #' @export
 cAMARETTO_HTMLreport <- function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC,report_address="./"){
   
   #dataframe with modules per Run
   ComModulesLink <- stack(cAMARETTOnetworkC$community_list) %>% 
-    rename(ind="Community", values="Module")
+    rename(Community="ind", Module="values")
   
   #adding Modules that are not in Communities or Communities that are filtered out
   all_module_names <- unique(c(cAMARETTOresults$hgt_modules$Geneset,cAMARETTOresults$hgt_modules$Testset))
@@ -25,7 +26,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnet
   Module_no_Network <- all_module_names_fil[!all_module_names_fil %in% Nodes_Mnetwork$name]
   Module_no_Com <- all_module_names_fil[all_module_names_fil %in% Nodes_Mnetwork$name]
   
-  ComModulesLink<-left_join(as.data.frame(all_module_names)%>% rename(all_module_names="Module"),ComModulesLink)
+  ComModulesLink<-left_join(as.data.frame(all_module_names)%>% rename(Module="all_module_names"),ComModulesLink)
   
   ComModulesLink <- ComModulesLink %>% mutate(Community=ifelse(Module %in% Module_no_Network,"Not in Network",ifelse(Module %in% Module_no_Com, "Not in a Community",paste0("Community ", Community))))
   
