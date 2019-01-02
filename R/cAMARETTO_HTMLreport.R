@@ -8,7 +8,8 @@
 #' @return a plot with one (or none) colored modules
 #' 
 #' @import igraph
-#' @import data.table
+#' @import DT
+#' @import tidyverse
 #' @export
 cAMARETTO_HTMLreport <- function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC,report_address="./"){
   
