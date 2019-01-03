@@ -7,10 +7,10 @@
 cAMARETTO_HTMLreport(cAMARETTOresults, cAMARETTOnetworkM,
   cAMARETTOnetworkC, output_address = "./",
   hyper_geo_test_bool = FALSE, hyper_geo_reference = NULL,
-  MSIGDB = FALSE, GMTURL = FALSE)
+  MSIGDB = FALSE, GMTURL = FALSE, NrCores = 2)
 }
 \arguments{
-\item{report_address}{}
+\item{output_address}{}
 }
 \value{
 A set of HTMLs, giving caracteristics of the communities
