@@ -19,7 +19,7 @@
 #' @export
 cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC,
                                  output_address="./", 
-                                 hyper_geo_test_bool = FALSE,hyper_geo_reference = NULL,MSIGDB=FALSE,GMTURL=FALSE,
+                                 hyper_geo_test_bool = FALSE, hyper_geo_reference = NULL, MSIGDB = FALSE,GMTURL = FALSE,
                                  NrCores=2){
   
   #test parameters
@@ -78,7 +78,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     genelist <- unlist(strsplit(community_info$overlapping_genes,", "))
     
     if (hyper_geo_test_bool) {
-      outputHGT <- HGTGeneEnrichmentList(genelist, hyper_geo_reference, NrCores=NrCores)
+      outputHGT <- HGTGeneEnrichmentList(genelist, hyper_geo_reference, NrCores = NrCores)
       outputHGT <- left_join(outputHGT,GeneSetDescriptions, by = c(Geneset = "GeneSet")) %>%
         mutate(overlap_perc = n_Overlapping / NumberGenes) %>% dplyr::select(Geneset, Description, n_Overlapping, Overlapping_genes, overlap_perc, p_value, padj)
       
