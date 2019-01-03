@@ -7,16 +7,14 @@ output:
 ---
 
 <center>
-## Run Information
-
-## Overview of Modules
+## Network visualisation of Community `r ComNr`
 <br><br><br>
 ```{r network,echo=FALSE}
 cAMARETTO_ColorOneModule(cAMARETTOnetworkM,cAMARETTOnetworkC,ComNr)
 ```
 <br><br><br>
 
-## Module to community assignment
+## Gense Set Enrichment Analysis for Community
 <br><br><br>
 ```{r Community,echo=FALSE}
 DTGSEA

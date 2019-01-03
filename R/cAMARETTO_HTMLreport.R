@@ -129,7 +129,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   }
 }
 
-#' HGTGeneEnrichmentList
+#' @title HGTGeneEnrichmentList
 #'
 #' Calculates the p-values for unranked gene set enrichment based on two gmt files as input and the hyper geometric test.
 #'
@@ -175,7 +175,7 @@ HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 4
     return(resultHGT)
 }
 
-#' GeneSetDescription
+#' @title GeneSetDescription
 #' @param filename The name of the gmt file.
 #'
 #' @return

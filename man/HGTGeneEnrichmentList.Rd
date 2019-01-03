@@ -2,7 +2,9 @@
 % Please edit documentation in R/cAMARETTO_HTMLreport.R
 \name{HGTGeneEnrichmentList}
 \alias{HGTGeneEnrichmentList}
-\title{HGTGeneEnrichmentList}
+\title{HGTGeneEnrichmentList
+
+Calculates the p-values for unranked gene set enrichment based on two gmt files as input and the hyper geometric test.}
 \usage{
 HGTGeneEnrichmentList(genelist, gmtfile, NrCores, ref.numb.genes = 45956)
 }
@@ -16,6 +18,8 @@ HGTGeneEnrichmentList(genelist, gmtfile, NrCores, ref.numb.genes = 45956)
 \item{testgmtfile}{The gmt file with gene sets to test. In our case, the gmt file of the modules.}
 }
 \description{
+HGTGeneEnrichmentList
+
 Calculates the p-values for unranked gene set enrichment based on two gmt files as input and the hyper geometric test.
 }
 \keyword{internal}
