@@ -4,6 +4,7 @@
 #' @param cAMARETTOnetworkM
 #' @param cAMARETTOnetworkC
 #' @param output_address
+#' @param NrCores
 #'
 #' @return A set of HTMLs, giving caracteristics of the communities
 #' 

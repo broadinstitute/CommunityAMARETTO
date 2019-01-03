@@ -10,7 +10,7 @@ cAMARETTO_HTMLreport(cAMARETTOresults, cAMARETTOnetworkM,
   MSIGDB = FALSE, GMTURL = FALSE, NrCores = 2)
 }
 \arguments{
-\item{output_address}{}
+\item{NrCores}{}
 }
 \value{
 A set of HTMLs, giving caracteristics of the communities
