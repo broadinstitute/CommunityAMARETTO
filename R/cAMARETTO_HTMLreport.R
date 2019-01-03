@@ -4,6 +4,10 @@
 #' @param cAMARETTOnetworkM
 #' @param cAMARETTOnetworkC
 #' @param output_address
+#' @param hyper_geo_test_bool
+#' @param hyper_geo_refence
+#' @param MSIGDB
+#' @param GMTURL
 #' @param NrCores
 #'
 #' @return A set of HTMLs, giving caracteristics of the communities
