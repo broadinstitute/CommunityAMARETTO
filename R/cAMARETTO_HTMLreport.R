@@ -136,8 +136,8 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
 #'
 #' Calculates the p-values for unranked gene set enrichment based on two gmt files as input and the hyper geometric test.
 #'
-#' @param gmtfile The gmt file with reference gene set.
-#' @param testgmtfile The gmt file with gene sets to test. In our case, the gmt file of the modules.
+#' @param genelist The gmt file with reference gene set.
+#' @param gmtfile The gmt file with gene sets to test. In our case, the gmt file of the modules.
 #' @param NrCores Number of cores used for parallelization.
 #' @param ref.numb.genes The total number of genes teste, standard equal to 45 956 (MSIGDB standard).
 #'
