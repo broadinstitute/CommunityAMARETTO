@@ -1,0 +1,25 @@
+---
+title: <center>Community `r ComNr` report</center>
+output: 
+  html_document:
+    theme: cerulean
+    highlight: NULL
+---
+
+<center>
+## Run Information
+
+## Overview of Modules
+<br><br><br>
+```{r network,echo=FALSE}
+cAMARETTO_ColorOneModule(cAMARETTOnetworkM,cAMARETTOnetworkC,ComNr)
+```
+<br><br><br>
+
+## Module to community assignment
+<br><br><br>
+```{r Community,echo=FALSE}
+datatable(outputHGT)
+```
+<br><br><br>
+</center>

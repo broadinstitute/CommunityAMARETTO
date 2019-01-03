@@ -20,4 +20,5 @@ cAMARETTO_InformationTable <- function(cAMARETTOnetworkM, cAMARETTOnetworkC) {
     Comm_Info <- add_row(Comm_Info, community_numb = as.numeric(names(cAMARETTOnetworkC$community_list[i])), included_nodes = paste(comm,collapse=", "), overlapping_genes = paste(all_overlapping_genes,collapse=", "))
     i = i + 1
   }
+  return(Comm_Info)
 }
