@@ -19,7 +19,7 @@ cAMARETTO_ColorOneModule(cAMARETTOnetworkM,cAMARETTOnetworkC,ComNr)
 ## Module to community assignment
 <br><br><br>
 ```{r Community,echo=FALSE}
-datatable(outputHGT)
+DTGSEA
 ```
 <br><br><br>
 </center>

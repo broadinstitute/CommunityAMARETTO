@@ -13,7 +13,7 @@
 #' @import reshape2
 #' @export
 cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC,
-                                 report_address="./", 
+                                 output_address="./", 
                                  hyper_geo_test_bool = FALSE,hyper_geo_reference = NULL,MSIGDB=FALSE,GMTURL=FALSE){
   
   #test parameters
@@ -47,7 +47,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     summarise(ModuleNrs=paste(ModuleNr, collapse = ", "))
 
   ComModulesLink <- dcast(ComModulesLink, Community~Run, fill=0)
-  full_path <- normalizePath(report_address)
+  full_path <- normalizePath(output_address)
   
   rmarkdown::render(
     system.file("templates/TemplateIndexPage.Rmd", package = "CommunityAMARETTO"),
@@ -61,8 +61,9 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   comm_info <- cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC)
   #HGT to test for gene set enrichment
-
-  GeneSetDescriptions <- GeneSetDescription(hyper_geo_reference)
+  if (hyper_geo_test_bool) {
+    GeneSetDescriptions <- GeneSetDescription(hyper_geo_reference)
+  }
   
   for (i in 1:length(comm_info)){
     community_info <- comm_info[i,]
@@ -70,7 +71,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     genelist <- unlist(strsplit(community_info$overlapping_genes,", "))
     
     if (hyper_geo_test_bool) {
-      outputHGT <- HGTGeneEnrichmentList(genelist,hyper_geo_reference,NrCores)
+      outputHGT <- HGTGeneEnrichmentList(genelist, hyper_geo_reference, NrCores)
       outputHGT <- left_join(outputHGT,GeneSetDescriptions, by = c(Geneset = "GeneSet")) %>%
         mutate(overlap_perc = n_Overlapping / NumberGenes) %>% dplyr::select(Geneset, Description, n_Overlapping, Overlapping_genes, overlap_perc, p_value, padj)
       
@@ -139,6 +140,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
 #'
 #' @import doParallel
 #' @keywords internal
+#' @export
 HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 45956) {
     gmtset <- readGMT(gmtfile)  # the hallmarks_and_co2...
     
@@ -179,6 +181,7 @@ HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 4
 #' @return
 #' @keywords internal
 #' @examples
+#' @export
 GeneSetDescription <- function(filename) {
   gmtLines <- strsplit(readLines(filename), "\t")
   gmtLines_description <- lapply(gmtLines, function(x) {c(x[[1]], x[[2]], length(x) - 2)})

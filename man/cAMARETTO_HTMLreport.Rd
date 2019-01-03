@@ -5,7 +5,7 @@
 \title{cAMARETTO_HTMLreport}
 \usage{
 cAMARETTO_HTMLreport(cAMARETTOresults, cAMARETTOnetworkM,
-  cAMARETTOnetworkC, report_address = "./",
+  cAMARETTOnetworkC, output_address = "./",
   hyper_geo_test_bool = FALSE, hyper_geo_reference = NULL,
   MSIGDB = FALSE, GMTURL = FALSE)
 }
