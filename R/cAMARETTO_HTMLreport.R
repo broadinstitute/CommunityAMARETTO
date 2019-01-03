@@ -3,7 +3,7 @@
 #' @param cAMARETTOresults
 #' @param cAMARETTOnetworkM
 #' @param cAMARETTOnetworkC
-#' @param report_address
+#' @param output_address
 #'
 #' @return A set of HTMLs, giving caracteristics of the communities
 #' 
@@ -14,7 +14,7 @@
 #' @export
 cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC,
                                  output_address="./", 
-                                 hyper_geo_test_bool = FALSE,hyper_geo_reference = NULL,MSIGDB=FALSE,GMTURL=FALSE){
+                                 hyper_geo_test_bool = FALSE,hyper_geo_reference = NULL,MSIGDB=FALSE,GMTURL=FALSE,NrCores=2){
   
   #test parameters
   if (!dir.exists(output_address)) {
@@ -33,14 +33,15 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   #adding Modules that are not in Communities or Communities that are filtered out
   all_module_names <- unique(c(cAMARETTOresults$hgt_modules$Geneset,cAMARETTOresults$hgt_modules$Testset))
+  ComModulesLink <- left_join(as.data.frame(all_module_names)%>% rename(Module="all_module_names"),ComModulesLink)
   all_module_names<-all_module_names[!all_module_names %in% ComModulesLink$Module]
   
   Nodes_Mnetwork <- igraph::as_data_frame(cAMARETTOnetworkM$module_network, what="vertices")
   Module_no_Network <- all_module_names[!all_module_names %in% Nodes_Mnetwork$name]
   Module_no_Com <- all_module_names[all_module_names %in% Nodes_Mnetwork$name]
   
-  ComModulesLink <- left_join(as.data.frame(all_module_names)%>% rename(Module="all_module_names"),ComModulesLink) %>% 
-    mutate(Community=ifelse(Module %in% Module_no_Network,"Not in Network",ifelse(Module %in% Module_no_Com, "Not in a Community",paste0("Community ", Community)))) %>%
+  ComModulesLink <- ComModulesLink %>% 
+    mutate(Community=ifelse(Module %in% Module_no_Network,"Not in Network",ifelse(Module %in% Module_no_Com, "Not in a Community",paste0("<a href=\"./communities/Community_",Community,".html\">Community ",Community, "</a>")))) %>%
     separate(Module, c("Run","ModuleNr"), "_Module_") %>% 
     mutate(ModuleNr = paste0("Module ", ModuleNr)) %>% 
     group_by(Community, Run) %>% 
@@ -65,7 +66,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     GeneSetDescriptions <- GeneSetDescription(hyper_geo_reference)
   }
   
-  for (i in 1:length(comm_info)){
+  for (i in 1:nrow(comm_info)){
     community_info <- comm_info[i,]
     ComNr <- community_info$community_numb
     genelist <- unlist(strsplit(community_info$overlapping_genes,", "))
