@@ -5,13 +5,15 @@
 \title{cAMARETTO_HTMLreport}
 \usage{
 cAMARETTO_HTMLreport(cAMARETTOresults, cAMARETTOnetworkM,
-  cAMARETTOnetworkC, report_address = "./")
+  cAMARETTOnetworkC, report_address = "./",
+  hyper_geo_test_bool = FALSE, hyper_geo_reference = NULL,
+  MSIGDB = FALSE, GMTURL = FALSE)
 }
 \arguments{
 \item{report_address}{}
 }
 \value{
-a plot with one (or none) colored modules
+A set of HTMLs, giving caracteristics of the communities
 }
 \description{
 cAMARETTO_HTMLreport
