@@ -18,6 +18,7 @@
 #' @import tidyverse
 #' @import reshape2
 #' @import rmarkdown
+#' @return
 #' @export
 cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC,
                                  output_address="./", HTMLsAMARETTOlist=NULL,

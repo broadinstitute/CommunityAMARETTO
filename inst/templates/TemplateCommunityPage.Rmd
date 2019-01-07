@@ -20,10 +20,7 @@ cAMARETTO_ColorOneModule(cAMARETTOnetworkM,cAMARETTOnetworkC,ComNr)
 <br><br><br>
 
 The modules included in the community are:
-
-```{r}
-cat(ModuleList,sep ="\n")
-```
+`r cat(ModuleList, sep ="\n")`
 <br><br><br>
 
 
