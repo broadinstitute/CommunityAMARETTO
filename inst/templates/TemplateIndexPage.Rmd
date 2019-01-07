@@ -35,7 +35,24 @@ legend(x = 1.5, y = 1, legend=names(cAMARETTOnetworkC$color_list), col=cAMARETTO
 datatable(ComModulesLink, class = "display",
           extensions = "Buttons",
           rownames = FALSE,
-          options = list(pageLength = 10, dom = "Bfrtip", buttons = c("csv", "excel", "pdf")), escape=FALSE)
+          options = list(pageLength = 10, 
+                         dom = "Bfrtip", 
+                         buttons = list(list(extend = 'csv',text = "Save CSV", title="ComModuleRelation"))),
+          escape=FALSE)
 ```
 <br><br><br>
+
+## Gene to community assignment
+<br><br><br>
+```{r Community,echo=FALSE}
+datatable(GeneComLink, class = "display",
+          extensions = "Buttons",
+          rownames = FALSE,
+          options = list(pageLength = 10, 
+                         dom = "Bfrtip", 
+                         buttons = list(list(extend = 'csv',text = "Save CSV", title="ComModuleRelation"))),
+          escape=FALSE)
+```
+<br><br><br>
+
 </center>

@@ -4,6 +4,7 @@
 #' @param cAMARETTOnetworkM
 #' @param cAMARETTOnetworkC
 #' @param output_address
+#' @param HTMLsAMARETTOlist
 #' @param hyper_geo_test_bool
 #' @param hyper_geo_refence
 #' @param MSIGDB
@@ -18,7 +19,7 @@
 #' @import reshape2
 #' @export
 cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC,
-                                 output_address="./", 
+                                 output_address="./", HTMLsAMARETTOlist=NULL,
                                  hyper_geo_test_bool = FALSE, hyper_geo_reference = NULL, MSIGDB = FALSE,GMTURL = FALSE,
                                  NrCores=2){
   
@@ -29,17 +30,29 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   if (hyper_geo_test_bool == TRUE) {
     if (!file.exists(hyper_geo_reference)) {
-      stop("GMT for hyper geometric test is not existing.\n")
+      stop("GMT for hyper geometric test is not existing.")
+    }
+  }
+  
+  i=1
+  if(is.null(HTMLsAMARETTOlist)==FALSE){
+    for(htmldir in HTMLsAMARETTOlist){
+      if(!file.exists(htmldir)){
+        stop("An AMARETTO html directory is not existing.")
+      }
+      htmldir<-normalizePath(htmldir)
+      HTMLsAMARETTOlist[i]<-htmldir
+      i=i+1
     }
   }
   
   #dataframe with modules per Run
   ComModulesLink <- stack(cAMARETTOnetworkC$community_list) %>% 
-    rename(Community="ind", Module="values")
+    dplyr::rename(Module=values, Community=ind)
   
   #adding Modules that are not in Communities or Communities that are filtered out
   all_module_names <- unique(c(cAMARETTOresults$hgt_modules$Geneset,cAMARETTOresults$hgt_modules$Testset))
-  ComModulesLink <- left_join(as.data.frame(all_module_names)%>% rename(Module="all_module_names"),ComModulesLink)
+  suppressWarnings(ComModulesLink <- left_join(as.data.frame(all_module_names) %>% dplyr::rename(Module="all_module_names"),ComModulesLink, by="Module"))
   all_module_names<-all_module_names[!all_module_names %in% ComModulesLink$Module]
   
   Nodes_Mnetwork <- igraph::as_data_frame(cAMARETTOnetworkM$module_network, what="vertices")
@@ -56,6 +69,13 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   ComModulesLink <- dcast(ComModulesLink, Community~Run, fill=0)
   full_path <- normalizePath(output_address)
   
+  comm_info <- cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC)
+  
+  GeneComLink <- comm_info %>% 
+    select(community_numb,overlapping_genes) %>% 
+    mutate(overlapping_genes = strsplit(as.character(overlapping_genes), ", "), community_numb=paste0("<a href=\"./communities/Community_",community_numb,".html\">Community ",community_numb, "</a>")) %>% 
+    unnest(overlapping_genes) %>% rename(Community="community_numb",GeneName="overlapping_genes") %>% arrange(GeneName)
+  
   rmarkdown::render(
     system.file("templates/TemplateIndexPage.Rmd", package = "CommunityAMARETTO"),
     output_dir = paste0(full_path, "/htmls/"),
@@ -64,9 +84,11 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
       cAMARETTOnetworkM = cAMARETTOnetworkM,
       cAMARETTOnetworkC = cAMARETTOnetworkC,
       ComModulesLink = ComModulesLink,
+      GeneComLink = GeneComLink,
     ), quiet = TRUE)
   
-  comm_info <- cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC)
+  print("The index html is created.")
+  
   #HGT to test for gene set enrichment
   if (hyper_geo_test_bool) {
     GeneSetDescriptions <- GeneSetDescription(hyper_geo_reference)
@@ -76,18 +98,28 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     community_info <- comm_info[i,]
     ComNr <- community_info$community_numb
     genelist <- unlist(strsplit(community_info$overlapping_genes,", "))
+    ModuleList <- unlist(strsplit(community_info$included_nodes,", "))
+    names(ModuleList)<-ModuleList
+    
+    if(is.null(HTMLsAMARETTOlist)==FALSE){
+      for (i in 1:length(HTMLsAMARETTOlist)){
+      ModuleList <- sub(names(HTMLsAMARETTOlist)[i], paste0(HTMLsAMARETTOlist[i]), ModuleList)
+      }
+      ModuleList <- sub("_Module_","/report_html/htmls/modules/module",ModuleList)
+      ModuleList <- paste0("[",names(ModuleList),"] (file:/",ModuleList,"\\.html")
+    }
     
     if (hyper_geo_test_bool) {
       outputHGT <- HGTGeneEnrichmentList(genelist, hyper_geo_reference, NrCores = NrCores)
       outputHGT <- left_join(outputHGT,GeneSetDescriptions, by = c(Geneset = "GeneSet")) %>%
-        mutate(overlap_perc = n_Overlapping / NumberGenes) %>% dplyr::select(Geneset, Description, n_Overlapping, Overlapping_genes, overlap_perc, p_value, padj)
+        mutate(overlap_perc = n_Overlapping / NumberGenes) %>% dplyr::select(Geneset, Description, n_Overlapping, Overlapping_genes, overlap_perc, p_value, padj) %>% arrange(padj)
       
       if (MSIGDB == TRUE & GMTURL == FALSE) {
         DTGSEA <- datatable(outputHGT %>% mutate(Geneset = paste0("<a href=\"http://software.broadinstitute.org/gsea/msigdb/cards/", Geneset, "\">", gsub("_", " ", Geneset),"</a>")),
                           class = "display",
                           extensions = "Buttons",
                           rownames = FALSE,
-                          options = list(pageLength = 10, dom = "Bfrtip", buttons = c("csv", "excel", "pdf")),
+                          options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
                           colnames = c("Gene Set Name", "Description", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
                           formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
                           formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
@@ -96,7 +128,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                           class = "display",
                           extensions = "Buttons",
                           rownames = FALSE,
-                          options = list(pageLength = 10, dom = "Bfrtip", buttons = c("csv", "excel", "pdf")),
+                          options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
                           colnames = c("Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
                           formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
                           formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
@@ -105,7 +137,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                           class = "display",
                           extensions = "Buttons",
                           rownames = FALSE,
-                          options = list(pageLength = 10, dom = "Bfrtip", buttons = c("csv", "excel", "pdf")),
+                          options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
                           colnames = c("Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
                           formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
                           formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
@@ -114,7 +146,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                           class = "display",
                           extensions = "Buttons",
                           rownames = FALSE,
-                          options = list(pageLength = 10, dom = "Bfrtip", buttons = c("csv", "excel", "pdf")),
+                          options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
                           colnames = c("Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
                           formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
                           formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
@@ -129,11 +161,13 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
       params = list(
         ComNr = ComNr,
         DTGSEA = DTGSEA,
+        ModuleList = ModuleList,
         cAMARETTOnetworkM = cAMARETTOnetworkM,
         cAMARETTOnetworkC = cAMARETTOnetworkC,
       ), quiet = TRUE)
-  
   }
+  
+  print("The community htmls are created.")
 }
 
 #' @title HGTGeneEnrichmentList
