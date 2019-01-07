@@ -9,7 +9,7 @@ output:
 <center>
 ## Run Information
 
-## Overview of Modules
+## Community Network
 <br><br><br>
 ```{r network,echo=FALSE}
 Nodes_Mnetwork<-igraph::as_data_frame(cAMARETTOnetworkM$module_network,what="vertices")
@@ -20,9 +20,8 @@ plot(cAMARETTOnetworkC$CommGraph,layout=cAMARETTOnetworkM$layoutMN,
        vertex.frame.color=NA,
        edge.color="gray80",
        mark.groups = cAMARETTOnetworkC$community_list,
-       #mark.col=as.character(commEdgeInfo$Color2[KeepComm]),
-       mark.border=NA,
-       main="Community network")
+       mark.col=cAMARETTOnetworkC$color_list,
+       mark.border=NA)
 
 legend(x = -1.5, y = -1.1, legend = names(cAMARETTOnetworkM$colMN), col = cAMARETTOnetworkM$colMN, pch=19, bty="n")
 legend(x = 1.5, y = 1, legend=names(cAMARETTOnetworkC$color_list), col=cAMARETTOnetworkC$color_list, pch=19, bty="n")

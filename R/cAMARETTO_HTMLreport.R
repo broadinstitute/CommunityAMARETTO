@@ -43,7 +43,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
         stop("An AMARETTO html directory is not existing.")
       }
       htmldir<-normalizePath(htmldir,"/report_html/htmls/modules/module")
-      HTMLsAMARETTOlist[i]<-htmldir
+      HTMLsAMARETTOlist[i] <- htmldir
       i=i+1
     }
   }
