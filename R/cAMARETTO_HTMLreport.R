@@ -48,7 +48,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   #dataframe with modules per Run
   ComModulesLink <- stack(cAMARETTOnetworkC$community_list) %>% 
-    dplyr::rename(Module=values, Community=ind)
+    dplyr::rename(Module="values", Community="ind")
   
   #adding Modules that are not in Communities or Communities that are filtered out
   all_module_names <- unique(c(cAMARETTOresults$hgt_modules$Geneset,cAMARETTOresults$hgt_modules$Testset))
@@ -74,7 +74,9 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   GeneComLink <- comm_info %>% 
     select(community_numb,overlapping_genes) %>% 
     mutate(overlapping_genes = strsplit(as.character(overlapping_genes), ", "), community_numb=paste0("<a href=\"./communities/Community_",community_numb,".html\">Community ",community_numb, "</a>")) %>% 
-    unnest(overlapping_genes) %>% rename(Community="community_numb",GeneName="overlapping_genes") %>% arrange(GeneName)
+    unnest(overlapping_genes) %>% 
+    dplyr::rename(Community="community_numb",GeneName="overlapping_genes") %>% 
+    arrange(GeneName)
   
   rmarkdown::render(
     system.file("templates/TemplateIndexPage.Rmd", package = "CommunityAMARETTO"),
