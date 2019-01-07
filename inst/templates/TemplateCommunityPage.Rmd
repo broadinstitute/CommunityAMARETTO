@@ -22,7 +22,7 @@ cAMARETTO_ColorOneModule(cAMARETTOnetworkM,cAMARETTOnetworkC,ComNr)
 The modules included in the community are:
 
 ```{r}
-cat(ModuleList,sep("\n"))
+cat(ModuleList,sep ="\n")
 ```
 <br><br><br>
 
