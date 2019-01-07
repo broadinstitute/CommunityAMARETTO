@@ -42,7 +42,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
       if(!file.exists(htmldir)){
         stop("An AMARETTO html directory is not existing.")
       }
-      htmldir<-normalizePath(htmldir)
+      htmldir<-normalizePath(htmldir,"/report_html/htmls/modules/module")
       HTMLsAMARETTOlist[i]<-htmldir
       i=i+1
     }
@@ -103,14 +103,30 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     ComNr <- community_info$community_numb
     genelist <- unlist(strsplit(community_info$overlapping_genes,", "))
     ModuleList <- unlist(strsplit(community_info$included_nodes,", "))
-    names(ModuleList)<-ModuleList
+    ModuleNames <- ModuleList
     
     if(is.null(HTMLsAMARETTOlist)==FALSE){
       for (i in 1:length(HTMLsAMARETTOlist)){
-      ModuleList <- sub(names(HTMLsAMARETTOlist)[i], paste0(HTMLsAMARETTOlist[i]), ModuleList)
+        ModuleList <- sub(names(HTMLsAMARETTOlist)[i], HTMLsAMARETTOlist[i], ModuleList)
       }
       ModuleList <- sub("_Module_","/report_html/htmls/modules/module",ModuleList)
-      ModuleList <- paste0("[",names(ModuleList),"] (file:/",ModuleList,"\\.html")
+      ModuleList <- paste0('<a href="file://',ModuleList,'.html"> ModuleLink </a>')
+      names(ModuleList) <- ModuleNames
+      ModuleList <- rownames_to_column(as.data.frame(ModuleList),"ModuleNames") %>% separate(ModuleNames,c("Run","ModuleNr"),"_Module_") %>% mutate(ModuleNr = sub("^","Module ",ModuleNr))
+      DTML <- datatable(ModuleList, 
+                        class = "display",
+                        extensions = "Buttons",
+                        rownames = FALSE,
+                        options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("ModulesCom",ComNr)))),
+                        escape = FALSE)
+    } else {
+      ModuleList <- as.data.frame(ModuleList) %>% separate(ModuleList,c("Run","ModuleNr"),"_Module_") %>% mutate(ModuleNr = sub("^","Module ",ModuleNr))
+      DTML <- datatable(ModuleList, 
+                        class = "display",
+                        extensions = "Buttons",
+                        rownames = FALSE,
+                        options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("ModulesCom",ComNr)))),
+                        escape = FALSE)
     }
     
     if (hyper_geo_test_bool) {
@@ -165,7 +181,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
       params = list(
         ComNr = ComNr,
         DTGSEA = DTGSEA,
-        ModuleList = ModuleList,
+        DTML = DTML,
         cAMARETTOnetworkM = cAMARETTOnetworkM,
         cAMARETTOnetworkC = cAMARETTOnetworkC,
       ), quiet = TRUE)
