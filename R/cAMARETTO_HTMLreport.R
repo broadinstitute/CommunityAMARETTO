@@ -131,49 +131,54 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     
     if (hyper_geo_test_bool) {
       outputHGT <- HGTGeneEnrichmentList(genelist, hyper_geo_reference, NrCores = NrCores)
-      outputHGT <- left_join(outputHGT,GeneSetDescriptions, by = c(Geneset = "GeneSet")) %>%
-        mutate(overlap_perc = n_Overlapping / NumberGenes) %>% dplyr::select(Geneset, Description, n_Overlapping, Overlapping_genes, overlap_perc, p_value, padj) %>% arrange(padj)
-      
-      if (MSIGDB == TRUE & GMTURL == FALSE) {
-        DTGSEA <- datatable(outputHGT %>% mutate(Geneset = paste0("<a href=\"http://software.broadinstitute.org/gsea/msigdb/cards/", Geneset, "\">", gsub("_", " ", Geneset),"</a>")),
-                          class = "display",
-                          extensions = "Buttons",
-                          rownames = FALSE,
-                          options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
-                          colnames = c("Gene Set Name", "Description", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
-                          formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
-                          formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
-      } else if (MSIGDB == TRUE & GMTURL == TRUE) {
-        DTGSEA <- datatable(outputHGT %>% dplyr::select(-Description) %>% mutate(Geneset = paste0("<a href=\"http://software.broadinstitute.org/gsea/msigdb/cards/", Geneset, "\">", gsub("_", " ", Geneset),"</a>")),
-                          class = "display",
-                          extensions = "Buttons",
-                          rownames = FALSE,
-                          options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
-                          colnames = c("Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
-                          formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
-                          formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
-      } else if (MSIGDB == FALSE & GMTURL == TRUE) {  
-        DTGSEA <- datatable(outputHGT %>% mutate(Geneset = paste0("<a href=\"", Description, "\">", gsub("_", " ", Geneset),"</a>")) %>% dplyr::select(-Description),
-                          class = "display",
-                          extensions = "Buttons",
-                          rownames = FALSE,
-                          options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
-                          colnames = c("Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
-                          formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
-                          formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
-      } else {
-        DTGSEA <- datatable(outputHGT,
-                          class = "display",
-                          extensions = "Buttons",
-                          rownames = FALSE,
-                          options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
-                          colnames = c("Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
-                          formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
-                          formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
-      }
+      if (nrow(outputHGT)>0){
+        outputHGT <- left_join(outputHGT,GeneSetDescriptions, by = c(Geneset = "GeneSet")) %>%
+          mutate(overlap_perc = n_Overlapping / NumberGenes) %>% dplyr::select(Geneset, Description, n_Overlapping, Overlapping_genes, overlap_perc, p_value, padj) %>% arrange(padj)
+        
+        if (MSIGDB == TRUE & GMTURL == FALSE) {
+          DTGSEA <- datatable(outputHGT %>% mutate(Geneset = paste0("<a href=\"http://software.broadinstitute.org/gsea/msigdb/cards/", Geneset, "\">", gsub("_", " ", Geneset),"</a>")),
+                            class = "display",
+                            extensions = "Buttons",
+                            rownames = FALSE,
+                            options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
+                            colnames = c("Gene Set Name", "Description", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
+                            formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
+                            formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
+        } else if (MSIGDB == TRUE & GMTURL == TRUE) {
+          DTGSEA <- datatable(outputHGT %>% dplyr::select(-Description) %>% mutate(Geneset = paste0("<a href=\"http://software.broadinstitute.org/gsea/msigdb/cards/", Geneset, "\">", gsub("_", " ", Geneset),"</a>")),
+                            class = "display",
+                            extensions = "Buttons",
+                            rownames = FALSE,
+                            options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
+                            colnames = c("Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
+                            formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
+                            formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
+        } else if (MSIGDB == FALSE & GMTURL == TRUE) {  
+          DTGSEA <- datatable(outputHGT %>% mutate(Geneset = paste0("<a href=\"", Description, "\">", gsub("_", " ", Geneset),"</a>")) %>% dplyr::select(-Description),
+                            class = "display",
+                            extensions = "Buttons",
+                            rownames = FALSE,
+                            options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
+                            colnames = c("Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
+                            formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
+                            formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
+        } else {
+          DTGSEA <- datatable(outputHGT,
+                            class = "display",
+                            extensions = "Buttons",
+                            rownames = FALSE,
+                            options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
+                            colnames = c("Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
+                            formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
+                            formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
+        }
+      } else{
+        DTGSEA <- "No significant overlap was identified in the geneset enrichment analysis."
+        }
   } else {
-    DTGSEA <- "Genesets were not analysed as they were not provided."
+    DTGSEA <- " Genesets were not analysed as they were not provided."
   }
+    
     rmarkdown::render(
       system.file("templates/TemplateCommunityPage.Rmd", package = "CommunityAMARETTO"),
       output_dir = paste0(full_path, "/htmls/communities"),

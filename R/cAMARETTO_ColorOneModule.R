@@ -9,12 +9,9 @@
 #' @import igraph
 #' @export
 cAMARETTO_ColorOneModule <- function(cAMARETTOnetworkM, cAMARETTOnetworkC, ModuleNr) {
-  if(ModuleNr > length(cAMARETTOnetworkC$community_list)){
-    stop("Module number is not existing")
-  }
-  
-  selected_group <- cAMARETTOnetworkC$community_list[ModuleNr]
-  color_group <- cAMARETTOnetworkC$color_list[ModuleNr]
+
+  selected_group <- cAMARETTOnetworkC$community_list[names(cAMARETTOnetworkC$community_list)==ModuleNr]
+  color_group <- cAMARETTOnetworkC$color_list[names(cAMARETTOnetworkC$color_list)==ModuleNr]
   Nodes_Mnetwork <- igraph::as_data_frame(cAMARETTOnetworkM$module_network,what="vertices")
   
   
