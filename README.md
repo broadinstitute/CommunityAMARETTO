@@ -1,6 +1,6 @@
 # CommunityAMARETTO
 
-The goal of CommunityAMARETTO is to ...
+The goal of CommunityAMARETTO is to identify ...
 
 ## Installation
 
