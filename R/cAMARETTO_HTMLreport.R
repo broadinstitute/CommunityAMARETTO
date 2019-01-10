@@ -108,7 +108,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   rmarkdown::render(
     system.file("templates/TemplateIndexPage.Rmd", package = "CommunityAMARETTO"),
-    output_dir = paste0(full_path, "/htmls/"),
+    output_dir = paste0(full_path),
     output_file = "index.html",
     params = list(
       cAMARETTOnetworkM = cAMARETTOnetworkM,
@@ -207,7 +207,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     
     rmarkdown::render(
       system.file("templates/TemplateCommunityPage.Rmd", package = "CommunityAMARETTO"),
-      output_dir = paste0(full_path, "/htmls/communities"),
+      output_dir = paste0(full_path, "/communities"),
       output_file = paste0("Community_",ComNr,".html"),
       params = list(
         ComNr = ComNr,
