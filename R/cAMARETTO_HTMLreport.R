@@ -32,6 +32,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   } else {
     dir.create(file.path(output_address,"htmls"), showWarnings = FALSE)
     full_path <- file.path(normalizePath(output_address),"htmls")
+    print(paste0("The output directory is: ",full_path))
   }
   
   if (hyper_geo_test_bool == TRUE) {
