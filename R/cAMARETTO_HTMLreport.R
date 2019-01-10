@@ -108,7 +108,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   rmarkdown::render(
     system.file("templates/TemplateIndexPage.Rmd", package = "CommunityAMARETTO"),
-    output_dir = paste0(full_path),
+    output_dir = full_path,
     output_file = "index.html",
     params = list(
       cAMARETTOnetworkM = cAMARETTOnetworkM,
