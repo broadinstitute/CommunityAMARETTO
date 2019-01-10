@@ -34,7 +34,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     full_path <- file.path(normalizePath(output_address),"htmls")
     print(paste0("The output directory is: ",full_path))
   }
-  
+  print("test")
   if (hyper_geo_test_bool == TRUE) {
     if (!file.exists(hyper_geo_reference)) {
       stop("GMT for hyper geometric test is not existing.")
