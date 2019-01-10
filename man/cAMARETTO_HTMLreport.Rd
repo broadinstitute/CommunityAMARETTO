@@ -6,8 +6,9 @@
 \usage{
 cAMARETTO_HTMLreport(cAMARETTOresults, cAMARETTOnetworkM,
   cAMARETTOnetworkC, output_address = "./", HTMLsAMARETTOlist = NULL,
-  hyper_geo_test_bool = FALSE, hyper_geo_reference = NULL,
-  MSIGDB = FALSE, GMTURL = FALSE, NrCores = 2)
+  CopyAMARETTOReport = TRUE, hyper_geo_test_bool = FALSE,
+  hyper_geo_reference = NULL, MSIGDB = FALSE, GMTURL = FALSE,
+  NrCores = 2)
 }
 \arguments{
 \item{NrCores}{}
