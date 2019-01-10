@@ -27,7 +27,6 @@ legend(x = -1.5, y = -1.1+0.05*length(names(cAMARETTOnetworkM$colMN)), legend = 
 legend(x = 1.5, y = 1.5, legend=names(cAMARETTOnetworkC$color_list), col=cAMARETTOnetworkC$color_list, pch=19, bty="n",cex=1/(1+0.02*length(names(cAMARETTOnetworkC$color_list))))
 ```
 <br><br><br>
-
 ## Module to community assignment
 <br><br><br>
 ```{r CommunityModules,echo=FALSE}
@@ -40,6 +39,10 @@ datatable(ComModulesLink, class = "display",
           escape=FALSE)
 ```
 <br><br><br>
+## Summary Information
+```{r RunInfo,echo=FALSE}
+datatable(RunInfo,class = "display",escape=FALSE,rownames = FALSE)
+```
 
 ## Gene to community assignment
 <br><br><br>

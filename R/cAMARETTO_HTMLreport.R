@@ -5,6 +5,7 @@
 #' @param cAMARETTOnetworkC
 #' @param output_address
 #' @param HTMLsAMARETTOlist
+#' @param CopyAMARETTOReport
 #' @param hyper_geo_test_bool
 #' @param hyper_geo_refence
 #' @param MSIGDB
@@ -21,13 +22,16 @@
 #' @return
 #' @export
 cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC,
-                                 output_address="./", HTMLsAMARETTOlist=NULL,
+                                 output_address="./", HTMLsAMARETTOlist=NULL, CopyAMARETTOReport = TRUE,
                                  hyper_geo_test_bool = FALSE, hyper_geo_reference = NULL, MSIGDB = FALSE,GMTURL = FALSE,
                                  NrCores=2){
   
   #test parameters
   if (!dir.exists(output_address)) {
     stop("Output directory is not existing.")
+  } else {
+    dir.create(file.path(output_address,"htmls"), showWarnings = FALSE)
+    full_path <- file.path(normalizePath(output_address),"htmls")
   }
   
   if (hyper_geo_test_bool == TRUE) {
@@ -38,39 +42,61 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   i=1
   if(is.null(HTMLsAMARETTOlist)==FALSE){
+    if(!all(names(HTMLsAMARETTOlist) %in% cAMARETTOresults$runnames)==TRUE){
+      stop("The RUN names don't match those of the cAMARETTOresults")
+    }
     for(htmldir in HTMLsAMARETTOlist){
       if(!file.exists(htmldir)){
-        stop("An AMARETTO html directory is not existing.")
+        stop(paste0("The AMARETTO ",names(HTMLsAMARETTOlist)[i] ," html directory is not existing."))
       }
-      htmldir<-normalizePath(htmldir,"/report_html/htmls/modules/module")
-      HTMLsAMARETTOlist[i] <- htmldir
+      htmldir<-normalizePath(file.path(htmldir,"/AMARETTOhtmls/"))
+      if (CopyAMARETTOReport==TRUE){
+        dir.create(file.path(full_path,names(HTMLsAMARETTOlist)[i]),showWarnings = FALSE)
+        file.copy(htmldir, file.path(full_path,names(HTMLsAMARETTOlist)[i]), recursive = TRUE)
+        htmldir<-file.path(".",names(HTMLsAMARETTOlist)[i],"AMARETTOhtmls")      
+      }
+      HTMLsAMARETTOlist[i]<-htmldir
       i=i+1
     }
+    RunInfo<-rownames_to_column(as.data.frame(HTMLsAMARETTOlist),"Run") %>% rename(ModuleLink="HTMLsAMARETTOlist")
   }
   
   #dataframe with modules per Run
   ComModulesLink <- stack(cAMARETTOnetworkC$community_list) %>% 
     dplyr::rename(Module="values", Community="ind")
   
-  #adding Modules that are not in Communities or Communities that are filtered out
   all_module_names <- unique(c(cAMARETTOresults$hgt_modules$Geneset,cAMARETTOresults$hgt_modules$Testset))
   suppressWarnings(ComModulesLink <- left_join(as.data.frame(all_module_names) %>% dplyr::rename(Module="all_module_names"),ComModulesLink, by="Module"))
-  all_module_names<-all_module_names[!all_module_names %in% ComModulesLink$Module]
   
+  #adding Module Links
+  if(is.null(HTMLsAMARETTOlist)==FALSE){
+  suppressMessages(ComModulesLink<- left_join(ComModulesLink %>% mutate(Run=sub("_.*","",Module)), RunInfo))
+  ComModulesLink <- ComModulesLink %>% mutate(ModuleLink=paste0(ModuleLink,"/modules/module",sub(".*_","",Module),".html"))
+  }
+  
+  #adding Modules that are not in Communities or Communities that are filtered out
+  all_module_names <- ComModulesLink[is.na(ComModulesLink[,"Community"]),"Module"]
   Nodes_Mnetwork <- igraph::as_data_frame(cAMARETTOnetworkM$module_network, what="vertices")
   Module_no_Network <- all_module_names[!all_module_names %in% Nodes_Mnetwork$name]
   Module_no_Com <- all_module_names[all_module_names %in% Nodes_Mnetwork$name]
   
-  ComModulesLink <- ComModulesLink %>% 
+  ComModulesLink <- ComModulesLink %>%
     mutate(Community=ifelse(Module %in% Module_no_Network,"Not in Network",ifelse(Module %in% Module_no_Com, "Not in a Community",paste0("<a href=\"./communities/Community_",Community,".html\">Community ",Community, "</a>")))) %>%
     separate(Module, c("Run","ModuleNr"), "_Module_") %>% 
-    mutate(ModuleNr = paste0("Module ", ModuleNr)) %>% 
+    mutate(ModuleNr = paste0("Module ", ModuleNr)) 
+  
+  if(is.null(HTMLsAMARETTOlist)==FALSE){
+    ComModulesLink <- ComModulesLink %>% mutate(ModuleNr = paste0('<a href="',ModuleLink,'">',ModuleNr,'</a>'))
+    RunInfo <- RunInfo %>% mutate(Run=paste0('<a href="',ModuleLink,'/index.html">',Run,'</a>')) %>% select(Run)
+  } else {
+    RunInfo <- as.data.frame(cAMARETTOresults$runnames) %>% dplyr::rename(Run='as.data.frame(cAMARETTOresults$runnames)')
+  }
+  ComModulesLink <- ComModulesLink %>% 
     group_by(Community, Run) %>% 
     summarise(ModuleNrs=paste(ModuleNr, collapse = ", "))
-
-  ComModulesLink <- dcast(ComModulesLink, Community~Run, fill=0)
-  full_path <- normalizePath(output_address)
   
+  ComModulesLink <- dcast(ComModulesLink, Community~Run, fill=0)
+
   comm_info <- cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC)
   
   GeneComLink <- comm_info %>% 
