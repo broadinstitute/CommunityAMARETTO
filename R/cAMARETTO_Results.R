@@ -4,12 +4,13 @@
 #' @param AMARETTOresults_all A list of multiple AMARETTO_Run outputs. The names are run names.
 #' @param parallelparam BiocParallel BPPARAM
 #' @param output_dir A directory that stores gmt files for the runs
+#' @param drivers
 #'
 #' @return a list with AMARETTOinit and AMARETTOresults data objects from multiple runs
 #' @import gtools
 #' @import tidyverse
 #' @export
-cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,nrCores=1,output_dir="./",gmt_filelist=NULL){
+cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,nrCores=1,output_dir="./",gmt_filelist=NULL,drivers=TRUE){
   
   #test if names are matching
   if (all(names(AMARETTOinit_all) == names(AMARETTOresults_all))) {
@@ -27,7 +28,7 @@ cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,nrCores=1,out
   create_gmt_filelist<-c()
   for (run in runnames){
     gmt_file <- file.path(output_dir,"gmt_files", paste0(run, "_modules.gmt"))
-    GmtFromModules(AMARETTOinit_all[[run]], AMARETTOresults_all[[run]], gmt_file, run)
+    GmtFromModules(AMARETTOresults_all[[run]], gmt_file, run, Drivers = drivers)
     create_gmt_filelist <- c(create_gmt_filelist,gmt_file)
   }
   names(create_gmt_filelist)<-runnames
@@ -72,21 +73,30 @@ cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,nrCores=1,out
 
 #' @title GmtFromModules
 #'
-#' @param AMARETTOinit_all A list of multiple AMARETTO_Initialize outputs. The names are run names.
-#' @param AMARETTOresults_all A list of multiple AMARETTO_Run outputs. The names are run names.
+#' @param AMARETTOresults A AMARETTO_Run output.
 #' @param gmt_file A gmtfilename
 #' @param run A runname
+#' @param Drivers Add drivers to the gmt-file
 #'
 #' @return Creates a gmt file for a AMARETTO run
 #'
 #' @import tidyverse
 #' @export
 
-GmtFromModules <- function(AMARETTOinit,AMARETTOresults,gmt_file,run){
+GmtFromModules <- function(AMARETTOresults,gmt_file,run,Drivers=FALSE){
   
   ModuleMembership<-rownames_to_column(as.data.frame(AMARETTOresults$ModuleMembership),"GeneNames")
   NrModules<-AMARETTOresults$NrModules
   ModuleMembership<-ModuleMembership %>% arrange(GeneNames)
+  
+  if (Drivers == TRUE){
+    for (i in 1:NrModules){
+      ModuleNr<-paste0("Module_",i)
+      Driver_list<-AMARETTOresults$RegulatoryPrograms[ModuleNr, which(AMARETTOresults$RegulatoryPrograms[ModuleNr,] != 0)]
+      Driver_list<-as.data.frame(names(Driver_list)) %>% dplyr::rename(GeneNames='names(Driver_list)') %>% mutate(ModuleNr=i)
+      ModuleMembership <- rbind(ModuleMembership,Driver_list)
+    }
+  }
   
   ModuleMembers_list<-split(ModuleMembership$GeneNames,ModuleMembership$ModuleNr)
   names(ModuleMembers_list)<-paste0(run,"_Module_",names(ModuleMembers_list))

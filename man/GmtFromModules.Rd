@@ -4,16 +4,16 @@
 \alias{GmtFromModules}
 \title{GmtFromModules}
 \usage{
-GmtFromModules(AMARETTOinit, AMARETTOresults, gmt_file, run)
+GmtFromModules(AMARETTOresults, gmt_file, run, Drivers = FALSE)
 }
 \arguments{
+\item{AMARETTOresults}{A AMARETTO_Run output.}
+
 \item{gmt_file}{A gmtfilename}
 
 \item{run}{A runname}
 
-\item{AMARETTOinit_all}{A list of multiple AMARETTO_Initialize outputs. The names are run names.}
-
-\item{AMARETTOresults_all}{A list of multiple AMARETTO_Run outputs. The names are run names.}
+\item{Drivers}{Add drivers to the gmt-file}
 }
 \value{
 Creates a gmt file for a AMARETTO run

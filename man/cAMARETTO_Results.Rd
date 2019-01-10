@@ -5,7 +5,7 @@
 \title{cAMARETTO_Results}
 \usage{
 cAMARETTO_Results(AMARETTOinit_all, AMARETTOresults_all, nrCores = 1,
-  output_dir = "./", gmt_filelist = NULL)
+  output_dir = "./", gmt_filelist = NULL, drivers = TRUE)
 }
 \arguments{
 \item{AMARETTOinit_all}{A list of multiple AMARETTO_Initialize outputs. The names are run names.}
@@ -13,6 +13,8 @@ cAMARETTO_Results(AMARETTOinit_all, AMARETTOresults_all, nrCores = 1,
 \item{AMARETTOresults_all}{A list of multiple AMARETTO_Run outputs. The names are run names.}
 
 \item{output_dir}{A directory that stores gmt files for the runs}
+
+\item{drivers}{}
 
 \item{parallelparam}{BiocParallel BPPARAM}
 }
