@@ -25,5 +25,5 @@ cAMARETTO_ColorOneModule <- function(cAMARETTOnetworkM, cAMARETTOnetworkC, Modul
        mark.border=NA,
        main="Community network")
   
-  legend(x = -1.5, y = -1.1, legend = names(cAMARETTOnetworkM$colMN), col = cAMARETTOnetworkM$colMN, pch=19, bty="n")
+  legend(x = -1.5, y = -1.1+0.05*length(names(cAMARETTOnetworkM$colMN)), legend = names(cAMARETTOnetworkM$colMN), col = cAMARETTOnetworkM$colMN, pch=19, bty="n")
 }
