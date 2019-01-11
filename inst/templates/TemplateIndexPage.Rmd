@@ -23,8 +23,8 @@ plot(cAMARETTOnetworkC$CommGraph,layout=cAMARETTOnetworkM$layoutMN,
        mark.col=cAMARETTOnetworkC$color_list,
        mark.border=NA)
 
-legend(x = -1.5, y = -1.1+0.05*length(names(cAMARETTOnetworkM$colMN)), legend = names(cAMARETTOnetworkM$colMN), col = cAMARETTOnetworkM$colMN, pch=19, bty="n")
-legend(x = 1.5, y = 1.5, legend=names(cAMARETTOnetworkC$color_list), col=cAMARETTOnetworkC$color_list, pch=19, bty="n",cex=1/(1+0.02*length(names(cAMARETTOnetworkC$color_list))))
+legend(x = -1.5, y = -1.1+0.05*length(cAMARETTOnetworkM$colMN), legend = names(cAMARETTOnetworkM$colMN), col = cAMARETTOnetworkM$colMN, pch=19, bty="n",ncol=ceiling(length(cAMARETTOnetworkM$colMN)/5))
+legend(x = 1.5, y = 1.5, legend=names(cAMARETTOnetworkC$color_list), col=cAMARETTOnetworkC$color_list, pch=19, bty="n",cex=max(0.9,1/(1+0.02*length(cAMARETTOnetworkC$color_list))),ncol=ceiling(length(cAMARETTOnetworkC$color_list)/15))
 ```
 <br><br><br>
 ## Module to community assignment

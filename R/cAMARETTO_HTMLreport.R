@@ -138,7 +138,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     if(is.null(HTMLsAMARETTOlist)==FALSE){
       
       ModuleList <- as.data.frame(ModuleList) %>% separate(ModuleList,c("Run","ModuleNr"),"_Module_") %>% mutate(ModuleNr = sub("^","Module ",ModuleNr))
-      ModuleList <- full_join(ModuleList,RunInfo) %>% mutate(ModuleNr = paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleNr),'">',ModuleNr,'</a>'))
+      suppressWarnings(ModuleList <- full_join(ModuleList,RunInfo) %>% mutate(ModuleNr = paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleNr),'">',ModuleNr,'</a>')))
       DTML <- datatable(ModuleList %>% select(-ModuleLink), 
                         class = "display",
                         extensions = "Buttons",
