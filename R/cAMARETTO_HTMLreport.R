@@ -88,7 +88,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   if(is.null(HTMLsAMARETTOlist)==FALSE){
     ComModulesLink <- ComModulesLink %>% mutate(ModuleNr = paste0('<a href="',ModuleLink,'">',ModuleNr,'</a>'))
-    RunInfo <- RunInfo %>% mutate(Run=paste0('<a href="',ModuleLink,'/index.html">',Run,'</a>')) %>% select(Run)
+    RunInfo <- RunInfo %>% mutate(Run=paste0('<a href="',ModuleLink,'/index.html">',Run,'</a>'))
   } else {
     RunInfo <- as.data.frame(cAMARETTOresults$runnames) %>% dplyr::rename(Run='as.data.frame(cAMARETTOresults$runnames)')
   }
@@ -116,6 +116,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
       cAMARETTOnetworkC = cAMARETTOnetworkC,
       ComModulesLink = ComModulesLink,
       GeneComLink = GeneComLink,
+      RunInfo =  RunInfo %>% select(Run)
     ), quiet = TRUE)
   
   print("The index html is created.")
@@ -124,23 +125,18 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   if (hyper_geo_test_bool) {
     GeneSetDescriptions <- GeneSetDescription(hyper_geo_reference)
   }
+  RunInfo<-rownames_to_column(as.data.frame(HTMLsAMARETTOlist),"Run") %>% rename(ModuleLink="HTMLsAMARETTOlist")
   
   for (i in 1:nrow(comm_info)){
     community_info <- comm_info[i,]
     ComNr <- community_info$community_numb
     genelist <- unlist(strsplit(community_info$overlapping_genes,", "))
     ModuleList <- unlist(strsplit(community_info$included_nodes,", "))
-    ModuleNames <- ModuleList
-    
+
     if(is.null(HTMLsAMARETTOlist)==FALSE){
-      for (i in 1:length(HTMLsAMARETTOlist)){
-        ModuleList <- sub(names(HTMLsAMARETTOlist)[i], HTMLsAMARETTOlist[i], ModuleList)
-      }
-      ModuleList <- sub("_Module_","/report_html/htmls/modules/module",ModuleList)
-      ModuleList <- paste0('<a href="file://',ModuleList,'.html"> ModuleLink </a>')
-      names(ModuleList) <- ModuleNames
-      ModuleList <- rownames_to_column(as.data.frame(ModuleList),"ModuleNames") %>% separate(ModuleNames,c("Run","ModuleNr"),"_Module_") %>% mutate(ModuleNr = sub("^","Module ",ModuleNr))
-      DTML <- datatable(ModuleList, 
+      ModuleList <- as.data.frame(ModuleList) %>% separate(ModuleList,c("Run","ModuleNr"),"_Module_") %>% mutate(ModuleNr = sub("^","Module ",ModuleNr))
+      ModuleList <- full_join(ModuleList,RunInfo) %>% mutate(ModuleNr = paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleNr),'">',ModuleNr,'</a>'))
+      DTML <- datatable(ModuleList %>% select(-ModuleLink), 
                         class = "display",
                         extensions = "Buttons",
                         rownames = FALSE,
