@@ -126,7 +126,9 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     GeneSetDescriptions <- GeneSetDescription(hyper_geo_reference)
   }
   RunInfo<-rownames_to_column(as.data.frame(HTMLsAMARETTOlist),"Run") %>% rename(ModuleLink="HTMLsAMARETTOlist")
-  
+  if(CopyAMARETTOReport==TRUE){
+    RunInfo <- RunInfo %>% mutate(ModuleLink=sub("^.*/","../",ModuleLink))
+  }
   for (i in 1:nrow(comm_info)){
     community_info <- comm_info[i,]
     ComNr <- community_info$community_numb
@@ -134,6 +136,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     ModuleList <- unlist(strsplit(community_info$included_nodes,", "))
 
     if(is.null(HTMLsAMARETTOlist)==FALSE){
+      
       ModuleList <- as.data.frame(ModuleList) %>% separate(ModuleList,c("Run","ModuleNr"),"_Module_") %>% mutate(ModuleNr = sub("^","Module ",ModuleNr))
       ModuleList <- full_join(ModuleList,RunInfo) %>% mutate(ModuleNr = paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleNr),'">',ModuleNr,'</a>'))
       DTML <- datatable(ModuleList %>% select(-ModuleLink), 
