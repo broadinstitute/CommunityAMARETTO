@@ -47,7 +47,7 @@ datatable(RunInfo,class = "display",escape=FALSE,rownames = FALSE)
 <br><br><br>
 ## Gene to community assignment
 <br><br><br>
-```{r CommunityGenes,echo=FALSE}
+```{r CommunityGenes, echo=FALSE}
 datatable(GeneComLink %>% select(GeneName,Community), class = "display",
           extensions = "Buttons",
           rownames = FALSE,
@@ -60,7 +60,7 @@ datatable(GeneComLink %>% select(GeneName,Community), class = "display",
 
 ## Gene Set Enrichment of Communities
 <br><br><br>
-```{r}
+```{r DTGSEAall, echo=FALSE}
 DTGSEAall
 ```
 <br><br><br>
