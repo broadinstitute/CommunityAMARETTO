@@ -58,4 +58,11 @@ datatable(GeneComLink %>% select(GeneName,Community), class = "display",
 ```
 <br><br><br>
 
+## Gene Set Enrichment of Communities
+<br><br><br>
+```{r}
+DTGSEAall
+```
+<br><br><br>
+
 </center>

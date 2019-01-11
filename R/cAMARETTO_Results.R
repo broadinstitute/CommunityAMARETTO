@@ -68,7 +68,7 @@ cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,nrCores=1,out
   output_hgt_allcombinations$padj <- p.adjust(output_hgt_allcombinations$p_value, method="BH")
   output_hgt_allcombinations <- output_hgt_allcombinations %>% 
                                     mutate(p_value=case_when(Geneset == Testset~NA_real_, TRUE~p_value))
-  return(list(runnames=runnames, hgt_modules=output_hgt_allcombinations, nrCores))
+  return(list(runnames=runnames, hgt_modules=output_hgt_allcombinations, nrCores=nrCores))
 }
 
 #' @title GmtFromModules

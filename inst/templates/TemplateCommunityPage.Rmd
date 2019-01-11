@@ -24,8 +24,7 @@ DTML
 ```
 <br><br><br>
 
-
-## Gense Set Enrichment Analysis for Community
+## Gene Set Enrichment Analysis for Community
 <br><br><br>
 ```{r CommunityGSEA,echo=FALSE}
 DTGSEA

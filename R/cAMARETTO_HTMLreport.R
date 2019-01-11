@@ -96,7 +96,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     group_by(Community, Run) %>% 
     summarise(ModuleNrs=paste(ModuleNr, collapse = ", "))
   
-  ComModulesLink <- dcast(ComModulesLink, Community~Run, fill=0)
+  suppressMessages(ComModulesLink <- dcast(ComModulesLink, Community~Run, fill=0))
 
   comm_info <- cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC)
   
@@ -107,27 +107,14 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     dplyr::rename(Community="community_numb",GeneName="overlapping_genes") %>% 
     arrange(GeneName)
   
-  rmarkdown::render(
-    system.file("templates/TemplateIndexPage.Rmd", package = "CommunityAMARETTO"),
-    output_dir = full_path,
-    output_file = "index.html",
-    params = list(
-      cAMARETTOnetworkM = cAMARETTOnetworkM,
-      cAMARETTOnetworkC = cAMARETTOnetworkC,
-      ComModulesLink = ComModulesLink,
-      GeneComLink = GeneComLink,
-      RunInfo =  RunInfo %>% select(Run)
-    ), quiet = TRUE)
-  
-  print("The index html is created.")
-  
   #HGT to test for gene set enrichment
   if (hyper_geo_test_bool) {
+    all_hgt_output <- tibble("Community"=character(),"Geneset"=character(),"Description"=character(),"n_Overlapping"=numeric(),"Overlapping_genes"=character(),"overlap_perc"=numeric(),"p_value="=numeric(),"padj"=numeric())
     GeneSetDescriptions <- GeneSetDescription(hyper_geo_reference)
   }
-  RunInfo<-rownames_to_column(as.data.frame(HTMLsAMARETTOlist),"Run") %>% rename(ModuleLink="HTMLsAMARETTOlist")
+  RunInfo2<-rownames_to_column(as.data.frame(HTMLsAMARETTOlist),"Run") %>% rename(ModuleLink="HTMLsAMARETTOlist")
   if(CopyAMARETTOReport==TRUE){
-    RunInfo <- RunInfo %>% mutate(ModuleLink=sub("^./","../",ModuleLink))
+    RunInfo2 <- RunInfo2 %>% mutate(ModuleLink=sub("^./","../",ModuleLink))
   }
   for (i in 1:nrow(comm_info)){
     community_info <- comm_info[i,]
@@ -138,9 +125,9 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     if(is.null(HTMLsAMARETTOlist)==FALSE){
       ModuleList <- as.data.frame(ModuleList) %>% separate(ModuleList,c("Run","ModuleNr"),"_Module_") %>% mutate(ModuleNr = sub("^","Module ",ModuleNr))
       if (CopyAMARETTOReport==TRUE){
-        suppressMessages(ModuleList <- left_join(ModuleList,RunInfo) %>% mutate(ModuleNr = paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleNr),'.html">',ModuleNr,'</a>')))
+        suppressMessages(ModuleList <- left_join(ModuleList,RunInfo2) %>% mutate(ModuleNr = paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleNr),'.html">',ModuleNr,'</a>')))
       } else {
-        suppressMessages(ModuleList <- left_join(ModuleList,RunInfo) %>% mutate(ModuleNr = paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleNr),'.html">',ModuleNr,'</a>')))
+        suppressMessages(ModuleList <- left_join(ModuleList,RunInfo2) %>% mutate(ModuleNr = paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleNr),'.html">',ModuleNr,'</a>')))
       }  
       DTML <- datatable(ModuleList %>% select(-ModuleLink), 
                         class = "display",
@@ -163,6 +150,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
       if (nrow(outputHGT)>0){
         outputHGT <- left_join(outputHGT,GeneSetDescriptions, by = c(Geneset = "GeneSet")) %>%
           mutate(overlap_perc = n_Overlapping / NumberGenes) %>% dplyr::select(Geneset, Description, n_Overlapping, Overlapping_genes, overlap_perc, p_value, padj) %>% arrange(padj)
+        all_hgt_output<-rbind(all_hgt_output %>% mutate(Community=paste0("Community ",ComNr)),outputHGT)
         
         if (MSIGDB == TRUE & GMTURL == FALSE) {
           DTGSEA <- datatable(outputHGT %>% mutate(Geneset = paste0("<a href=\"http://software.broadinstitute.org/gsea/msigdb/cards/", Geneset, "\">", gsub("_", " ", Geneset),"</a>")),
@@ -205,7 +193,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
         DTGSEA <- "No significant overlap was identified in the geneset enrichment analysis."
         }
   } else {
-    DTGSEA <- " Genesets were not analysed as they were not provided."
+    DTGSEA <- "Genesets were not analysed as they were not provided."
   }
     
     rmarkdown::render(
@@ -220,8 +208,65 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
         cAMARETTOnetworkC = cAMARETTOnetworkC,
       ), quiet = TRUE)
   }
-  
   print("The community htmls are created.")
+  
+  if (hyper_geo_test_bool) {
+    if (MSIGDB == TRUE & GMTURL == FALSE) {
+      DTGSEAall <- datatable(all_hgt_output %>% mutate(Geneset = paste0("<a href=\"http://software.broadinstitute.org/gsea/msigdb/cards/", Geneset, "\">", gsub("_", " ", Geneset),"</a>")),
+                        class = "display",
+                        extensions = "Buttons",
+                        rownames = FALSE,
+                        options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
+                        colnames = c("Community","Gene Set Name", "Description", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
+                        formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
+                        formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
+    } else if (MSIGDB == TRUE & GMTURL == TRUE) {
+      DTGSEAall <- datatable(all_hgt_output %>% dplyr::select(-Description) %>% mutate(Geneset = paste0("<a href=\"http://software.broadinstitute.org/gsea/msigdb/cards/", Geneset, "\">", gsub("_", " ", Geneset),"</a>")),
+                        class = "display",
+                        extensions = "Buttons",
+                        rownames = FALSE,
+                        options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
+                        colnames = c("Community", "Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
+                        formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
+                        formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
+    } else if (MSIGDB == FALSE & GMTURL == TRUE) {  
+      DTGSEAall <- datatable(all_hgt_output %>% mutate(Geneset = paste0("<a href=\"", Description, "\">", gsub("_", " ", Geneset),"</a>")) %>% dplyr::select(-Description),
+                        class = "display",
+                        extensions = "Buttons",
+                        rownames = FALSE,
+                        options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
+                        colnames = c("Community","Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
+                        formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
+                        formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
+    } else {
+      DTGSEAall <- datatable(all_hgt_output,
+                        class = "display",
+                        extensions = "Buttons",
+                        rownames = FALSE,
+                        options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
+                        colnames = c("Community","Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
+      formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
+      formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
+    }
+  } else{
+    DTGSEAall <- "Genesets were not analysed as they were not provided."
+  }
+  
+  rmarkdown::render(
+    system.file("templates/TemplateIndexPage.Rmd", package = "CommunityAMARETTO"),
+    output_dir = full_path,
+    output_file = "index.html",
+    params = list(
+      cAMARETTOnetworkM = cAMARETTOnetworkM,
+      cAMARETTOnetworkC = cAMARETTOnetworkC,
+      ComModulesLink = ComModulesLink,
+      GeneComLink = GeneComLink,
+      RunInfo =  RunInfo %>% select(Run),
+      DTGSEAall = DTGSEAall
+    ), quiet = TRUE)
+  
+  print("The index html is created.")
+  
 }
 
 #' @title HGTGeneEnrichmentList
