@@ -38,3 +38,32 @@ cAMARETTO_Read<-function(AMARETTOdirectories){
   names(AMARETTOresults_all)<-names(AMARETTOdirectories)
   return(list(AMARETTOinit_all = AMARETTOinit_all,AMARETTOresults_all = AMARETTOresults_all))
 }
+
+#' @title cAMARETTO_ExportResults
+#'
+#' @param cAMARETTOresults
+#' @param cAMARETTOnetworkM
+#' @param cAMARETTOnetworkC
+#' @param output_address
+#'
+#' @return 
+#' 
+#' @export
+cAMARETTO_ExportResults<-function(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC, output_address="./"){
+
+  if (!dir.exists(output_address)){
+    stop("Output directory is not existing.")
+  }
+  
+  #add a date stamp to the output directory
+  output_dir<-paste0("cAMARETTOresults_",gsub("-|:","",gsub(" ","_",Sys.time())))
+  dir.create(file.path(output_address,output_dir))
+
+  #save rdata files for AMARETTO_Run and AMARETTO_Initialize output
+  save(cAMARETTOresults, file=file.path(output_address,output_dir,"/cAMARETTOresults.RData"))
+  save(cAMARETTOnetworkM, file=file.path(output_address,output_dir,"/cAMARETTOnetworkM.RData"))
+  save(cAMARETTOnetworkC, file=file.path(output_address,output_dir,"/cAMARETTOnetworkC.RData"))
+
+  zip(zipfile = file.path(output_address,output_dir),files=file.path(output_address,output_dir))
+  unlink(output_dir,recursive = TRUE)
+}
