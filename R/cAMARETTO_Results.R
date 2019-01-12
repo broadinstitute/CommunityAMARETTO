@@ -128,6 +128,7 @@ readGMT<-function(filename){
 #' @param gmtfile2 A second gmtfile to compare with.
 #' @param runname1
 #' @param runname2
+#' @param NrCores
 #' @param ref.numb.genes The reference number of genes.
 #' 
 #' @return Creates resultfile with p-values and padj when comparing two gmt files with a hyper geometric test.

@@ -4,15 +4,15 @@
 \alias{HyperGTestGeneEnrichment}
 \title{GmtFromModules}
 \usage{
-HyperGTestGeneEnrichment(gmtfile, testgmtfile, NrCores,
+HyperGTestGeneEnrichment(gmtfile1, gmtfile2, runname1, runname2, NrCores,
   ref.numb.genes = 45956)
 }
 \arguments{
-\item{ref.numb.genes}{The reference number of genes.}
-
 \item{gmtfile1}{A gmtfilename that you want to compare}
 
 \item{gmtfile2}{A second gmtfile to compare with.}
+
+\item{ref.numb.genes}{The reference number of genes.}
 }
 \value{
 Creates resultfile with p-values and padj when comparing two gmt files with a hyper geometric test.
