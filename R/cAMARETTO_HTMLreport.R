@@ -127,9 +127,9 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     if(is.null(HTMLsAMARETTOlist)==FALSE){
       ModuleList <- as.data.frame(ModuleList) %>% separate(ModuleList,c("Run","ModuleName"),"_",extra = "merge")
       if (CopyAMARETTOReport==TRUE){
-        suppressMessages(ModuleList <- left_join(ModuleList,RunInfo2) %>% mutate(ModuleName = ifelse(Run %in% cAMARETTOresults$runnames,paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleName),'.html">',ModuleName,'</a>'),ModuleName)))
+        suppressMessages(ModuleList <- left_join(ModuleList,RunInfo2) %>% mutate(ModuleName = ifelse(Run %in% cAMARETTOresults$runnames,paste0('<a href="',ModuleLink,'/modules/',sub("Module_","module",ModuleName),'.html">',sub("_"," ",ModuleName),'</a>'),sub("_"," ",ModuleName))))
       } else {
-        suppressMessages(ModuleList <- left_join(ModuleList,RunInfo2) %>% mutate(ModuleName = ifelse(Run %in% cAMARETTOresults$runnames,paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleName),'.html">',ModuleName,'</a>'),ModuleName)))
+        suppressMessages(ModuleList <- left_join(ModuleList,RunInfo2) %>% mutate(ModuleName = ifelse(Run %in% cAMARETTOresults$runnames,paste0('<a href="',ModuleLink,'/modules/',sub("Module_","module",ModuleName),'.html">',sub("_"," ",ModuleName),'</a>'),sub("_"," ",ModuleName))))
       }  
       DTML <- datatable(ModuleList %>% select(-ModuleLink), 
                         class = "display",
@@ -217,6 +217,10 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     dplyr::rename(Genes="value") %>%
     dplyr::mutate(ModuleName = gsub("_"," ",ModuleName)) %>%
     dplyr::select(Run,ModuleName,Genes)
+  
+  genelists_module <- suppressMessages(left_join(genelists_module,RunInfo2) %>% 
+    dplyr::mutate(ModuleName = ifelse(Run %in% cAMARETTOresults$runnames,paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleName),'.html">',ModuleName,'</a>'),ModuleName)) %>%
+    dplyr::select(-ModuleLink))
   
   DTGenes <- datatable(genelists_module,
                        class = "display",
