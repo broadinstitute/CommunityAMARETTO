@@ -64,7 +64,9 @@ cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,nrCores=1,out
   })
   
   genelists<-lapply(all_gmt_files_list, function(x){
-    return(readGMT(x))
+    genelist<-readGMT(x)
+    names(genelist)<-gsub(" ","_",names(genelist))
+    return(genelist)
   })
   
   output_hgt_allcombinations <- do.call(rbind, output_hgt_allcombinations)

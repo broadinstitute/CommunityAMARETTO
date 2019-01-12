@@ -30,4 +30,11 @@ DTML
 DTGSEA
 ```
 <br><br><br>
+
+## Gene Module Link
+<br><br><br>
+```{r GeneModule,echo=FALSE}
+DTGenes
+```
+<br><br><br>
 </center>

@@ -66,13 +66,13 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   ComModulesLink <- stack(cAMARETTOnetworkC$community_list) %>% 
     dplyr::rename(Module="values", Community="ind")
   
-  all_module_names <- unique(c(cAMARETTOresults$hgt_modules$Geneset,cAMARETTOresults$hgt_modules$Testset))
+  all_module_names <- unique(c(cAMARETTOresults$hgt_modules$Geneset1,cAMARETTOresults$hgt_modules$Geneset2))
   suppressWarnings(ComModulesLink <- left_join(as.data.frame(all_module_names) %>% dplyr::rename(Module="all_module_names"),ComModulesLink, by="Module"))
   
   #adding Module Links
   if(is.null(HTMLsAMARETTOlist)==FALSE){
   suppressMessages(ComModulesLink<- left_join(ComModulesLink %>% mutate(Run=sub("_.*","",Module)), RunInfo))
-  ComModulesLink <- ComModulesLink %>% mutate(ModuleLink=paste0(ModuleLink,"/modules/module",sub(".*_","",Module),".html"))
+  ComModulesLink <- ComModulesLink %>% mutate(ModuleLink=ifelse(Run %in% cAMARETTOresults$runnames,paste0(ModuleLink,"/modules/module",sub(".*_","",Module),".html"),NA))
   }
   
   #adding Modules that are not in Communities or Communities that are filtered out
@@ -83,18 +83,18 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   ComModulesLink <- ComModulesLink %>%
     mutate(Community=ifelse(Module %in% Module_no_Network,"Not in Network",ifelse(Module %in% Module_no_Com, "Not in a Community",paste0("Community ",Community)))) %>%
-    separate(Module, c("Run","ModuleNr"), "_Module_") %>% 
-    mutate(ModuleNr = paste0("Module ", ModuleNr)) 
+    mutate(ModuleName = sub("^[^_]*_","",Module)) %>% 
+    mutate(ModuleName = sub("_"," ",ModuleName)) 
   
   if(is.null(HTMLsAMARETTOlist)==FALSE){
-    ComModulesLink <- ComModulesLink %>% mutate(ModuleNr = paste0('<a href="',ModuleLink,'">',ModuleNr,'</a>'))
+    ComModulesLink <- ComModulesLink %>% mutate(ModuleName = ifelse(Run %in% cAMARETTOresults$runnames, paste0('<a href="',ModuleLink,'">',ModuleName,'</a>'),ModuleName))
     RunInfo <- RunInfo %>% mutate(Run=paste0('<a href="',ModuleLink,'/index.html">',Run,'</a>'))
   } else {
     RunInfo <- as.data.frame(cAMARETTOresults$runnames) %>% dplyr::rename(Run='as.data.frame(cAMARETTOresults$runnames)')
   }
   ComModulesLink <- ComModulesLink %>% 
     group_by(Community, Run) %>% 
-    summarise(ModuleNrs=paste(ModuleNr, collapse = ", "))
+    summarise(ModuleNames=paste(ModuleName, collapse = ", "))
   
   suppressMessages(ComModulesLink <- dcast(ComModulesLink, Community~Run, fill=0))
   
@@ -125,11 +125,11 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     ModuleList <- unlist(strsplit(community_info$included_nodes,", "))
 
     if(is.null(HTMLsAMARETTOlist)==FALSE){
-      ModuleList <- as.data.frame(ModuleList) %>% separate(ModuleList,c("Run","ModuleNr"),"_Module_") %>% mutate(ModuleNr = sub("^","Module ",ModuleNr))
+      ModuleList <- as.data.frame(ModuleList) %>% separate(ModuleList,c("Run","ModuleName"),"_",extra = "merge")
       if (CopyAMARETTOReport==TRUE){
-        suppressMessages(ModuleList <- left_join(ModuleList,RunInfo2) %>% mutate(ModuleNr = paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleNr),'.html">',ModuleNr,'</a>')))
+        suppressMessages(ModuleList <- left_join(ModuleList,RunInfo2) %>% mutate(ModuleName = ifelse(Run %in% cAMARETTOresults$runnames,paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleName),'.html">',ModuleName,'</a>'),ModuleName)))
       } else {
-        suppressMessages(ModuleList <- left_join(ModuleList,RunInfo2) %>% mutate(ModuleNr = paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleNr),'.html">',ModuleNr,'</a>')))
+        suppressMessages(ModuleList <- left_join(ModuleList,RunInfo2) %>% mutate(ModuleName = ifelse(Run %in% cAMARETTOresults$runnames,paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleName),'.html">',ModuleName,'</a>'),ModuleName)))
       }  
       DTML <- datatable(ModuleList %>% select(-ModuleLink), 
                         class = "display",
@@ -138,7 +138,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                         options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("ModulesCom",ComNr)))),
                         escape = FALSE)
     } else {
-      ModuleList <- as.data.frame(ModuleList) %>% separate(ModuleList,c("Run","ModuleNr"),"_Module_") %>% mutate(ModuleNr = sub("^","Module ",ModuleNr))
+      ModuleList <- as.data.frame(ModuleList) %>% separate(ModuleList,c("Run","ModuleName"),"_",extra = "merge")
       DTML <- datatable(ModuleList, 
                         class = "display",
                         extensions = "Buttons",
@@ -197,8 +197,37 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   } else {
     DTGSEA <- "Genesets were not analysed as they were not provided."
   }
-    
-    rmarkdown::render(
+  
+  #Create Gene-Module-Run tabel
+  ModuleList <- unlist(strsplit(community_info$included_nodes,", "))
+  ModuleList <- as.data.frame(ModuleList) %>%
+    separate(ModuleList,c("Run","ModuleName"),"_",extra = "merge",remove = FALSE)
+  genelists_module<-apply(ModuleList,1,function(x){
+    if(x["Run"] %in% cAMARETTOresults$runnames){
+      x["ModuleName"]<-sub('<.*','',sub('^.*">',"",x["ModuleName"]))
+      genelists<-cAMARETTOresults$genelists[[x["Run"]]][[paste0(x["Run"],"_",x["ModuleName"])]]
+    } else {
+      genelists<-cAMARETTOresults$genelists[[x["Run"]]][[x["ModuleName"]]]
+    }
+    return(genelists)
+  })
+  names(genelists_module)<-ModuleList$ModuleList
+  genelists_module <- melt(genelists_module) %>% 
+    separate(L1,c("Run","ModuleName"),"_",extra = "merge") %>% 
+    dplyr::rename(Genes="value") %>%
+    dplyr::mutate(ModuleName = gsub("_"," ",ModuleName)) %>%
+    dplyr::select(Run,ModuleName,Genes)
+  
+  DTGenes <- datatable(genelists_module,
+                       class = "display",
+                       extensions = "Buttons",
+                       rownames = FALSE,
+                       options = list(pageLength = 10, 
+                                      dom = "Bfrtip", 
+                                      buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"))),
+                       escape=FALSE)
+  
+  rmarkdown::render(
       system.file("templates/TemplateCommunityPage.Rmd", package = "CommunityAMARETTO"),
       output_dir = paste0(full_path, "/communities"),
       output_file = paste0("Community_",ComNr,".html"),
@@ -206,10 +235,12 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
         ComNr = ComNr,
         DTGSEA = DTGSEA,
         DTML = DTML,
+        DTGenes = DTGenes,
         cAMARETTOnetworkM = cAMARETTOnetworkM,
-        cAMARETTOnetworkC = cAMARETTOnetworkC,
+        cAMARETTOnetworkC = cAMARETTOnetworkC
       ), quiet = TRUE)
   }
+  
   print("The community htmls are created.")
   
   if (hyper_geo_test_bool) {
