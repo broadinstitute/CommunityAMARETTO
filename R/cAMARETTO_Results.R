@@ -2,7 +2,7 @@
 #'
 #' @param AMARETTOinit_all A list of multiple AMARETTO_Initialize outputs. The names are run names.
 #' @param AMARETTOresults_all A list of multiple AMARETTO_Run outputs. The names are run names.
-#' @param parallelparam BiocParallel BPPARAM
+#' @param NrCores
 #' @param output_dir A directory that stores gmt files for the runs
 #' @param gmt_filelist
 #' @param drivers
@@ -11,7 +11,7 @@
 #' @import gtools
 #' @import tidyverse
 #' @export
-cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,nrCores=1,output_dir="./",gmt_filelist=NULL,drivers=TRUE){
+cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,NrCores=1,output_dir="./",gmt_filelist=NULL,drivers=TRUE){
   
   #test if names are matching
   if (all(names(AMARETTOinit_all) == names(AMARETTOresults_all))) {
@@ -75,7 +75,7 @@ cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,nrCores=1,out
                                     mutate(p_value=case_when(Geneset1 == Geneset2~NA_real_, TRUE~p_value))
   output_hgt_allcombinations <- output_hgt_allcombinations %>% mutate(Geneset1=ifelse(RunName1%in%names(given_gmt_filelist),paste0(RunName1,"_",gsub(" ","_",Geneset1)),Geneset1),Geneset2=ifelse(RunName2%in%names(given_gmt_filelist),paste0(RunName2,"_",gsub(" ","_",Geneset2)),Geneset2))
   
-  return(list(runnames=runnames,gmtnames=names(given_gmt_filelist),hgt_modules=output_hgt_allcombinations, genelists = genelists, nrCores=nrCores))
+  return(list(runnames=runnames,gmtnames=names(given_gmt_filelist),hgt_modules=output_hgt_allcombinations, genelists = genelists, NrCores=NrCores))
 }
 
 #' @title GmtFromModules
