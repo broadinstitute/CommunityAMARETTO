@@ -98,7 +98,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   suppressMessages(ComModulesLink <- dcast(ComModulesLink, Community~Run, fill=0))
   
-  suppressMessages(ComModulesLink <- left_join(ComModulesLink,cAMARETTOnetworkC$commEdgeInfo %>% dplyr::select(Community,numTotalEdgesInCommunity,fractEdgesInVSOut,CommsizeFrac) %>% mutate(Community=paste0("Community ",Community))))
+  suppressMessages(ComModulesLink <- left_join(ComModulesLink,cAMARETTOnetworkC$commEdgeInfo %>% dplyr::select(Community,numTotalEdgesInCommunity,fractEdgesInVsOut,CommsizeFrac) %>% mutate(Community=paste0("Community ",Community))))
   ComModulesLink <- ComModulesLink %>% mutate(Community = paste0("<a href=\"./communities/",sub(" ","_",Community),".html\">",Community, "</a>"))
   comm_info <- cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC)
   
