@@ -4,7 +4,7 @@
 \alias{cAMARETTO_Results}
 \title{cAMARETTO_Results}
 \usage{
-cAMARETTO_Results(AMARETTOinit_all, AMARETTOresults_all, nrCores = 1,
+cAMARETTO_Results(AMARETTOinit_all, AMARETTOresults_all, NrCores = 1,
   output_dir = "./", gmt_filelist = NULL, drivers = TRUE)
 }
 \arguments{
@@ -15,8 +15,6 @@ cAMARETTO_Results(AMARETTOinit_all, AMARETTOresults_all, nrCores = 1,
 \item{output_dir}{A directory that stores gmt files for the runs}
 
 \item{drivers}{}
-
-\item{parallelparam}{BiocParallel BPPARAM}
 }
 \value{
 a list with AMARETTOinit and AMARETTOresults data objects from multiple runs
