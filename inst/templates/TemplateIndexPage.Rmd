@@ -27,24 +27,29 @@ legend(x = -1.5, y = -1.1+0.05*length(cAMARETTOnetworkM$colMN), legend = names(c
 legend(x = 1.5, y = 1.5, legend=names(cAMARETTOnetworkC$color_list), col=cAMARETTOnetworkC$color_list, pch=19, bty="n",cex=max(0.9,1/(1+0.02*length(cAMARETTOnetworkC$color_list))),ncol=ceiling(length(cAMARETTOnetworkC$color_list)/15))
 ```
 <br><br><br>
-## Module to community assignment
 
+## Module to community assignment
 <br><br><br>
 ```{r CommunityModules,echo=FALSE}
-datatable(ComModulesLink, class = "display",
+datatable(ComModulesLink %>% 
+            dplyr::rename(Edges="numTotalEdgesInCommunity",FractionEdges="fractEdgesInVsOut",FractionSize="CommsizeFrac"), class = "display",
           extensions = "Buttons",
           rownames = FALSE,
           options = list(pageLength = 10, 
                          dom = "Bfrtip", 
                          buttons = list(list(extend = 'csv',text = "Save CSV", title="ComModuleRelation"))),
-          escape=FALSE)
+          escape=FALSE) %>%
+          formatSignif(c("FractionEdges","FractionSize"),2)
 ```
 <br><br><br>
+
 ## Summary Information
+<br><br><br>
 ```{r RunInfo,echo=FALSE}
 datatable(RunInfo,class = "display",escape=FALSE,rownames = FALSE)
 ```
 <br><br><br>
+
 ## Gene to community assignment
 <br><br><br>
 ```{r CommunityGenes, echo=FALSE}

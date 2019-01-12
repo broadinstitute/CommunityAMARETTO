@@ -82,7 +82,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   Module_no_Com <- all_module_names[all_module_names %in% Nodes_Mnetwork$name]
   
   ComModulesLink <- ComModulesLink %>%
-    mutate(Community=ifelse(Module %in% Module_no_Network,"Not in Network",ifelse(Module %in% Module_no_Com, "Not in a Community",paste0("<a href=\"./communities/Community_",Community,".html\">Community ",Community, "</a>")))) %>%
+    mutate(Community=ifelse(Module %in% Module_no_Network,"Not in Network",ifelse(Module %in% Module_no_Com, "Not in a Community",paste0("Community ",Community)))) %>%
     separate(Module, c("Run","ModuleNr"), "_Module_") %>% 
     mutate(ModuleNr = paste0("Module ", ModuleNr)) 
   
@@ -97,7 +97,9 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     summarise(ModuleNrs=paste(ModuleNr, collapse = ", "))
   
   suppressMessages(ComModulesLink <- dcast(ComModulesLink, Community~Run, fill=0))
-
+  
+  suppressMessages(ComModulesLink <- left_join(ComModulesLink,cAMARETTOnetworkC$commEdgeInfo %>% dplyr::select(Community,numTotalEdgesInCommunity,fractEdgesInVSOut,CommsizeFrac) %>% mutate(Community=paste0("Community ",Community))))
+  ComModulesLink <- ComModulesLink %>% mutate(Community = paste0("<a href=\"./communities/",sub(" ","_",Community),".html\">",Community, "</a>"))
   comm_info <- cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC)
   
   GeneComLink <- comm_info %>% 

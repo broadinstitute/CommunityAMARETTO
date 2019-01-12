@@ -22,26 +22,26 @@ cAMARETTO_IdentifyCom <- function(cAMARETTOnetworkM, color_list=NULL, filterComm
   
   names(comm$membership) <- V(cAMARETTOnetworkM$module_network)$name
   membership <- as.data.frame(cbind(c(1:length(comm$membership)), comm$membership))
-  colnames(membership) <- c("nodeID", "community")
-  numCommunitiesOrig <- length(unique(membership[, "community"]))
+  colnames(membership) <- c("nodeID", "Community")
+  numCommunitiesOrig <- length(unique(membership[, "Community"]))
   membership<-rownames_to_column(membership, "nodeName") %>% mutate(run=sub("_Module_.*$", "", nodeName))
   
   Edges_Mnetwork <- igraph::as_data_frame(cAMARETTOnetworkM$module_network, what="edges")
   Nodes_Mnetwork <- igraph::as_data_frame(cAMARETTOnetworkM$module_network, what="vertices")
   
   for(m in 1:nrow(membership)){ 
-    commNum <- membership[m, "community"]
+    commNum <- membership[m, "Community"]
     Id <-  membership[m, "nodeName"]
     edgeMatrixVector <- unlist(Edges_Mnetwork %>% filter(from==Id | to==Id) %>% select(from,to))
     edgeMatrixVector <- edgeMatrixVector[-which(edgeMatrixVector ==Id)]
     membership[m, "totalNumEdges"] <- length(edgeMatrixVector)
-    membership[m, "numEdgesInComm"] <- nrow(membership[match(edgeMatrixVector, membership[,"nodeName"]), ] %>% filter(community==commNum))
+    membership[m, "numEdgesInComm"] <- nrow(membership[match(edgeMatrixVector, membership[,"nodeName"]), ] %>% filter(Community==commNum))
   }
   
   membership <- membership %>% mutate(fractEdgesInOut=numEdgesInComm/totalNumEdges, numEdgesNotInComm = totalNumEdges - numEdgesInComm)
 
   commEdgeInfo <- membership %>% 
-    group_by(community) %>% 
+    group_by(Community) %>% 
     summarise(numTotalEdgesInCommunity = sum(numEdgesInComm)/2, 
               numTotalEdgesNotInCommunity = sum(numEdgesNotInComm),
               fractEdgesInVsOut = numTotalEdgesInCommunity/(numTotalEdgesNotInCommunity+numTotalEdgesInCommunity),
@@ -54,7 +54,7 @@ cAMARETTO_IdentifyCom <- function(cAMARETTOnetworkM, color_list=NULL, filterComm
     arrange(-CommSize) %>% 
     mutate(NewComNumber=row_number())
   
-  membership<-left_join(membership,commEdgeInfo %>% select(community, NewComNumber))
+  membership<-left_join(membership,commEdgeInfo %>% select(Community, NewComNumber))
   
   #Post Filter communities
   # ratio comm size, community network size
@@ -63,7 +63,7 @@ cAMARETTO_IdentifyCom <- function(cAMARETTOnetworkM, color_list=NULL, filterComm
   
   if (filterComm ==TRUE) {
   KeepCommEdgeInfo <- commEdgeInfo %>% 
-    filter(CommsizeFrac > ratioCommSize & numDatasetsPerCommunity > MinRuns & fractDatasetsSize > ratioRunSize & fractEdgesInVsOut > ratioEdgesInOut)
+    filter(CommsizeFrac >= ratioCommSize & numDatasetsPerCommunity >= MinRuns & fractDatasetsSize >= ratioRunSize & fractEdgesInVsOut >= ratioEdgesInOut)
   
   message("There are ", nrow(commEdgeInfo) - nrow(KeepCommEdgeInfo)," communities to remove.")
   } else {
@@ -76,9 +76,9 @@ cAMARETTO_IdentifyCom <- function(cAMARETTOnetworkM, color_list=NULL, filterComm
   V(CommGraph)$size <- 2*sqrt(graph.degrees)
   
   community_list_df <- membership %>% 
-    filter(community %in% KeepCommEdgeInfo$community) %>%
-    select(nodeName, community) %>% 
-    split(.$community)
+    filter(Community %in% KeepCommEdgeInfo$Community) %>%
+    select(nodeName, Community) %>% 
+    split(.$Community)
   
   community_list <- lapply(community_list_df, function(x) unlist(x$nodeName))
   names(community_list) <- names(community_list_df)
@@ -107,5 +107,5 @@ cAMARETTO_IdentifyCom <- function(cAMARETTOnetworkM, color_list=NULL, filterComm
   legendCOM <- legend(x = 1.5, y = 1.5, legend=names(color_list), col=color_list, pch=19, bty="n",cex=max(0.9,1/(1+0.02*length(color_list))),ncol=ceiling(length(color_list)/15))
   legendCOM
   
-  return(list(CommGraph=CommGraph, community_list=community_list, color_list=color_list))
+  return(list(CommGraph=CommGraph, community_list=community_list, commEdgeInfo = commEdgeInfo, color_list=color_list))
 }
