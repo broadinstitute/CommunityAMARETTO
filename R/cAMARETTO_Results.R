@@ -4,6 +4,7 @@
 #' @param AMARETTOresults_all A list of multiple AMARETTO_Run outputs. The names are run names.
 #' @param parallelparam BiocParallel BPPARAM
 #' @param output_dir A directory that stores gmt files for the runs
+#' @param gmt_filelist
 #' @param drivers
 #'
 #' @return a list with AMARETTOinit and AMARETTOresults data objects from multiple runs
