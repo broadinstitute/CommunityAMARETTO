@@ -54,7 +54,7 @@ cAMARETTO_IdentifyCom <- function(cAMARETTOnetworkM, color_list=NULL, filterComm
     arrange(-CommSize) %>% 
     mutate(NewComNumber=row_number())
   
-  membership<-left_join(membership,commEdgeInfo %>% select(Community, NewComNumber))
+  suppressMessages(membership<-left_join(membership,commEdgeInfo %>% select(Community, NewComNumber)))
   
   #Post Filter communities
   # ratio comm size, community network size

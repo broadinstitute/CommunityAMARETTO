@@ -27,7 +27,7 @@ cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,nrCores=1,out
   # for each file a gmt for the modules
   create_gmt_filelist<-c()
   for (run in runnames){
-    gmt_file <- file.path(output_dir,"gmt_files", paste0(run, "_modules.gmt"))
+    gmt_file <- file.path(output_dir,"gmt_files",paste0(run, "_modules.gmt"))
     GmtFromModules(AMARETTOresults_all[[run]], gmt_file, run, Drivers = drivers)
     create_gmt_filelist <- c(create_gmt_filelist,gmt_file)
   }
@@ -42,9 +42,8 @@ cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,nrCores=1,out
     }
   }
   names(given_gmt_filelist)<-names(gmt_filelist)
-  
   all_gmt_files_list <- c(create_gmt_filelist,given_gmt_filelist)
-  
+
   if (! length(unique(names(all_gmt_files_list))) == length(names(all_gmt_files_list))){
     stop("There is overlap between the gmt file names and run names")
   }
@@ -54,21 +53,26 @@ cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,nrCores=1,out
   }
   
   # compare gmts pairwise between runs
-  names_groups <- names(all_gmt_files_list)
-  all_run_combinations <- as.data.frame(combinations(n=length(all_gmt_files_list), r=2, v=names_groups, repeats.allowed=F))
+  all_run_combinations <- as.data.frame(combinations(n=length(all_gmt_files_list), r=2, v=names(all_gmt_files_list), repeats.allowed=F))
   
   output_hgt_allcombinations <- apply(all_run_combinations, 1, function(x) {
-    gmt_run1 <- file.path(output_dir, "gmt_files", paste0(x["V1"], "_modules.gmt"))
-    gmt_run2 <- file.path(output_dir, "gmt_files", paste0(x["V2"], "_modules.gmt"))
-    output_hgt_combination <- HyperGTestGeneEnrichment(gmt_run1, gmt_run2)
+    gmt_run1 <- all_gmt_files_list[x["V1"]]
+    gmt_run2 <- all_gmt_files_list[x["V2"]]
+    output_hgt_combination <- HyperGTestGeneEnrichment(gmt_run1, gmt_run2,as.character(x["V1"]),as.character(x["V2"]))
     return(output_hgt_combination)
+  })
+  
+  genelists<-lapply(all_gmt_files_list, function(x){
+    return(readGMT(x))
   })
   
   output_hgt_allcombinations <- do.call(rbind, output_hgt_allcombinations)
   output_hgt_allcombinations$padj <- p.adjust(output_hgt_allcombinations$p_value, method="BH")
   output_hgt_allcombinations <- output_hgt_allcombinations %>% 
-                                    mutate(p_value=case_when(Geneset == Testset~NA_real_, TRUE~p_value))
-  return(list(runnames=runnames, hgt_modules=output_hgt_allcombinations, nrCores=nrCores))
+                                    mutate(p_value=case_when(Geneset1 == Geneset2~NA_real_, TRUE~p_value))
+  output_hgt_allcombinations <- output_hgt_allcombinations %>% mutate(Geneset1=ifelse(RunName1%in%names(given_gmt_filelist),paste0(RunName1,"_",gsub(" ","_",Geneset1)),Geneset1),Geneset2=ifelse(RunName2%in%names(given_gmt_filelist),paste0(RunName2,"_",gsub(" ","_",Geneset2)),Geneset2))
+  
+  return(list(runnames=runnames,gmtnames=names(given_gmt_filelist),hgt_modules=output_hgt_allcombinations, genelists = genelists, nrCores=nrCores))
 }
 
 #' @title GmtFromModules
@@ -122,34 +126,36 @@ readGMT<-function(filename){
 #'
 #' @param gmtfile1 A gmtfilename that you want to compare
 #' @param gmtfile2 A second gmtfile to compare with.
+#' @param runname1
+#' @param runname2
 #' @param ref.numb.genes The reference number of genes.
 #' 
 #' @return Creates resultfile with p-values and padj when comparing two gmt files with a hyper geometric test.
 #'
 #' @import doParallel
 #' @export
-HyperGTestGeneEnrichment<-function(gmtfile,testgmtfile,NrCores,ref.numb.genes=45956){
+HyperGTestGeneEnrichment<-function(gmtfile1,gmtfile2,runname1,runname2,NrCores,ref.numb.genes=45956){
   
-  test.gmt<-readGMT(testgmtfile) # our gmt_file_output_from Amaretto
-  gmt.path<-readGMT(gmtfile)  # the hallmarks_and_co2...
+  gmtfile1<-readGMT(gmtfile1) # our gmt_file_output_from Amaretto
+  gmtfile2<-readGMT(gmtfile2)  # the hallmarks_and_co2...
   
   ###########################  Parallelizing :
   cluster <- makeCluster(c(rep("localhost", NrCores)), type = "SOCK")
   registerDoParallel(cluster,cores=NrCores)
   
-  resultloop<-foreach(j=1:length(test.gmt), .combine='rbind') %do% {
+  resultloop<-foreach(j=1:length(gmtfile2), .combine='rbind') %do% {
     #print(j)
-    foreach(i=1:length(gmt.path),.combine='rbind') %dopar% {
+    foreach(i=1:length(gmtfile1),.combine='rbind') %dopar% {
       #print(i)
-      l<-length(gmt.path[[i]])
-      k<-sum(gmt.path[[i]] %in% test.gmt[[j]])
+      l<-length(gmtfile1[[i]])
+      k<-sum(gmtfile1[[i]] %in% gmtfile2[[j]])
       m<-ref.numb.genes
-      n<-length(test.gmt[[j]])
+      n<-length(gmtfile2[[j]])
       p1<-phyper(k-1,l,m-l,n,lower.tail=FALSE)
       
-      overlapping.genes<-gmt.path[[i]][gmt.path[[i]] %in% test.gmt[[j]]]
+      overlapping.genes<-gmtfile1[[i]][gmtfile1[[i]] %in% gmtfile2[[j]]]
       overlapping.genes<-paste(overlapping.genes,collapse = ', ')
-      c(Geneset=names(gmt.path[i]),Testset=names(test.gmt[j]),p_value=p1,n_Overlapping=k,Overlapping_genes=overlapping.genes)
+      c(RunName1=runname1, RunName2=runname2,Geneset1=names(gmtfile1[i]),Geneset2=names(gmtfile2[j]),p_value=p1,n_Overlapping=k,Overlapping_genes=overlapping.genes)
     }
   }
   

@@ -15,18 +15,18 @@
 cAMARETTO_ModuleNetwork<-function(cAMARETTOresults,pvalue,inter,color_list=NULL,edge_method="pvalue"){
   
   output_hgt_allcombinations_filtered <- cAMARETTOresults$hgt_modules %>% 
-                                            filter(padj<pvalue & n_Overlapping>=inter)
-  node_information <- as.data.frame(unique(c(output_hgt_allcombinations_filtered$Geneset, output_hgt_allcombinations_filtered$Testset)))
+                                            filter(padj<=pvalue & n_Overlapping>=inter)
+  node_information <- as.data.frame(unique(c(output_hgt_allcombinations_filtered$Geneset1, output_hgt_allcombinations_filtered$Geneset2)))
   colnames(node_information) <- c("modulenames")
   node_information <- node_information %>% 
-                        mutate(run=sub("_Module_.*$","",modulenames))
-  module_network <- graph_from_data_frame(d=output_hgt_allcombinations_filtered, vertices=node_information, directed=FALSE)
+                        mutate(run=sub("_.*$","",modulenames))
+  module_network <- graph_from_data_frame(d=output_hgt_allcombinations_filtered%>% select(-RunName1,-RunName2), vertices=node_information, directed=FALSE)
   
   if (is.null(color_list)){
-    color_list <- randomColor(length(cAMARETTOresults$runnames),luminosity="bright")
-    names(color_list) <- cAMARETTOresults$runnames
+    color_list <- randomColor(length(c(cAMARETTOresults$runnames,cAMARETTOresults$gmtnames)),luminosity="bright")
+    names(color_list) <- c(cAMARETTOresults$runnames,cAMARETTOresults$gmtnames)
   } else {
-    cAMARETTOresults$runnames %in% names(color_list)
+    c(cAMARETTOresults$runnames,cAMARETTOresults$gmtnames) %in% names(color_list)
   }
   V(module_network)$color <- color_list[V(module_network)$run]
   V(module_network)$size <- 2*sqrt(igraph::degree(module_network, mode="all"))
