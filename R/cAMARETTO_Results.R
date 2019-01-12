@@ -59,7 +59,7 @@ cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,nrCores=1,out
   output_hgt_allcombinations <- apply(all_run_combinations, 1, function(x) {
     gmt_run1 <- all_gmt_files_list[x["V1"]]
     gmt_run2 <- all_gmt_files_list[x["V2"]]
-    output_hgt_combination <- HyperGTestGeneEnrichment(gmt_run1, gmt_run2,as.character(x["V1"]),as.character(x["V2"]))
+    output_hgt_combination <- HyperGTestGeneEnrichment(gmt_run1, gmt_run2,runname1=as.character(x["V1"]),runname2=as.character(x["V2"]),NrCores=NrCores)
     return(output_hgt_combination)
   })
   
@@ -136,7 +136,7 @@ readGMT<-function(filename){
 #'
 #' @import doParallel
 #' @export
-HyperGTestGeneEnrichment<-function(gmtfile1,gmtfile2,runname1,runname2,NrCores,ref.numb.genes=45956){
+HyperGTestGeneEnrichment<-function(gmtfile1, gmtfile2, runname1, runname2, NrCores, ref.numb.genes=45956){
   
   gmtfile1<-readGMT(gmtfile1) # our gmt_file_output_from Amaretto
   gmtfile2<-readGMT(gmtfile2)  # the hallmarks_and_co2...
