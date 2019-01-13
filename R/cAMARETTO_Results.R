@@ -99,8 +99,9 @@ GmtFromModules <- function(AMARETTOresults,gmt_file,run,Drivers=FALSE){
   if (Drivers == TRUE){
     for (i in 1:NrModules){
       ModuleNr<-paste0("Module_",i)
-      Driver_list<-AMARETTOresults$RegulatoryPrograms[ModuleNr, which(AMARETTOresults$RegulatoryPrograms[ModuleNr,] != 0)]
-      Driver_list<-as.data.frame(names(Driver_list))
+      RegulatoryProgramsModule <- AMARETTOresults$RegulatoryPrograms[ModuleNr,]
+      Driver_list<-names(RegulatoryProgramsModule[RegulatoryProgramsModule!=0])
+      Driver_list<-as.data.frame(Driver_list)
       colnames(Driver_list) <- c("GeneNames")
       Driver_list <- Driver_list %>% mutate(ModuleNr=i)
       ModuleMembership <- rbind(ModuleMembership,Driver_list)
