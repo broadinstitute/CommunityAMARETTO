@@ -90,7 +90,8 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     ComModulesLink <- ComModulesLink %>% mutate(ModuleName = ifelse(Run %in% cAMARETTOresults$runnames, paste0('<a href="',ModuleLink,'">',ModuleName,'</a>'),ModuleName))
     RunInfo <- RunInfo %>% mutate(Run=paste0('<a href="',ModuleLink,'/index.html">',Run,'</a>'))
   } else {
-    RunInfo <- as.data.frame(cAMARETTOresults$runnames) %>% dplyr::rename(Run='as.data.frame(cAMARETTOresults$runnames)')
+    RunInfo <- as.data.frame(cAMARETTOresults$runnames) 
+    names(RunInfo) <- c("Run")
   }
   ComModulesLink <- ComModulesLink %>% 
     group_by(Community, Run) %>% 
