@@ -71,8 +71,8 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   #adding Module Links
   if(is.null(HTMLsAMARETTOlist)==FALSE){
-  suppressMessages(ComModulesLink<- left_join(ComModulesLink %>% mutate(Run=sub("_.*","",Module)), RunInfo))
-  ComModulesLink <- ComModulesLink %>% mutate(ModuleLink=ifelse(Run %in% cAMARETTOresults$runnames,paste0(ModuleLink,"/modules/module",sub(".*_","",Module),".html"),NA))
+    suppressMessages(ComModulesLink<- left_join(ComModulesLink %>% mutate(Run=sub("_.*","",Module)), RunInfo))
+    ComModulesLink <- ComModulesLink %>% mutate(ModuleLink=ifelse(Run %in% cAMARETTOresults$runnames,paste0(ModuleLink,"/modules/module",sub(".*_","",Module),".html"),NA))
   }
   
   #adding Modules that are not in Communities or Communities that are filtered out
@@ -90,6 +90,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     ComModulesLink <- ComModulesLink %>% mutate(ModuleName = ifelse(Run %in% cAMARETTOresults$runnames, paste0('<a href="',ModuleLink,'">',ModuleName,'</a>'),ModuleName))
     RunInfo <- RunInfo %>% mutate(Run=paste0('<a href="',ModuleLink,'/index.html">',Run,'</a>'))
   } else {
+    ComModulesLink <- ComModulesLink %>% mutate(Run=sub("_.*","",Module))
     RunInfo <- as.data.frame(cAMARETTOresults$runnames) 
     names(RunInfo) <- c("Run")
   }
@@ -115,9 +116,11 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     all_hgt_output <- tibble("Community"=character(),"Geneset"=character(),"Description"=character(),"n_Overlapping"=numeric(),"Overlapping_genes"=character(),"overlap_perc"=numeric(),"p_value="=numeric(),"padj"=numeric())
     GeneSetDescriptions <- GeneSetDescription(hyper_geo_reference)
   }
-  RunInfo2<-rownames_to_column(as.data.frame(HTMLsAMARETTOlist),"Run") %>% rename(ModuleLink="HTMLsAMARETTOlist")
-  if(CopyAMARETTOReport==TRUE){
-    RunInfo2 <- RunInfo2 %>% mutate(ModuleLink=sub("^./","../",ModuleLink))
+  if(is.null(HTMLsAMARETTOlist)==FALSE){
+    RunInfo2<-rownames_to_column(as.data.frame(HTMLsAMARETTOlist),"Run") %>% rename(ModuleLink="HTMLsAMARETTOlist")
+    if(CopyAMARETTOReport==TRUE){
+      RunInfo2 <- RunInfo2 %>% mutate(ModuleLink=sub("^./","../",ModuleLink))
+    }
   }
   for (i in 1:nrow(comm_info)){
     community_info <- comm_info[i,]
@@ -139,7 +142,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                         options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("ModulesCom",ComNr)))),
                         escape = FALSE)
     } else {
-      ModuleList <- as.data.frame(ModuleList) %>% separate(ModuleList,c("Run","ModuleName"),"_",extra = "merge")
+      ModuleList <- as.data.frame(ModuleList) %>% separate(ModuleList,c("Run","ModuleName"),"_",extra = "merge") %>% mutate(ModuleName = sub("_"," ",ModuleName))
       DTML <- datatable(ModuleList, 
                         class = "display",
                         extensions = "Buttons",
@@ -219,10 +222,11 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     dplyr::mutate(ModuleName = gsub("_"," ",ModuleName)) %>%
     dplyr::select(Run,ModuleName,Genes)
   
-  genelists_module <- suppressMessages(left_join(genelists_module,RunInfo2) %>% 
-    dplyr::mutate(ModuleName = ifelse(Run %in% cAMARETTOresults$runnames,paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleName),'.html">',ModuleName,'</a>'),ModuleName)) %>%
-    dplyr::select(-ModuleLink))
-  
+  if(is.null(HTMLsAMARETTOlist)==FALSE){
+    genelists_module <- suppressMessages(left_join(genelists_module,RunInfo2) %>% 
+      dplyr::mutate(ModuleName = ifelse(Run %in% cAMARETTOresults$runnames,paste0('<a href="',ModuleLink,'/modules/',sub("Module ","module",ModuleName),'.html">',ModuleName,'</a>'),ModuleName)) %>%
+      dplyr::select(-ModuleLink))
+  }
   DTGenes <- datatable(genelists_module,
                        class = "display",
                        extensions = "Buttons",
