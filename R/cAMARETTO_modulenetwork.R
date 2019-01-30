@@ -1,4 +1,6 @@
 #' @title cAMARETTO_ModuleNetwork
+#' 
+#' Creates a module network.
 #'
 #' @param cAMARETTOresults 
 #' @param pvalue pvalue cut-off for each gene set
@@ -11,8 +13,13 @@
 #' @import randomcoloR
 #' @import tidyverse
 #' @import igraph
+#' 
+#' @examples 
+#' 
+#' cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,0.10,5)
+#' 
 #' @export
-cAMARETTO_ModuleNetwork<-function(cAMARETTOresults,pvalue,inter,color_list=NULL,edge_method="pvalue"){
+cAMARETTO_ModuleNetwork<-function(cAMARETTOresults, pvalue=0.05, inter=5, color_list=NULL, edge_method="pvalue"){
   
   output_hgt_allcombinations_filtered <- cAMARETTOresults$hgt_modules %>% 
                                             filter(padj<=pvalue & n_Overlapping>=inter)

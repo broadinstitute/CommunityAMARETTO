@@ -7,11 +7,18 @@
 cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC)
 }
 \arguments{
-\item{ModuleNr}{}
+\item{cAMARETTOnetworkM}{The output of the Module Network function.}
+
+\item{cAMARETTOnetworkC}{The output of the Identify Communities function.}
 }
 \value{
-a plot with one (or none) colored modules
+an information table about the communities containing the included nodes and overlapping genes per community.
 }
 \description{
 cAMARETTO_InformationTable
+}
+\examples{
+
+cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC)
+
 }

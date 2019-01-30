@@ -2,7 +2,9 @@
 % Please edit documentation in R/cAMARETTO_heatmap.R
 \name{cAMARETTO_heatmap}
 \alias{cAMARETTO_heatmap}
-\title{cAMARETTO_heatmap}
+\title{cAMARETTO_heatmap
+
+Constructs a heatmap with the comparison between modules of two runs based on a hyper geometric test}
 \usage{
 cAMARETTO_heatmap(cAMARETTOresults, run1, run2)
 }
@@ -14,8 +16,14 @@ cAMARETTO_heatmap(cAMARETTOresults, run1, run2)
 \item{run2}{name of run 2}
 }
 \value{
-a heatmap with the comparison between two runs
+None
 }
 \description{
 cAMARETTO_heatmap
+
+Constructs a heatmap with the comparison between modules of two runs based on a hyper geometric test
+}
+\examples{
+cAMARETTO_heatmap(cAMARETTOresults, "LIHC", "GBM")
+
 }

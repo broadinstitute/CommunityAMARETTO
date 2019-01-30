@@ -9,13 +9,30 @@ cAMARETTO_IdentifyCom(cAMARETTOnetworkM, color_list = NULL,
   ratioRunSize = 0.1, ratioEdgesInOut = 0.5)
 }
 \arguments{
-\item{color_list}{An optional list with colors}
+\item{cAMARETTOnetworkM}{The output of the Module Network function.}
+
+\item{color_list}{An optional list with colors.}
+
+\item{filterComm}{Boolean to indicate if the identified communities needs to be filtered or not.}
+
+\item{ratioCommSize}{Filter nodes in the community versus nodes out of the community.}
+
+\item{MinRuns}{Filter on minimum number of runs in the community.}
+
+\item{ratioRunSize}{Filter on percentage of runs in the community versus total number of runs.}
+
+\item{ratioEdgesInOut}{Filer on edges in the community versus edges going out.}
 
 \item{edge_method}{Define edge weights based p-values or overlap between the gene sets.}
 }
 \value{
-a list with the module network, layout for the network, used p-value, used overlap en colors
+a list with the module network, a community list, community edge information and color list.
 }
 \description{
 cAMARETTO_IdentifyCom
+}
+\examples{
+
+cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
+
 }

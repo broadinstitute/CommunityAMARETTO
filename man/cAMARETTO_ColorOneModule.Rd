@@ -2,16 +2,27 @@
 % Please edit documentation in R/cAMARETTO_ColorOneModule.R
 \name{cAMARETTO_ColorOneModule}
 \alias{cAMARETTO_ColorOneModule}
-\title{cAMARETTO_ColorOneModule}
+\title{cAMARETTO_ColorOneModule
+
+Creates a network with one (or none) colored modules}
 \usage{
 cAMARETTO_ColorOneModule(cAMARETTOnetworkM, cAMARETTOnetworkC, ModuleNr)
 }
 \arguments{
-\item{ModuleNr}{}
+\item{cAMARETTOnetworkM}{The output of the Module Network function.}
+
+\item{cAMARETTOnetworkC}{The output of the Identify Communities function.}
+
+\item{ModuleNr}{The module number that you want to highlight.}
 }
 \value{
-a plot with one (or none) colored modules
+None
 }
 \description{
 cAMARETTO_ColorOneModule
+
+Creates a network with one (or none) colored modules
+}
+\examples{
+cAMARETTO_ColorOneModule(cAMARETTOnetworkM, cAMARETTOnetworkC, 2)
 }

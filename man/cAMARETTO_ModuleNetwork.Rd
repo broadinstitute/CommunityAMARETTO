@@ -2,9 +2,11 @@
 % Please edit documentation in R/cAMARETTO_modulenetwork.R
 \name{cAMARETTO_ModuleNetwork}
 \alias{cAMARETTO_ModuleNetwork}
-\title{cAMARETTO_ModuleNetwork}
+\title{cAMARETTO_ModuleNetwork
+
+Creates a module network.}
 \usage{
-cAMARETTO_ModuleNetwork(cAMARETTOresults, pvalue, inter,
+cAMARETTO_ModuleNetwork(cAMARETTOresults, pvalue = 0.05, inter = 5,
   color_list = NULL, edge_method = "pvalue")
 }
 \arguments{
@@ -23,4 +25,11 @@ a list with the module network, layout for the network, used p-value, used overl
 }
 \description{
 cAMARETTO_ModuleNetwork
+
+Creates a module network.
+}
+\examples{
+
+cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,0.10,5)
+
 }

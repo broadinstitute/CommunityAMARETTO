@@ -1,17 +1,25 @@
 #' @title cAMARETTO_Results
+#' 
+#' To initiate the community AMARETTO this results functions performs hyper geometric tests between all modules and gene sets.
 #'
 #' @param AMARETTOinit_all A list of multiple AMARETTO_Initialize outputs. The names are run names.
 #' @param AMARETTOresults_all A list of multiple AMARETTO_Run outputs. The names are run names.
-#' @param NrCores
+#' @param NrCores Nr of Cores that can be used to calculated the results.
 #' @param output_dir A directory that stores gmt files for the runs
-#' @param gmt_filelist
-#' @param drivers
+#' @param gmt_filelist A list with gmt files that are added into the communities. The names of the list are used in the networks. NULL if no list is added.
+#' @param drivers Boolean that defines if only targets or drivers and targets are used to calculate the HGT.
 #'
 #' @return a list with AMARETTOinit and AMARETTOresults data objects from multiple runs
 #' @import gtools
 #' @import tidyverse
+#' 
+#' @examples 
+#' 
+#' Cibersortgmt <- "ciberSort.gmt"
+#' cAMARETTOresults <- cAMARETTO_Results(AMARETTOinit_all, AMARETTOresults_all, gmt_filelist=list(ImmuneSignature = Cibersortgmt), NrCores = 4 , output_dir = "./")
+#' 
 #' @export
-cAMARETTO_Results <- function(AMARETTOinit_all,AMARETTOresults_all,NrCores=1,output_dir="./",gmt_filelist=NULL,drivers=TRUE){
+cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, output_dir="./", gmt_filelist=NULL, drivers=TRUE){
   
   #test if names are matching
   if (all(names(AMARETTOinit_all) == names(AMARETTOresults_all))) {

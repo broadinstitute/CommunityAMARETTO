@@ -1,12 +1,16 @@
 #' @title cAMARETTO_InformationTable
 #'
-#' @param cAMARETTOnetworkM
-#' @param cAMARETTOnetworkC
-#' @param ModuleNr
+#' @param cAMARETTOnetworkM The output of the Module Network function.
+#' @param cAMARETTOnetworkC The output of the Identify Communities function.
 #'
-#' @return a plot with one (or none) colored modules
+#' @return an information table about the communities containing the included nodes and overlapping genes per community.
 #' 
 #' @import igraph
+#' 
+#' @examples 
+#' 
+#' cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC)
+#' 
 #' @export
 cAMARETTO_InformationTable <- function(cAMARETTOnetworkM, cAMARETTOnetworkC) {
   Nodes_Cnetwork <- igraph::as_data_frame(cAMARETTOnetworkC$CommGraph, what="vertices")

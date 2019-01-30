@@ -1,16 +1,18 @@
 #' @title cAMARETTO_HTMLreport
 #'
-#' @param cAMARETTOresults
-#' @param cAMARETTOnetworkM
-#' @param cAMARETTOnetworkC
-#' @param output_address
-#' @param HTMLsAMARETTOlist
-#' @param CopyAMARETTOReport
-#' @param hyper_geo_test_bool
-#' @param hyper_geo_refence
-#' @param MSIGDB
-#' @param GMTURL
-#' @param NrCores
+#' Creates a HTMLreport for the community AMARETTO results
+#'
+#' @param cAMARETTOresults The output of the Results function.
+#' @param cAMARETTOnetworkM The output of the Module Network function.
+#' @param cAMARETTOnetworkC The output of the Identify Communities function.
+#' @param output_address The output repository for the HTML report.
+#' @param HTMLsAMARETTOlist A list with AMARETTO reports to link with the Community AMARETTO report. If NULL, no links are added.
+#' @param CopyAMARETTOReport Boolean to indicate if the AMARETTO reports needs to be copied in the AMARETTO report directory. In this way links are contained when moving the HTML directory.
+#' @param hyper_geo_test_bool Boolean if Hyper Geometric Test needs to be performed.
+#' @param hyper_geo_refence A reference gmt file to perform the Hyper Geometric Test.
+#' @param MSIGDB Boolean if gmt is MSIGDB derived.
+#' @param GMTURL Boolean if description of GMT file contains an URL or not.
+#' @param NrCores Number of Cores to use during generation of the HTML report.
 #'
 #' @return A set of HTMLs, giving caracteristics of the communities
 #' 
@@ -19,7 +21,10 @@
 #' @import tidyverse
 #' @import reshape2
 #' @import rmarkdown
-#' @return
+#' @examples
+#' 
+#' cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist = HTMLsAMARETTOlist, hyper_geo_test_bool = TRUE, hyper_geo_reference = gmtfile, MSIGDB = TRUE, GMTURL = FALSE, output_address= "./")
+#' 
 #' @export
 cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC,
                                  output_address="./", HTMLsAMARETTOlist=NULL, CopyAMARETTOReport = TRUE,

@@ -2,7 +2,9 @@
 % Please edit documentation in R/cAMARETTO_Results.R
 \name{cAMARETTO_Results}
 \alias{cAMARETTO_Results}
-\title{cAMARETTO_Results}
+\title{cAMARETTO_Results
+
+To initiate the community AMARETTO this results functions performs hyper geometric tests between all modules and gene sets.}
 \usage{
 cAMARETTO_Results(AMARETTOinit_all, AMARETTOresults_all, NrCores = 1,
   output_dir = "./", gmt_filelist = NULL, drivers = TRUE)
@@ -12,13 +14,25 @@ cAMARETTO_Results(AMARETTOinit_all, AMARETTOresults_all, NrCores = 1,
 
 \item{AMARETTOresults_all}{A list of multiple AMARETTO_Run outputs. The names are run names.}
 
+\item{NrCores}{Nr of Cores that can be used to calculated the results.}
+
 \item{output_dir}{A directory that stores gmt files for the runs}
 
-\item{drivers}{}
+\item{gmt_filelist}{A list with gmt files that are added into the communities. The names of the list are used in the networks. NULL if no list is added.}
+
+\item{drivers}{Boolean that defines if only targets or drivers and targets are used to calculate the HGT.}
 }
 \value{
 a list with AMARETTOinit and AMARETTOresults data objects from multiple runs
 }
 \description{
 cAMARETTO_Results
+
+To initiate the community AMARETTO this results functions performs hyper geometric tests between all modules and gene sets.
+}
+\examples{
+
+Cibersortgmt <- "ciberSort.gmt"
+cAMARETTOresults <- cAMARETTO_Results(AMARETTOinit_all, AMARETTOresults_all, gmt_filelist=list(ImmuneSignature = Cibersortgmt), NrCores = 4 , output_dir = "./")
+
 }

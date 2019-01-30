@@ -1,13 +1,19 @@
 #' @title cAMARETTO_heatmap
 #'
+#' Constructs a heatmap with the comparison between modules of two runs based on a hyper geometric test
+#' 
 #' @param cAMARETTOresults cAMARETTO_Run output
 #' @param run1 name of run 1
 #' @param run2 name of run 2
 #'
-#' @return a heatmap with the comparison between two runs
+#' @return None
 #' @import ComplexHeatmap
 #' @import tidyverse
 #' @import circlize
+#' 
+#' @examples 
+#' cAMARETTO_heatmap(cAMARETTOresults, "LIHC", "GBM")
+#' 
 #' @export
 cAMARETTO_heatmap<-function(cAMARETTOresults,run1,run2){
   results_filtered<-cAMARETTOresults$hgt_modules %>% filter((grepl(run1,Geneset2)|grepl(run2,Geneset2))&(grepl(run1,Geneset1)|grepl(run2,Geneset1)))

@@ -1,18 +1,23 @@
 #' @title cAMARETTO_ColorOneModule
 #'
-#' @param cAMARETTOnetworkM
-#' @param cAMARETTOnetworkC
-#' @param ModuleNr
+#' Creates a network with one (or none) colored modules
 #'
-#' @return a plot with one (or none) colored modules
+#' @param cAMARETTOnetworkM The output of the Module Network function.
+#' @param cAMARETTOnetworkC The output of the Identify Communities function.
+#' @param ModuleNr The module number that you want to highlight.
+#'
+#' @return None
 #' 
 #' @import igraph
+#' @examples
+#' cAMARETTO_ColorOneModule(cAMARETTOnetworkM, cAMARETTOnetworkC, 2)
 #' @export
-cAMARETTO_ColorOneModule <- function(cAMARETTOnetworkM, cAMARETTOnetworkC, ModuleNr) {
+cAMARETTO_ColorOneModule <- 
+function(cAMARETTOnetworkM, cAMARETTOnetworkC, ModuleNr) {
 
   selected_group <- cAMARETTOnetworkC$community_list[names(cAMARETTOnetworkC$community_list)==ModuleNr]
   color_group <- cAMARETTOnetworkC$color_list[names(cAMARETTOnetworkC$color_list)==ModuleNr]
-  Nodes_Mnetwork <- igraph::as_data_frame(cAMARETTOnetworkM$module_network,what="vertices")
+  Nodes_Mnetwork <- igraph::as_data_frame(cAMARETTOnetworkM$module_network, what="vertices")
   
   
   plot(cAMARETTOnetworkC$CommGraph,layout=cAMARETTOnetworkM$layoutMN,

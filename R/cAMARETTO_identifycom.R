@@ -1,18 +1,23 @@
 #' @title cAMARETTO_IdentifyCom
 #'
-#' @param cAMARETTOnetworkM
-#' @param color_list An optional list with colors
-#' @param ratioCommSize
-#' @param MinRuns
-#' @param ratioRunSize
-#' @param ratioEdgesInOut
+#' @param cAMARETTOnetworkM The output of the Module Network function.
+#' @param color_list An optional list with colors.
+#' @param filterComm Boolean to indicate if the identified communities needs to be filtered or not.
+#' @param ratioCommSize Filter nodes in the community versus nodes out of the community.
+#' @param MinRuns Filter on minimum number of runs in the community.
+#' @param ratioRunSize Filter on percentage of runs in the community versus total number of runs.
+#' @param ratioEdgesInOut Filer on edges in the community versus edges going out.
 #' @param edge_method Define edge weights based p-values or overlap between the gene sets.
 #'
-#' @return a list with the module network, layout for the network, used p-value, used overlap en colors
+#' @return a list with the module network, a community list, community edge information and color list.
 #' 
 #' @import randomcoloR
 #' @import tidyverse
 #' @import igraph
+#' @examples 
+#' 
+#' cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
+#' 
 #' @export
 cAMARETTO_IdentifyCom <- function(cAMARETTOnetworkM, color_list=NULL, filterComm=TRUE, ratioCommSize=0.01, MinRuns=2, ratioRunSize=0.1, ratioEdgesInOut=0.5 ){
   
