@@ -11,12 +11,12 @@ AMARETTO: https://github.com/gevaertlab/AMARETTO
 Community-AMARETTO: https://github.com/broadinstitute/CommunityAMARETTO
 
 GenePattern: <under development>
-https://beta.genepattern.org/gp/pages/index.jsf?lsid=urn:lsid:broad.mit.edu:cancer.software.genepattern.module.analysis:00378:0.52
-https://beta.genepattern.org/gp/pages/index.jsf?lsid=urn:lsid:broad.mit.edu:cancer.software.genepattern.module.analysis:00380:999999999
+AMARETTO: https://beta.genepattern.org/gp/pages/index.jsf?lsid=urn:lsid:broad.mit.edu:cancer.software.genepattern.module.analysis:00378:0.52
+Community-AMARETTO: https://beta.genepattern.org/gp/pages/index.jsf?lsid=urn:lsid:broad.mit.edu:cancer.software.genepattern.module.analysis:00380:999999999
   
 Docker: <under development>
-https://hub.docker.com/r/genepattern/docker-amaretto
-https://hub.docker.com/r/genepattern/community-amaretto
+AMARETTO: https://hub.docker.com/r/genepattern/docker-amaretto
+Community-AMARETTO: https://hub.docker.com/r/genepattern/community-amaretto
 
 ## Installation
 
