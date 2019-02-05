@@ -6,16 +6,16 @@ REFERENCES
 
 Champion M., Brennan K., Croonenborghs T., Gentles A.J., Pochet N., Gevaert O. (2018) Module analysis captures pancancer genetically and epigenetically deregulated cancer driver genes for smoking and antiviral response. EBioMedicine, 27:156-166. https://www.ebiomedicine.com/article/S2352-3964(17)30472-3/fulltext
 
-GitHub:
-AMARETTO: https://github.com/gevaertlab/AMARETTO
+GitHub:<br/>
+AMARETTO: https://github.com/gevaertlab/AMARETTO<br/>
 Community-AMARETTO: https://github.com/broadinstitute/CommunityAMARETTO
 
-GenePattern: <under development>
-AMARETTO: https://beta.genepattern.org/gp/pages/index.jsf?lsid=urn:lsid:broad.mit.edu:cancer.software.genepattern.module.analysis:00378:0.52
+GenePattern: <under development><br/>
+AMARETTO: https://beta.genepattern.org/gp/pages/index.jsf?lsid=urn:lsid:broad.mit.edu:cancer.software.genepattern.module.analysis:00378:0.52<br/>
 Community-AMARETTO: https://beta.genepattern.org/gp/pages/index.jsf?lsid=urn:lsid:broad.mit.edu:cancer.software.genepattern.module.analysis:00380:999999999
   
-Docker: <under development>
-AMARETTO: https://hub.docker.com/r/genepattern/docker-amaretto
+Docker: <under development><br/>
+AMARETTO: https://hub.docker.com/r/genepattern/docker-amaretto<br/>
 Community-AMARETTO: https://hub.docker.com/r/genepattern/community-amaretto
 
 ## Installation
