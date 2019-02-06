@@ -9,8 +9,7 @@ Creates a HTMLreport for the community AMARETTO results}
 cAMARETTO_HTMLreport(cAMARETTOresults, cAMARETTOnetworkM,
   cAMARETTOnetworkC, output_address = "./", HTMLsAMARETTOlist = NULL,
   CopyAMARETTOReport = TRUE, hyper_geo_test_bool = FALSE,
-  hyper_geo_reference = NULL, MSIGDB = FALSE, GMTURL = FALSE,
-  NrCores = 2)
+  hyper_geo_reference = NULL, MSIGDB = FALSE, NrCores = 2)
 }
 \arguments{
 \item{cAMARETTOresults}{The output of the Results function.}
@@ -27,13 +26,11 @@ cAMARETTO_HTMLreport(cAMARETTOresults, cAMARETTOnetworkM,
 
 \item{hyper_geo_test_bool}{Boolean if Hyper Geometric Test needs to be performed.}
 
+\item{hyper_geo_reference}{}
+
 \item{MSIGDB}{Boolean if gmt is MSIGDB derived.}
 
-\item{GMTURL}{Boolean if description of GMT file contains an URL or not.}
-
 \item{NrCores}{Number of Cores to use during generation of the HTML report.}
-
-\item{hyper_geo_refence}{A reference gmt file to perform the Hyper Geometric Test.}
 }
 \value{
 A set of HTMLs, giving caracteristics of the communities
@@ -45,6 +42,6 @@ Creates a HTMLreport for the community AMARETTO results
 }
 \examples{
 
-cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist = HTMLsAMARETTOlist, hyper_geo_test_bool = TRUE, hyper_geo_reference = gmtfile, MSIGDB = TRUE, GMTURL = FALSE, output_address= "./")
+cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist = HTMLsAMARETTOlist, hyper_geo_test_bool = TRUE, hyper_geo_reference = gmtfile, MSIGDB = TRUE, output_address= "./")
 
 }
