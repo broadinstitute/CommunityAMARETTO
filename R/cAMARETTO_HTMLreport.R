@@ -9,9 +9,9 @@
 #' @param HTMLsAMARETTOlist A list with AMARETTO reports to link with the Community AMARETTO report. If NULL, no links are added.
 #' @param CopyAMARETTOReport Boolean to indicate if the AMARETTO reports needs to be copied in the AMARETTO report directory. In this way links are contained when moving the HTML directory.
 #' @param hyper_geo_test_bool Boolean if Hyper Geometric Test needs to be performed.
+#' @param hyper_geo_reference A reference gmt file to perform the Hyper Geometric Test.
 #' @param MSIGDB Boolean if gmt is MSIGDB derived.
 #' @param NrCores Number of Cores to use during generation of the HTML report.
-#' @param hyper_geo_reference 
 #'
 #' @return A set of HTMLs, giving caracteristics of the communities
 #' 
