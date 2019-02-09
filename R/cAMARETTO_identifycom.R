@@ -29,7 +29,7 @@ cAMARETTO_IdentifyCom <- function(cAMARETTOnetworkM, color_list=NULL, filterComm
   membership <- as.data.frame(cbind(c(1:length(comm$membership)), comm$membership))
   colnames(membership) <- c("nodeID", "Community")
   numCommunitiesOrig <- length(unique(membership[, "Community"]))
-  membership<-rownames_to_column(membership, "nodeName") %>% mutate(run=sub("|Module|.*$", "", nodeName))
+  membership<-rownames_to_column(membership, "nodeName") %>% mutate(run=sub("|Module_.*$", "", nodeName))
   
   Edges_Mnetwork <- igraph::as_data_frame(cAMARETTOnetworkM$module_network, what="edges")
   Nodes_Mnetwork <- igraph::as_data_frame(cAMARETTOnetworkM$module_network, what="vertices")
