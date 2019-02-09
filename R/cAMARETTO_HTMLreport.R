@@ -75,7 +75,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   #adding Module Links
   if(is.null(HTMLsAMARETTOlist)==FALSE){
-    suppressMessages(ComModulesLink<- left_join(ComModulesLink %>% mutate(Run=sub("_.*","",Module)), RunInfo))
+    suppressMessages(ComModulesLink<- left_join(ComModulesLink %>% mutate(Run=sub("\\|.*","",Module)), RunInfo))
     ComModulesLink <- ComModulesLink %>% mutate(ModuleLink=ifelse(Run %in% cAMARETTOresults$runnames,paste0(ModuleLink,"/modules/module",sub(".*_","",Module),".html"),NA))
   }
   
@@ -87,7 +87,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   ComModulesLink <- ComModulesLink %>%
     mutate(Community=ifelse(Module %in% Module_no_Network,"Not in Network",ifelse(Module %in% Module_no_Com, "Not in a Community",paste0("Community ",Community)))) %>%
-    mutate(ModuleName = sub("^[^_]*_","",Module)) %>% 
+    mutate(ModuleName = sub("^.*\\|","",Module)) %>% 
     mutate(ModuleName = sub("_"," ",ModuleName)) 
   
   if(is.null(HTMLsAMARETTOlist)==FALSE){
@@ -133,7 +133,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     ModuleList <- unlist(strsplit(community_info$included_nodes,", "))
 
     if(is.null(HTMLsAMARETTOlist)==FALSE){
-      ModuleList <- as.data.frame(ModuleList) %>% separate(ModuleList,c("Run","ModuleName"),"_",extra = "merge")
+      ModuleList <- as.data.frame(ModuleList) %>% separate(ModuleList,c("Run","ModuleName"),"\\|",extra = "merge")
       if (CopyAMARETTOReport==TRUE){
         suppressMessages(ModuleList <- left_join(ModuleList,RunInfo2) %>% mutate(ModuleName = ifelse(Run %in% cAMARETTOresults$runnames,paste0('<a href="',ModuleLink,'/modules/',sub("Module_","module",ModuleName),'.html">',sub("_"," ",ModuleName),'</a>'),sub("_"," ",ModuleName))))
       } else {
@@ -146,7 +146,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                         options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("ModulesCom",ComNr)))),
                         escape = FALSE)
     } else {
-      ModuleList <- as.data.frame(ModuleList) %>% separate(ModuleList,c("Run","ModuleName"),"_",extra = "merge") %>% mutate(ModuleName = sub("_"," ",ModuleName))
+      ModuleList <- as.data.frame(ModuleList) %>% separate(ModuleList,c("Run","ModuleName"),"\\|",extra = "merge") %>% mutate(ModuleName = sub("_"," ",ModuleName))
       DTML <- datatable(ModuleList, 
                         class = "display",
                         extensions = "Buttons",
@@ -191,11 +191,11 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   #Create Gene-Module-Run tabel
   ModuleList <- unlist(strsplit(community_info$included_nodes,", "))
   ModuleList <- as.data.frame(ModuleList) %>%
-    separate(ModuleList,c("Run","ModuleName"),"_",extra = "merge",remove = FALSE)
+    separate(ModuleList,c("Run","ModuleName"),"\\|",extra = "merge",remove = FALSE)
   genelists_module<-apply(ModuleList,1,function(x){
     if(x["Run"] %in% cAMARETTOresults$runnames){
       x["ModuleName"]<-sub('<.*','',sub('^.*">',"",x["ModuleName"]))
-      genelists<-cAMARETTOresults$genelists[[x["Run"]]][[paste0(x["Run"],"_",x["ModuleName"])]]
+      genelists<-cAMARETTOresults$genelists[[x["Run"]]][[paste0(x["Run"],"|",x["ModuleName"])]]
     } else {
       genelists<-cAMARETTOresults$genelists[[x["Run"]]][[x["ModuleName"]]]
     }
@@ -203,7 +203,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   })
   names(genelists_module)<-ModuleList$ModuleList
   genelists_module <- melt(genelists_module) %>% 
-    separate(L1,c("Run","ModuleName"),"_",extra = "merge") %>% 
+    separate(L1,c("Run","ModuleName"),"\\|",extra = "merge") %>% 
     dplyr::rename(Genes="value") %>%
     dplyr::mutate(ModuleName = gsub("_"," ",ModuleName)) %>%
     dplyr::select(Run,ModuleName,Genes)

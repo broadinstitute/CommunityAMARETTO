@@ -81,7 +81,7 @@ cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, 
   output_hgt_allcombinations$padj <- p.adjust(output_hgt_allcombinations$p_value, method="BH")
   output_hgt_allcombinations <- output_hgt_allcombinations %>% 
                                     mutate(p_value=case_when(Geneset1 == Geneset2~NA_real_, TRUE~p_value))
-  output_hgt_allcombinations <- output_hgt_allcombinations %>% mutate(Geneset1=ifelse(RunName1%in%names(given_gmt_filelist),paste0(RunName1,"_",gsub(" ","_",Geneset1)),Geneset1),Geneset2=ifelse(RunName2%in%names(given_gmt_filelist),paste0(RunName2,"_",gsub(" ","_",Geneset2)),Geneset2))
+  output_hgt_allcombinations <- output_hgt_allcombinations %>% mutate(Geneset1=ifelse(RunName1%in%names(given_gmt_filelist),paste0(RunName1,"|",gsub(" ","_",Geneset1)),Geneset1),Geneset2=ifelse(RunName2%in%names(given_gmt_filelist),paste0(RunName2,"|",gsub(" ","_",Geneset2)),Geneset2))
   
   return(list(runnames=runnames,gmtnames=names(given_gmt_filelist),hgt_modules=output_hgt_allcombinations, genelists = genelists, NrCores=NrCores))
 }
@@ -117,7 +117,7 @@ GmtFromModules <- function(AMARETTOresults,gmt_file,run,Drivers=FALSE){
   }
   
   ModuleMembers_list<-split(ModuleMembership$GeneNames,ModuleMembership$ModuleNr)
-  names(ModuleMembers_list)<-paste0(run,"_Module_",names(ModuleMembers_list))
+  names(ModuleMembers_list)<-paste0(run,"|Module_",names(ModuleMembers_list))
   
   write.table(sapply(names(ModuleMembers_list),function(x) paste(x,paste(ModuleMembers_list[[x]],collapse="\t"),sep="\t")),gmt_file,quote = FALSE,row.names = TRUE,col.names = FALSE,sep='\t')
 }
