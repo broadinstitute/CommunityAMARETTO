@@ -114,7 +114,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     unnest(overlapping_genes) %>% 
     dplyr::rename(Community="community_numb",GeneName="overlapping_genes") %>% 
     arrange(GeneName)
-  
+  options('DT.warn.size'=FALSE) # avoid showing datatable size-related warnings.
   #HGT to test for gene set enrichment
   if (hyper_geo_test_bool) {
     all_hgt_output <- tibble("Community"=character(),"Geneset"=character(),"Description"=character(),"n_Overlapping"=numeric(),"Overlapping_genes"=character(),"overlap_perc"=numeric(),"p_value="=numeric(),"padj"=numeric())
