@@ -12,7 +12,7 @@ Encoding: UTF-8
 NeedsCompilation: no
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 6.1.1.9000
 LinkingTo: 
     Rcpp
 Imports: 
