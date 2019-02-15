@@ -26,7 +26,7 @@ cAMARETTO_HTMLreport(cAMARETTOresults, cAMARETTOnetworkM,
 
 \item{hyper_geo_test_bool}{Boolean if Hyper Geometric Test needs to be performed.}
 
-\item{hyper_geo_reference}{}
+\item{hyper_geo_reference}{A reference gmt file to perform the Hyper Geometric Test.}
 
 \item{MSIGDB}{Boolean if gmt is MSIGDB derived.}
 

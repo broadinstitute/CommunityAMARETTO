@@ -2,6 +2,7 @@
 #' 
 #' Reads the AMARETTOinit and AMARETTOresults from (zipped) AMARETTO directories. The names of the list are assigned as run names.
 #'
+#' @param unzipParentDirectory the address where the files are unzipped in
 #' @param AMARETTOdirectories a list of AMARETTO directories 
 #'
 #' @return a list with the AMARETTOinit and AMARETTOresults
@@ -14,13 +15,22 @@
 #' AMARETTOresults_all <- AMARETTO_all$AMARETTOresults_all
 #' 
 #' @export
-cAMARETTO_Read<-function(AMARETTOdirectories){
+
+cAMARETTO_Read<-function(AMARETTOdirectories,unzipParentDirectory="./"){
+  
   directories_to_unzip <- AMARETTOdirectories[grepl("zip$",AMARETTOdirectories)]
   # unzip directories if needed
   if(length(directories_to_unzip)>0){
-    for(directory_to_unzip in directories_to_unzip){
-      if(file.exists(directory_to_unzip)){
-        unzip(directory_to_unzip)
+    for(i in 1:length(directories_to_unzip)){
+      if(file.exists(directories_to_unzip[[i]])){
+        if (str_count(directories_to_unzip[[i]],"/")>=str_count(directories_to_unzip[[i]],"\\\\")){   #linux or windows addresses
+          extdir=paste(sub("/$","",unzipParentDirectory),names(directories_to_unzip)[i],sep="/")
+        }
+        else{
+          extdir=paste(sub("\\\\$","",unzipParentDirectory),names(directories_to_unzip)[i],sep="\\")
+        }
+        unzip(directories_to_unzip[[i]],exdir=extdir,junkpaths = TRUE)
+        AMARETTOdirectories[[i]]<-extdir
       } else {
         stop(paste0("The ",directory_to_unzip," is not existing"))
       }
