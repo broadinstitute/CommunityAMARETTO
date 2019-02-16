@@ -16,7 +16,7 @@
 #' 
 #' @export
 
-cAMARETTO_Read<-function(AMARETTOdirectories,unzipParentDirectory="./"){
+cAMARETTO_Read<-function(AMARETTOdirectories,unzipParentDirectory=getwd()){
   
   directories_to_unzip <- AMARETTOdirectories[grepl("zip$",AMARETTOdirectories)]
   # unzip directories if needed
@@ -32,7 +32,7 @@ cAMARETTO_Read<-function(AMARETTOdirectories,unzipParentDirectory="./"){
         unzip(directories_to_unzip[[i]],exdir=extdir,junkpaths = TRUE)
         AMARETTOdirectories[[i]]<-extdir
       } else {
-        stop(paste0("The ",directory_to_unzip," is not existing"))
+        stop(paste0("The ",directories_to_unzip[[i]]," is not existing"))
       }
     }
   }
@@ -45,11 +45,11 @@ cAMARETTO_Read<-function(AMARETTOdirectories,unzipParentDirectory="./"){
     tmp = load(paste0(AMARETTOdirectory,"/amarettoInit.RData"))
     assign(paste0("AMARETTOinit_",names(AMARETTOdirectories)[i]),get(tmp))
     rm(tmp)
-    AMARETTOinit_all<-list.append(AMARETTOinit_all,eval(parse(text=paste0("AMARETTOinit_",names(AMARETTOdirectories)[i]))))
+    AMARETTOinit_all<-list.append(AMARETTOinit_all,eval(parse(text=paste0("AMARETTOinit_",names(AMARETTOdirectories)[i])),envir = environment()))
     tmp = load(paste0(AMARETTOdirectory,"/amarettoResults.RData"))
     assign(paste0("AMARETTOresults_",names(AMARETTOdirectories)[i]),get(tmp))
     rm(tmp)
-    AMARETTOresults_all<-list.append(AMARETTOresults_all,eval(parse(text=paste0("AMARETTOresults_",names(AMARETTOdirectories)[i]))))
+    AMARETTOresults_all<-list.append(AMARETTOresults_all,eval(parse(text=paste0("AMARETTOresults_",names(AMARETTOdirectories)[i])),envir = environment()))
     i = i + 1
   }
   names(AMARETTOinit_all)<-names(AMARETTOdirectories)
