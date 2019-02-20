@@ -6,7 +6,7 @@
 
 Reads the AMARETTOinit and AMARETTOresults from (zipped) AMARETTO directories. The names of the list are assigned as run names.}
 \usage{
-cAMARETTO_Read(AMARETTOdirectories, unzipParentDirectory = "./")
+cAMARETTO_Read(AMARETTOdirectories, unzipParentDirectory = getwd())
 }
 \arguments{
 \item{AMARETTOdirectories}{a list of AMARETTO directories}
