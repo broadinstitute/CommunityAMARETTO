@@ -67,19 +67,21 @@ cAMARETTO_Read<-function(AMARETTOdirectories,unzipParentDirectory=getwd()){
 #'
 #' @examples cAMARETTO_HTML_Read(list(TCGA_LIHC="TCGA_LIHC_report.zip",TCGA_GBM="TCGA_GBM_report.zip"))
 cAMARETTO_HTML_Read<-function(HTMLsAMARETTOlist,unzipParentDirectory=getwd()){
-  HTMLsAMARETTOlist_names<-names(HTMLsAMARETTOlist)
-  for (i in 1:length(HTMLsAMARETTOlist)){
-    if(file.exists(HTMLsAMARETTOlist[[i]])){
-      extdir=sub("/$","",unzipParentDirectory)
-      unzip(HTMLsAMARETTOlist[[i]],exdir=extdir)
-      HTMLsAMARETTOlist[[i]]<-sub(".zip","",paste(extdir,HTMLsAMARETTOlist[[i]],sep="/"))
+  if (! is.null(HTMLsAMARETTOlist) ){
+    HTMLsAMARETTOlist_names<-names(HTMLsAMARETTOlist)
+    for (i in 1:length(HTMLsAMARETTOlist)){
+      if(file.exists(HTMLsAMARETTOlist[[i]])){
+        extdir=sub("/$","",unzipParentDirectory)
+        unzip(HTMLsAMARETTOlist[[i]],exdir=extdir)
+        HTMLsAMARETTOlist[[i]]<-sub(".zip","",paste(extdir,HTMLsAMARETTOlist[[i]],sep="/"))
+      }
+      else{
+        stop(paste0("The ",HTMLsAMARETTOlist[[i]]," is not existing"))
+      }
     }
-    else{
-      stop(paste0("The ",HTMLsAMARETTOlist[[i]]," is not existing"))
-    }
+    names(HTMLsAMARETTOlist)<-HTMLsAMARETTOlist_names
+    HTMLsAMARETTOlist<-unlist(HTMLsAMARETTOlist)
   }
-  names(HTMLsAMARETTOlist)<-HTMLsAMARETTOlist_names
-  HTMLsAMARETTOlist<-unlist(HTMLsAMARETTOlist)
   return(HTMLsAMARETTOlist)
 }
 #' @title cAMARETTO_ExportResults
