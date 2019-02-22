@@ -4,10 +4,10 @@
 \alias{cAMARETTO_HTML_Read}
 \title{Title cAMARETTO_HTML_Read}
 \usage{
-cAMARETTO_HTML_Read(HTMLsAMARETTOlist, unzipParentDirectory = getwd())
+cAMARETTO_HTML_Read(HTMLsAMARETTOZips, unzipParentDirectory = getwd())
 }
 \arguments{
-\item{HTMLsAMARETTOlist}{a list of directories for each AMARETTO HTML report.}
+\item{HTMLsAMARETTOZips}{a list of directories for each AMARETTO HTML.zip report, the output of AMARETTO.}
 
 \item{unzipParentDirectory}{a directory address where the html report files are unzipped to}
 }

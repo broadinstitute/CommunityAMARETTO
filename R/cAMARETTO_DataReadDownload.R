@@ -59,29 +59,30 @@ cAMARETTO_Read<-function(AMARETTOdirectories,unzipParentDirectory=getwd()){
 
 #' Title cAMARETTO_HTML_Read
 #'
-#' @param HTMLsAMARETTOlist a list of directories for each AMARETTO HTML report.
 #' @param unzipParentDirectory a directory address where the html report files are unzipped to
+#' @param HTMLsAMARETTOZips a list of directories for each AMARETTO HTML.zip report, the output of AMARETTO.
 #'
 #' @return a named vector with directories of unzipped HTML reprorts.
 #' @export
 #'
 #' @examples cAMARETTO_HTML_Read(list(TCGA_LIHC="TCGA_LIHC_report.zip",TCGA_GBM="TCGA_GBM_report.zip"))
-cAMARETTO_HTML_Read<-function(HTMLsAMARETTOlist,unzipParentDirectory=getwd()){
-  if (! is.null(HTMLsAMARETTOlist) ){
-    HTMLsAMARETTOlist_names<-names(HTMLsAMARETTOlist)
-    for (i in 1:length(HTMLsAMARETTOlist)){
-      if(file.exists(HTMLsAMARETTOlist[[i]])){
+cAMARETTO_HTML_Read<-function(HTMLsAMARETTOZips,unzipParentDirectory=getwd()){
+  HTMLsAMARETTOlist<-rep(NA,length(HTMLsAMARETTOZips))
+  if (! is.null(HTMLsAMARETTOZips) ){
+    for (i in 1:length(HTMLsAMARETTOZips)){
+      if(file.exists(HTMLsAMARETTOZips[[i]])){
         extdir=sub("/$","",unzipParentDirectory)
-        unzip(HTMLsAMARETTOlist[[i]],exdir=extdir)
-        HTMLsAMARETTOlist[[i]]<-sub(".zip","",paste(extdir,HTMLsAMARETTOlist[[i]],sep="/"))
+        unzip(HTMLsAMARETTOZips[[i]],exdir=extdir)
+        print(paste(HTMLsAMARETTOZips[[i]],"is unzipped to",extdir))
+        HTMLsAMARETTOlist[i]<-sub(".zip","",paste(extdir,basename(HTMLsAMARETTOZips[[i]]),sep="/"))
       }
       else{
-        stop(paste0("The ",HTMLsAMARETTOlist[[i]]," is not existing"))
+        stop(paste0("The ",HTMLsAMARETTOZips[[i]]," is not existing"))
       }
     }
-    names(HTMLsAMARETTOlist)<-HTMLsAMARETTOlist_names
-    HTMLsAMARETTOlist<-unlist(HTMLsAMARETTOlist)
+    names(HTMLsAMARETTOlist)<-names(HTMLsAMARETTOZips)
   }
+  print(HTMLsAMARETTOlist)
   return(HTMLsAMARETTOlist)
 }
 #' @title cAMARETTO_ExportResults
