@@ -240,7 +240,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                       dom = "Bfrtip", 
                                       buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"))),
                        escape=FALSE)
-  
+  knitr::knit_meta(class=NULL, clean = TRUE)  # cleaning memory, avoiding memory to be overloaded
   rmarkdown::render(
       system.file("templates/TemplateCommunityPage.Rmd", package = "CommunityAMARETTO"),
       output_dir = paste0(full_path, "/communities"),
