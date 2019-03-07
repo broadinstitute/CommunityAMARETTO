@@ -19,7 +19,7 @@
 #' cAMARETTOresults <- cAMARETTO_Results(AMARETTOinit_all, AMARETTOresults_all, gmt_filelist=list(ImmuneSignature = Cibersortgmt), NrCores = 4 , output_dir = "./")
 #' 
 #' @export
-cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, output_dir="./", gmt_filelist=NULL, drivers=TRUE){
+cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, output_dir="./", gmt_filelist=NULL, drivers = FALSE){
   
   #test if names are matching
   if (all(names(AMARETTOinit_all) == names(AMARETTOresults_all))) {
