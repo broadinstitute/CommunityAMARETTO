@@ -106,7 +106,7 @@ GmtFromModules <- function(AMARETTOresults,gmt_file,run,Drivers=FALSE){
   }
   ModuleMembership<-ModuleMembership%>%select(GeneNames,ModuleNr)%>%arrange(GeneNames)
   ModuleMembers_list<-split(ModuleMembership$GeneNames,ModuleMembership$ModuleNr)
-  names(ModuleMembers_list)<-paste0(run,"_Module_",names(ModuleMembers_list))
+  names(ModuleMembers_list)<-paste0(run,"|Module_",names(ModuleMembers_list))
   write.table(sapply(names(ModuleMembers_list),function(x) paste(x,paste(ModuleMembers_list[[x]],collapse="\t"),sep="\t")),gmt_file,quote = FALSE,row.names = TRUE,col.names = FALSE,sep='\t')
 }
 
