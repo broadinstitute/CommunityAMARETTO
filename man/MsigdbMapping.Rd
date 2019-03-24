@@ -6,7 +6,7 @@
 \title{MsigdbMapping}
 \format{An object of class \code{data.frame} with 17810 rows and 3 columns.}
 \source{
-\url{AMARETTO}
+\url{CommunityAMARETTO}
 }
 \usage{
 MsigdbMapping
