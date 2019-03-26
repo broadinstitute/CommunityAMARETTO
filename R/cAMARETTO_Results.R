@@ -43,7 +43,6 @@ cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, 
     all_genes_modules_df<-rbind(all_genes_modules_df,ExtractGenesInfo(AMARETTOresults_all[[run]],run))
   }
   names(create_gmt_filelist)<-runnames
-  
   # add extra gmt files to compare with
   given_gmt_filelist <- c()
   if (!is.null(gmt_filelist)){
@@ -183,10 +182,10 @@ ExtractGenesInfo<-function(AMARETTOresults,run){
   ModuleMembership<-NULL
   for (ModuleNr in 1:AMARETTOresults$NrModules){
     Targets<- names(AMARETTOresults$ModuleMembership[which(AMARETTOresults$ModuleMembership==ModuleNr),1])
-    Target_df<-data.frame(Run_Names=run,ModuleNr=ModuleNr,GeneNames=Targets,type="T",Weights=NA,stringsAsFactors = FALSE) 
+    Target_df<-data.frame(Run_Names=run,ModuleNr=ModuleNr,GeneNames=Targets,Type="Target",Weights=NA,stringsAsFactors = FALSE) 
     Drivers <- names(which(AMARETTOresults$RegulatoryPrograms[ModuleNr,] != 0))
     Weight_Driver<-AMARETTOresults$RegulatoryPrograms[ModuleNr,Drivers]
-    Drivers_df<-data.frame(Run_Names=run,ModuleNr=ModuleNr,GeneNames=Drivers,type="D",Weights=Weight_Driver,stringsAsFactors = FALSE) 
+    Drivers_df<-data.frame(Run_Names=run,ModuleNr=ModuleNr,GeneNames=Drivers,Type="Driver",Weights=Weight_Driver,stringsAsFactors = FALSE) 
     ModuleMembership <- rbind(ModuleMembership,Target_df,Drivers_df)
   }
   return(ModuleMembership)

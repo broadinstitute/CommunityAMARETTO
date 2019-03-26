@@ -43,6 +43,16 @@ datatable(ComModulesLink %>%
 ```
 <br><br><br>
 
+## Driver Genes to community assignment
+<br><br><br>
+```{r CommunityDrivers,echo=FALSE}
+DTComDrivers
+```
+<br><br><br>
+
+
+
+
 ## Summary Information
 <br><br><br>
 ```{r RunInfo,echo=FALSE}
@@ -53,7 +63,7 @@ datatable(RunInfo,class = "display",escape=FALSE,rownames = FALSE)
 ## Gene to community assignment
 <br><br><br>
 ```{r CommunityGenes, echo=FALSE}
-datatable(GeneComLink %>% select(GeneName,Community), class = "display",
+datatable(GeneComLink, class = "display",
           extensions = "Buttons",
           rownames = FALSE,
           options = list(pageLength = 10, 

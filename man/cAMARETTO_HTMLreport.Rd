@@ -9,7 +9,8 @@ Creates a HTMLreport for the community AMARETTO results}
 cAMARETTO_HTMLreport(cAMARETTOresults, cAMARETTOnetworkM,
   cAMARETTOnetworkC, output_address = "./", HTMLsAMARETTOlist = NULL,
   CopyAMARETTOReport = TRUE, hyper_geo_test_bool = FALSE,
-  hyper_geo_reference = NULL, MSIGDB = FALSE, NrCores = 2)
+  hyper_geo_reference = NULL, MSIGDB = FALSE, driverGSEA = TRUE,
+  NrCores = 2)
 }
 \arguments{
 \item{cAMARETTOresults}{The output of the Results function.}
@@ -29,6 +30,8 @@ cAMARETTO_HTMLreport(cAMARETTOresults, cAMARETTOnetworkM,
 \item{hyper_geo_reference}{A reference gmt file to perform the Hyper Geometric Test.}
 
 \item{MSIGDB}{Boolean if gmt is MSIGDB derived.}
+
+\item{driverGSEA}{if TRUE, driver genes beside the target genes will also be included for hypergeometric test.}
 
 \item{NrCores}{Number of Cores to use during generation of the HTML report.}
 }
