@@ -21,6 +21,7 @@
 #' @import tidyverse
 #' @import reshape2
 #' @import rmarkdown
+#' @import stringr
 #' @examples
 #' 
 #' cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist = HTMLsAMARETTOlist, hyper_geo_test_bool = TRUE, hyper_geo_reference = gmtfile, MSIGDB = TRUE, output_address= "./")
@@ -105,17 +106,18 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     summarise(ModuleNames=paste(ModuleName, collapse = ", "))
   suppressMessages(ComModulesLink <- dcast(ComModulesLink, Community~Run, fill=0))
   suppressMessages(ComModulesLink <- left_join(ComModulesLink,cAMARETTOnetworkC$commEdgeInfo %>% dplyr::select(Community,numTotalEdgesInCommunity,fractEdgesInVsOut,CommsizeFrac) %>% mutate(Community=paste0("Community ",Community))))
-  ComModulesLink <- ComModulesLink %>% mutate(Community = paste0("<a href=\"./communities/",sub(" ","_",Community),".html\">",Community, "</a>"))
-  
+  ComModulesLink <- ComModulesLink%>%mutate(Community=stringr::str_sort(Community, numeric = TRUE)) %>%
+    mutate(Community = paste0("<a href=\"./communities/",sub(" ","_",Community),".html\">",Community, "</a>"))
+
   # adding genes to communities table
-  GeneComLink<-com_gene_df%>%mutate(Community=paste0("<a href=\"./communities/",gsub(" ","_",Community),".html\">",Community, "</a>"))%>%
+  GeneComLink<-com_gene_df%>%mutate(Community=stringr::str_sort(Community, numeric = TRUE))%>%mutate(Community=paste0("<a href=\"./communities/",gsub(" ","_",Community),".html\">",Community, "</a>"))%>%
     rename(GeneName = GeneNames)%>%
     dplyr::mutate(GeneName = paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", GeneName, "\">", GeneName, "</a>"))%>%
     select(c(GeneName,Type,Community))
   
   #adding Community to driver genes table 
   Comm_Drivers<-com_gene_df%>%filter(Type=="Driver")%>%mutate(GeneNames=paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", GeneNames, "\">", GeneNames, "</a>"))%>%
-    group_by(Community)%>%summarise(Drivers=paste(unique(GeneNames),collapse = ", "))
+    group_by(Community)%>%summarise(Drivers=paste(unique(GeneNames),collapse = ", "))%>%mutate(Community=stringr::str_sort(Community, numeric = TRUE))
   
   #HGT to test for gene set enrichment
   options('DT.warn.size'=FALSE) # avoid showing datatable size-related warnings.
