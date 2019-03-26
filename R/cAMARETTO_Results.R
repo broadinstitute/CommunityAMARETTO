@@ -101,7 +101,7 @@ cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, 
 GmtFromModules <- function(AMARETTOresults,gmt_file,run,Drivers=FALSE){
   ModuleMembership<-ExtractGenesInfo(AMARETTOresults,run)
   if (Drivers == FALSE){
-    ModuleMembership<-dplyr::filter(ModuleMembership,type=="T")
+    ModuleMembership<-dplyr::filter(ModuleMembership,Type=="Target")
   }
   ModuleMembership<-ModuleMembership%>%select(GeneNames,ModuleNr)%>%arrange(GeneNames)
   ModuleMembers_list<-split(ModuleMembership$GeneNames,ModuleMembership$ModuleNr)
