@@ -130,10 +130,9 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   Comm_Drivers<-com_gene_df%>%filter(Type=="Driver")%>%
     mutate(GeneNames=paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", GeneNames, "\">", GeneNames, "</a>"))%>%
     group_by(Community,Run_Names)%>%summarise(Drivers=paste(unique(GeneNames),collapse = ", "))
-  print("Hi Ali")
+
   Comm_Drivers<-data.frame(Comm_Drivers)%>%mutate(Community=paste0("<a href=\"./communities/",paste0("Community_",Community),".html\">",paste0("Community ",Community), "</a>"))
-  print("Hi Omid")
-  
+
   #HGT to test for gene set enrichment
   options('DT.warn.size'=FALSE) # avoid showing datatable size-related warnings.
   if (hyper_geo_test_bool) {
