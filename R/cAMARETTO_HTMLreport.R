@@ -110,10 +110,24 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     mutate(Community = paste0("<a href=\"./communities/",sub(" ","_",Community),".html\">",Community, "</a>"))
 
   # adding genes to communities table
-  GeneComLink<-com_gene_df%>%mutate(Community=stringr::str_sort(Community, numeric = TRUE))%>%mutate(Community=paste0("<a href=\"./communities/",gsub(" ","_",Community),".html\">",Community, "</a>"))%>%
+  
+  com_gene_df<-com_gene_df%>%mutate(Color=sapply(as.numeric(Weights), function(x){
+    if(is.na(x)){
+      return("")
+    }
+    else if(x>0){
+      return("blue")
+    }
+    else {
+      return("red")
+    }
+
+  }))%>%mutate(TypeColored=paste0('<font color=',Color,'>',Type,'</font>'))
+  #%>%mutate(Community=stringr::str_sort(Community, numeric = TRUE))
+  GeneComLink<-com_gene_df%>%mutate(Community=paste0("<a href=\"./communities/",gsub(" ","_",Community),".html\">",Community, "</a>"))%>%
     rename(GeneName = GeneNames)%>%
     dplyr::mutate(GeneName = paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", GeneName, "\">", GeneName, "</a>"))%>%
-    select(c(GeneName,Type,Community))
+    select(c(GeneName,TypeColored,Community))%>%rename(Type=TypeColored)
   
   #adding Community to driver genes table 
   Comm_Drivers<-com_gene_df%>%filter(Type=="Driver")%>%mutate(GeneNames=paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", GeneNames, "\">", GeneNames, "</a>"))%>%
@@ -198,8 +212,8 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   }
   
   #adding Gene-Module-Run tabel
-  genelists_module<-com_gene_df%>%filter(Community==paste("Community",i))%>%arrange(GeneNames)%>%rename(Run=Run_Names)%>%rename(ModuleName=ModuleNr)%>%rename(Genes=GeneNames)
-  
+  genelists_module<-com_gene_df%>%filter(Community==paste("Community",i))%>%arrange(GeneNames)%>%rename(Run=Run_Names)%>%rename(ModuleName=ModuleNr)%>%rename(Genes=GeneNames)%>%select(-c(Type))%>%rename(Type=TypeColored)
+
   if(is.null(HTMLsAMARETTOlist)==FALSE){
     genelists_module <- suppressMessages(left_join(genelists_module,RunInfo2) %>% 
       dplyr::mutate(ModuleName=paste0("Module ",ModuleName))%>%
@@ -367,7 +381,7 @@ ComRunModGenInfo<-function(cAMARETTOresults,cAMARETTOnetworkC){
   Nodes_Mnetwork <- igraph::as_data_frame(cAMARETTOnetworkM$module_network, what="vertices")
   Module_no_Network <- all_module_names[!all_module_names %in% Nodes_Mnetwork$name]
   Module_no_Com <- all_module_names[all_module_names %in% Nodes_Mnetwork$name]
-  ComModulesLink <- ComModulesLink %>% mutate(Community=ifelse(Module %in% Module_no_Network,"Not in Network",ifelse(Module %in% Module_no_Com, "Not in a Community",paste0("Community ",Community))))
+  ComModulesLink <- ComModulesLink %>%arrange(Community)%>%mutate(Community=ifelse(Module %in% Module_no_Network,"Not in Network",ifelse(Module %in% Module_no_Com, "Not in a Community",paste0("Community ",Community))))
   return(suppressMessages(dplyr::left_join(cAMARETTOresults$all_genes_modules_df,ComModulesLink)))
 }
 
