@@ -21,6 +21,7 @@
 #' @import tidyverse
 #' @import reshape2
 #' @import rmarkdown
+#' @import stringr
 #' @examples
 #' 
 #' cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist = HTMLsAMARETTOlist, hyper_geo_test_bool = TRUE, hyper_geo_reference = gmtfile, MSIGDB = TRUE, output_address= "./")
@@ -106,7 +107,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   suppressMessages(ComModulesLink <- dcast(ComModulesLink, Community~Run, fill=0))
   suppressMessages(ComModulesLink <- left_join(ComModulesLink,cAMARETTOnetworkC$commEdgeInfo %>% dplyr::select(Community,numTotalEdgesInCommunity,fractEdgesInVsOut,CommsizeFrac) %>% mutate(Community=paste0("Community ",Community))))
   ComModulesLink <- ComModulesLink%>%mutate(Community = paste0("<a href=\"./communities/",sub(" ","_",Community),".html\">",Community, "</a>"))
-
+  ComModulesLink<-ComModulesLink[stringr::str_order(ComModulesLink$Community, numeric = TRUE),]
   # adding genes to communities table
   
   com_gene_df<-com_gene_df%>%mutate(Color=sapply(as.numeric(Weights), function(x){
@@ -120,19 +121,20 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
       return("darkblue")
     }
   }))%>%mutate(TypeColored=paste0('<font color=',Color,'>',Type,'</font>'))
-  #%>%mutate(Community=stringr::str_sort(Community, numeric = TRUE))
+  #[stringr::str_order(Community, numeric = TRUE),]
   GeneComLink<-com_gene_df%>%rename(GeneName = GeneNames)%>%
     dplyr::mutate(GeneName = paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", GeneName, "\">", GeneName, "</a>"))%>%
     select(c(GeneName,TypeColored,Community))%>%rename(Type=TypeColored)%>%
     mutate(Community=paste0("<a href=\"./communities/",paste0("Community_",Community),".html\">",paste0("Community ",Community), "</a>"))
+  GeneComLink<-GeneComLink[stringr::str_order(GeneComLink$Community, numeric = TRUE),]
   
   #adding Community to driver genes table 
   Comm_Drivers<-com_gene_df%>%filter(Type=="Driver")%>%
     mutate(GeneNames=paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", GeneNames, "\">", GeneNames, "</a>"))%>%
     group_by(Community,Run_Names)%>%summarise(Drivers=paste(unique(GeneNames),collapse = ", "))
-
   Comm_Drivers<-data.frame(Comm_Drivers)%>%mutate(Community=paste0("<a href=\"./communities/",paste0("Community_",Community),".html\">",paste0("Community ",Community), "</a>"))
-
+  Comm_Drivers<-Comm_Drivers[stringr::str_order(Comm_Drivers$Community, numeric = TRUE),]
+  
   #HGT to test for gene set enrichment
   options('DT.warn.size'=FALSE) # avoid showing datatable size-related warnings.
   if (hyper_geo_test_bool) {
