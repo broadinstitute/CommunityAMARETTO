@@ -19,7 +19,7 @@
 #' cAMARETTOresults <- cAMARETTO_Results(AMARETTOinit_all, AMARETTOresults_all, gmt_filelist=list(ImmuneSignature = Cibersortgmt), NrCores = 4 , output_dir = "./")
 #' 
 #' @export
-cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, output_dir="./", gmt_filelist=NULL, drivers=TRUE){
+cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, output_dir="./", gmt_filelist=NULL, drivers = FALSE){
   
   #test if names are matching
   if (all(names(AMARETTOinit_all) == names(AMARETTOresults_all))) {
@@ -35,13 +35,14 @@ cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, 
   
   # for each file a gmt for the modules
   create_gmt_filelist<-c()
+  all_genes_modules_df<-NULL
   for (run in runnames){
     gmt_file <- file.path(output_dir,"gmt_files",paste0(run, "_modules.gmt"))
     GmtFromModules(AMARETTOresults_all[[run]], gmt_file, run, Drivers = drivers)
     create_gmt_filelist <- c(create_gmt_filelist,gmt_file)
+    all_genes_modules_df<-rbind(all_genes_modules_df,ExtractGenesInfo(AMARETTOresults_all[[run]],run))
   }
   names(create_gmt_filelist)<-runnames
-  
   # add extra gmt files to compare with
   given_gmt_filelist <- c()
   if (!is.null(gmt_filelist)){
@@ -81,9 +82,9 @@ cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, 
   output_hgt_allcombinations$padj <- p.adjust(output_hgt_allcombinations$p_value, method="BH")
   output_hgt_allcombinations <- output_hgt_allcombinations %>% 
                                     mutate(p_value=case_when(Geneset1 == Geneset2~NA_real_, TRUE~p_value))
-  output_hgt_allcombinations <- output_hgt_allcombinations %>% mutate(Geneset1=ifelse(RunName1%in%names(given_gmt_filelist),paste0(RunName1,"_",gsub(" ","_",Geneset1)),Geneset1),Geneset2=ifelse(RunName2%in%names(given_gmt_filelist),paste0(RunName2,"_",gsub(" ","_",Geneset2)),Geneset2))
+  output_hgt_allcombinations <- output_hgt_allcombinations %>% mutate(Geneset1=ifelse(RunName1%in%names(given_gmt_filelist),paste0(RunName1,"|",gsub(" ","_",Geneset1)),Geneset1),Geneset2=ifelse(RunName2%in%names(given_gmt_filelist),paste0(RunName2,"|",gsub(" ","_",Geneset2)),Geneset2))
   
-  return(list(runnames=runnames,gmtnames=names(given_gmt_filelist),hgt_modules=output_hgt_allcombinations, genelists = genelists, NrCores=NrCores))
+  return(list(runnames=runnames,gmtnames=names(given_gmt_filelist),hgt_modules=output_hgt_allcombinations, genelists = genelists, all_genes_modules_df=all_genes_modules_df, NrCores=NrCores))
 }
 
 #' @title GmtFromModules
@@ -97,28 +98,14 @@ cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, 
 #'
 #' @import tidyverse
 #' @export
-
 GmtFromModules <- function(AMARETTOresults,gmt_file,run,Drivers=FALSE){
-  
-  ModuleMembership<-rownames_to_column(as.data.frame(AMARETTOresults$ModuleMembership),"GeneNames")
-  NrModules<-AMARETTOresults$NrModules
-  ModuleMembership<-ModuleMembership %>% arrange(GeneNames)
-  
-  if (Drivers == TRUE){
-    for (i in 1:NrModules){
-      ModuleNr<-paste0("Module_",i)
-      RegulatoryProgramsModule <- AMARETTOresults$RegulatoryPrograms[ModuleNr,]
-      Driver_list<-names(RegulatoryProgramsModule[RegulatoryProgramsModule!=0])
-      Driver_list<-as.data.frame(Driver_list)
-      colnames(Driver_list) <- c("GeneNames")
-      Driver_list <- Driver_list %>% mutate(ModuleNr=i)
-      ModuleMembership <- rbind(ModuleMembership,Driver_list)
-    }
+  ModuleMembership<-ExtractGenesInfo(AMARETTOresults,run)
+  if (Drivers == FALSE){
+    ModuleMembership<-dplyr::filter(ModuleMembership,Type=="Target")
   }
-  
+  ModuleMembership<-ModuleMembership%>%select(GeneNames,ModuleNr)%>%arrange(GeneNames)
   ModuleMembers_list<-split(ModuleMembership$GeneNames,ModuleMembership$ModuleNr)
-  names(ModuleMembers_list)<-paste0(run,"_Module_",names(ModuleMembers_list))
-  
+  names(ModuleMembers_list)<-paste0(run,"|Module_",names(ModuleMembers_list))
   write.table(sapply(names(ModuleMembers_list),function(x) paste(x,paste(ModuleMembers_list[[x]],collapse="\t"),sep="\t")),gmt_file,quote = FALSE,row.names = TRUE,col.names = FALSE,sep='\t')
 }
 
@@ -181,3 +168,26 @@ HyperGTestGeneEnrichment<-function(gmtfile1, gmtfile2, runname1, runname2, NrCor
   resultloop[,"padj"]<-p.adjust(resultloop[,"p_value"],method='BH')
   return(resultloop)
 }
+
+#' Title  ExtractGenesInfo 
+#'
+#' @param AMARETTOresults AMARETTOreults object from an AMARETTO run.
+#' @param run the run-name string , for example :"TCGA_LIHC", associated with the AMARETTOreults run. 
+#'
+#' @return returns a dataframe with columns of runname, module-number, genename, gene-types, and weights of the driver genes.
+#' @export
+#'
+#' @examples 
+ExtractGenesInfo<-function(AMARETTOresults,run){
+  ModuleMembership<-NULL
+  for (ModuleNr in 1:AMARETTOresults$NrModules){
+    Targets<- names(AMARETTOresults$ModuleMembership[which(AMARETTOresults$ModuleMembership==ModuleNr),1])
+    Target_df<-data.frame(Run_Names=run,ModuleNr=ModuleNr,GeneNames=Targets,Type="Target",Weights=NA,stringsAsFactors = FALSE) 
+    Drivers <- names(which(AMARETTOresults$RegulatoryPrograms[ModuleNr,] != 0))
+    Weight_Driver<-AMARETTOresults$RegulatoryPrograms[ModuleNr,Drivers]
+    Drivers_df<-data.frame(Run_Names=run,ModuleNr=ModuleNr,GeneNames=Drivers,Type="Driver",Weights=Weight_Driver,stringsAsFactors = FALSE) 
+    ModuleMembership <- rbind(ModuleMembership,Target_df,Drivers_df)
+  }
+  return(ModuleMembership)
+}
+

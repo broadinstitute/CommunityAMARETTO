@@ -18,9 +18,16 @@ output:
 cAMARETTO_ColorOneModule(cAMARETTOnetworkM,cAMARETTOnetworkC,ComNr)
 ```
 <br><br><br>
-The modules included in the community are:
+## Community modules
 ```{r Modules,echo=FALSE}
 DTML
+```
+<br><br><br>
+
+## Gene to Module assignment
+<br><br><br>
+```{r GeneModule,echo=FALSE}
+DTGenes
 ```
 <br><br><br>
 
@@ -31,10 +38,4 @@ DTGSEA
 ```
 <br><br><br>
 
-## Gene to Module Link
-<br><br><br>
-```{r GeneModule,echo=FALSE}
-DTGenes
-```
-<br><br><br>
 </center>

@@ -12,6 +12,7 @@ cAMARETTO_Read(AMARETTOdirectories, unzipParentDirectory = getwd())
 \item{AMARETTOdirectories}{a list of AMARETTO directories}
 
 \item{unzipParentDirectory}{the address where the files are unzipped to}
+
 }
 \value{
 a list with the AMARETTOinit and AMARETTOresults

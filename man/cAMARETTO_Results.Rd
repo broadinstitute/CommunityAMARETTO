@@ -7,7 +7,7 @@
 To initiate the community AMARETTO this results functions performs hyper geometric tests between all modules and gene sets.}
 \usage{
 cAMARETTO_Results(AMARETTOinit_all, AMARETTOresults_all, NrCores = 1,
-  output_dir = "./", gmt_filelist = NULL, drivers = TRUE)
+  output_dir = "./", gmt_filelist = NULL, drivers = FALSE)
 }
 \arguments{
 \item{AMARETTOinit_all}{A list of multiple AMARETTO_Initialize outputs. The names are run names.}

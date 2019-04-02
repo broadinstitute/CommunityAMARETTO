@@ -85,6 +85,7 @@ cAMARETTO_HTML_Read<-function(HTMLsAMARETTOZips,unzipParentDirectory=getwd()){
   print(HTMLsAMARETTOlist)
   return(HTMLsAMARETTOlist)
 }
+
 #' @title cAMARETTO_ExportResults
 #'
 #' @param cAMARETTOresults
