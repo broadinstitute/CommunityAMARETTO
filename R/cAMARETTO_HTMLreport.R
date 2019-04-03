@@ -151,9 +151,9 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   for (i in 1:nrow(comm_info)){
     community_info <- comm_info[i,]
     ComNr <- community_info$community_numb
-    target_genes<-com_gene_df%>%filter(Community==i)%>%filter(Type=="Target")%>%arrange(GeneNames)%>%pull(GeneNames)
-    driver_genes<-com_gene_df%>%filter(Community==i)%>%filter(Type=="Driver")%>%arrange(GeneNames)%>%pull(GeneNames)
-    driver_genes_weights<-com_gene_df%>%filter(Community==i)%>%filter(Type=="Driver")%>%arrange(GeneNames)%>%pull(Weights)
+    target_genes<-com_gene_df%>%filter(Community==ComNr)%>%filter(Type=="Target")%>%arrange(GeneNames)%>%pull(GeneNames)
+    driver_genes<-com_gene_df%>%filter(Community==ComNr)%>%filter(Type=="Driver")%>%arrange(GeneNames)%>%pull(GeneNames)
+    driver_genes_weights<-com_gene_df%>%filter(Community==ComNr)%>%filter(Type=="Driver")%>%arrange(GeneNames)%>%pull(Weights)
     
     ModuleList <- unlist(strsplit(community_info$included_nodes,", "))
     if(is.null(HTMLsAMARETTOlist)==FALSE){
@@ -214,7 +214,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   }
   
   #adding Gene-Module-Run tabel
-  genelists_module<-com_gene_df%>%filter(Community==i)%>%arrange(GeneNames)%>%rename(Run=Run_Names)%>%rename(ModuleName=ModuleNr)%>%rename(Genes=GeneNames)%>%select(-c(Type))%>%rename(Type=TypeColored)
+  genelists_module<-com_gene_df%>%filter(Community==ComNr)%>%arrange(GeneNames)%>%rename(Run=Run_Names)%>%rename(ModuleName=ModuleNr)%>%rename(Genes=GeneNames)%>%select(-c(Type))%>%rename(Type=TypeColored)
 
   if(is.null(HTMLsAMARETTOlist)==FALSE){
     genelists_module <- suppressMessages(left_join(genelists_module,RunInfo2) %>% 
@@ -233,15 +233,6 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                       buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"))),
                        escape=FALSE)
 
-  DTComDrivers<-datatable(Comm_Drivers,
-                          class = "display",
-                          extensions = "Buttons",
-                          rownames = FALSE,
-                          options = list(pageLength = 10, 
-                                         dom = "Bfrtip", 
-                                         buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"))),
-                          escape=FALSE)
-
   knitr::knit_meta(class=NULL, clean = TRUE)  # cleaning memory, avoiding memory to be overloaded
   rmarkdown::render(
       system.file("templates/TemplateCommunityPage.Rmd", package = "CommunityAMARETTO"),
@@ -252,7 +243,6 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
         DTGSEA = DTGSEA,
         DTML = DTML,
         DTGenes = DTGenes,
-        DTComDrivers=DTComDrivers,
         cAMARETTOnetworkM = cAMARETTOnetworkM,
         cAMARETTOnetworkC = cAMARETTOnetworkC
       ), quiet = TRUE)
@@ -280,6 +270,15 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   } else{
     DTGSEAall <- "Genesets were not analysed as they were not provided."
   }
+  DTComDrivers<-datatable(Comm_Drivers,
+                          class = "display",
+                          extensions = "Buttons",
+                          rownames = FALSE,
+                          options = list(pageLength = 10, 
+                                         dom = "Bfrtip", 
+                                         buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"))),
+                          escape=FALSE)
+  
   rmarkdown::render(
     system.file("templates/TemplateIndexPage.Rmd", package = "CommunityAMARETTO"),
     output_dir = full_path,
@@ -288,6 +287,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
       cAMARETTOnetworkM = cAMARETTOnetworkM,
       cAMARETTOnetworkC = cAMARETTOnetworkC,
       ComModulesLink = ComModulesLink,
+      DTComDrivers=DTComDrivers,
       GeneComLink = GeneComLink,
       RunInfo =  RunInfo %>% select(Run),
       DTGSEAall = DTGSEAall
