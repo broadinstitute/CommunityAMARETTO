@@ -7,7 +7,13 @@ output:
 ---
 
 <center>
-## Run Information
+
+## Summary Information
+<br><br><br>
+```{r RunInfo,echo=FALSE}
+datatable(RunInfo,class = "display",escape=FALSE,rownames = FALSE)
+```
+<br><br><br>
 
 ## Community Network
 <br><br><br>
@@ -50,15 +56,6 @@ DTComDrivers
 ```
 <br><br><br>
 
-
-
-
-## Summary Information
-<br><br><br>
-```{r RunInfo,echo=FALSE}
-datatable(RunInfo,class = "display",escape=FALSE,rownames = FALSE)
-```
-<br><br><br>
 
 ## Gene to Community assignment
 <br><br><br>
