@@ -153,6 +153,10 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     ComNr <- community_info$community_numb
     target_genes<-com_gene_df%>%filter(Community==ComNr)%>%filter(Type=="Target")%>%arrange(GeneNames)%>%pull(GeneNames)
     driver_genes<-com_gene_df%>%filter(Community==ComNr)%>%filter(Type=="Driver")%>%arrange(GeneNames)%>%pull(GeneNames)
+    print("hi_target_driver")
+    print(target_genes)
+    print(driver_genes)
+    
     driver_genes_weights<-com_gene_df%>%filter(Community==ComNr)%>%filter(Type=="Driver")%>%arrange(GeneNames)%>%pull(Weights)
     
     ModuleList <- unlist(strsplit(community_info$included_nodes,", "))
