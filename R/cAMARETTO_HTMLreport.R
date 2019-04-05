@@ -336,6 +336,7 @@ HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 4
     resultHGT <- as.data.frame(resultHGT, stringsAsFactors = FALSE)
     resultHGT$p_value <- as.numeric(resultHGT$p_value)
     resultHGT$n_Overlapping <- as.numeric((resultHGT$n_Overlapping))
+    print(resultHGT$n_Overlapping)
     resultHGT[, "padj"] <- p.adjust(resultHGT[, "p_value"], method = "BH")
     return(resultHGT)
 }
