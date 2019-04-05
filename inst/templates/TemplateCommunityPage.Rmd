@@ -1,5 +1,5 @@
 ---
-title: <center>Community `r ComNr` report</center>
+title: <center>Community-AMARETTO Community `r ComNr` report</center>
 output: 
   html_document:
     theme: cerulean
@@ -12,27 +12,27 @@ output:
 <a href="../index.html"><button type="button"  class="btn btn-primary">Index Page</button></a>
 <br><br>
 
-## Network visualisation of Community `r ComNr`
+## Community Network Visualisation
 <br><br><br>
 ```{r network,echo=FALSE}
 cAMARETTO_ColorOneModule(cAMARETTOnetworkM,cAMARETTOnetworkC,ComNr)
 ```
 <br><br><br>
 
-## Community modules
+## Regulatory Modules in Community
 ```{r Modules,echo=FALSE}
 DTML
 ```
 <br><br><br>
 
-## Gene to Module assignment
+## Driver and Target Genes in Community
 <br><br><br>
 ```{r GeneModule,echo=FALSE}
 DTGenes
 ```
 <br><br><br>
 
-## Gene Set Enrichment Analysis for Community
+## Enrichments of Functional Categories in Community
 <br><br><br>
 ```{r CommunityGSEA,echo=FALSE}
 DTGSEA
