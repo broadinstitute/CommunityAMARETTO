@@ -314,7 +314,8 @@ HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 4
     ########################### Parallelizing :
     cluster <- makeCluster(c(rep("localhost", NrCores)), type = "SOCK")
     registerDoParallel(cluster, cores = NrCores)
-    
+    print(genelist)
+    print(gmtset[[1]])
     resultHGT<-foreach(i = 1:length(gmtset), .combine = "rbind") %dopar% {
         l <- length(gmtset[[i]])
         k <- sum(gmtset[[i]] %in% genelist)
