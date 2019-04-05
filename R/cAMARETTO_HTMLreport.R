@@ -182,6 +182,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     if (hyper_geo_test_bool) {
       genelist<-ifelse(driverGSEA,unique(c(target_genes,driver_genes)),unique(target_genes))
       outputHGT <- HGTGeneEnrichmentList(genelist, hyper_geo_reference, NrCores = NrCores)
+      print(outputHGT)
       if (nrow(outputHGT)>0){
         outputHGT <- left_join(outputHGT,GeneSetDescriptions, by = c(Geneset = "GeneSet")) %>%
           mutate(overlap_perc = n_Overlapping / NumberGenes) %>% dplyr::select(Geneset, Description, n_Overlapping, Overlapping_genes, overlap_perc, p_value, padj) %>% arrange(padj)
@@ -336,7 +337,6 @@ HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 4
     resultHGT <- as.data.frame(resultHGT, stringsAsFactors = FALSE)
     resultHGT$p_value <- as.numeric(resultHGT$p_value)
     resultHGT$n_Overlapping <- as.numeric((resultHGT$n_Overlapping))
-    print(resultHGT$n_Overlapping)
     resultHGT[, "padj"] <- p.adjust(resultHGT[, "p_value"], method = "BH")
     return(resultHGT)
 }
