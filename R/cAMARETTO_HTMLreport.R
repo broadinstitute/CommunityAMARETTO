@@ -185,6 +185,8 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     
     if (hyper_geo_test_bool) {
       genelist<-ifelse(driverGSEA,unique(c(target_genes,driver_genes)),unique(target_genes))
+      print("baba")
+      print(genelist)
       outputHGT <- HGTGeneEnrichmentList(genelist, hyper_geo_reference, NrCores = NrCores)
       print(outputHGT)
       if (nrow(outputHGT)>0){
