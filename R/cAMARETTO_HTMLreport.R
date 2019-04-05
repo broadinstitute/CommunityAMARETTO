@@ -191,7 +191,8 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
       if (nrow(outputHGT)>0){
         outputHGT <- left_join(outputHGT,GeneSetDescriptions, by = c(Geneset = "GeneSet")) %>%
           mutate(overlap_perc = n_Overlapping / NumberGenes) %>% dplyr::select(Geneset, Description, n_Overlapping, Overlapping_genes, overlap_perc, p_value, padj) %>% arrange(padj)
-        all_hgt_output<-rbind(all_hgt_output, outputHGT %>% mutate(Community=paste0("Community ",ComNr)) %>% dplyr::select(Community,everything()))
+        all_hgt_output<-rbind(all_hgt_output, outputHGT %>%mutate(Community=paste0("<a href=\"./communities/",paste0("Community_",ComNr),".html\">",paste0("Community ",ComNr), "</a>")) %>%
+                                dplyr::select(Community,everything()))
         
         if (MSIGDB == TRUE) {
           DTGSEA <- datatable(outputHGT %>% mutate(Geneset = paste0("<a href=\"http://software.broadinstitute.org/gsea/msigdb/cards/", Geneset, "\">", gsub("_", " ", Geneset),"</a>")),
