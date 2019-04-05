@@ -153,9 +153,6 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     ComNr <- community_info$community_numb
     target_genes<-com_gene_df%>%filter(Community==ComNr)%>%filter(Type=="Target")%>%arrange(GeneNames)%>%pull(GeneNames)
     driver_genes<-com_gene_df%>%filter(Community==ComNr)%>%filter(Type=="Driver")%>%arrange(GeneNames)%>%pull(GeneNames)
-    print("hi_target_driver")
-    print(target_genes)
-    print(driver_genes)
     
     driver_genes_weights<-com_gene_df%>%filter(Community==ComNr)%>%filter(Type=="Driver")%>%arrange(GeneNames)%>%pull(Weights)
     
@@ -190,10 +187,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
       else{
         genelist<-unique(target_genes)
       }
-      print("baba")
-      print(genelist)
       outputHGT <- HGTGeneEnrichmentList(genelist, hyper_geo_reference, NrCores = NrCores)
-      print(outputHGT)
       if (nrow(outputHGT)>0){
         outputHGT <- left_join(outputHGT,GeneSetDescriptions, by = c(Geneset = "GeneSet")) %>%
           mutate(overlap_perc = n_Overlapping / NumberGenes) %>% dplyr::select(Geneset, Description, n_Overlapping, Overlapping_genes, overlap_perc, p_value, padj) %>% arrange(padj)
@@ -325,8 +319,6 @@ HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 4
     ########################### Parallelizing :
     cluster <- makeCluster(c(rep("localhost", NrCores)), type = "SOCK")
     registerDoParallel(cluster, cores = NrCores)
-    print(genelist)
-    print(gmtset[[1]])
     resultHGT<-foreach(i = 1:length(gmtset), .combine = "rbind") %dopar% {
         l <- length(gmtset[[i]])
         k <- sum(gmtset[[i]] %in% genelist)
