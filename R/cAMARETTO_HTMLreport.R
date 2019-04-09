@@ -125,13 +125,13 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   GeneComLink<-com_gene_df%>%rename(GeneName = GeneNames)%>%
     dplyr::mutate(GeneName = paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", GeneName, "\">", GeneName, "</a>"))%>%
     select(c(GeneName,TypeColored,Community))%>%rename(Type=TypeColored)%>%
-    mutate(Community=paste0("<a href=\"./communities/",paste0("Community_",Community),".html\">",paste0("Community ",Community), "</a>"))
-  GeneComLink<-GeneComLink[stringr::str_order(GeneComLink$Community, numeric = TRUE),]
-  
+    mutate(Community=paste0("<a href=\"./communities/",paste0("Community_",Community),".html\">",paste0("Community ",Community), "</a>"))%>%arrange(GeneName)
+  #GeneComLink<-GeneComLink[stringr::str_order(GeneComLink$Community, numeric = TRUE),]
+
   #adding Community to driver genes table 
   Comm_Drivers<-com_gene_df%>%filter(Type=="Driver")%>%
     mutate(GeneNames=paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", GeneNames, "\">", GeneNames, "</a>"))%>%
-    group_by(Community,Run_Names)%>%summarise(Drivers=paste(unique(GeneNames),collapse = ", "))
+    group_by(Community,Run_Names)%>%summarise(Drivers=paste(unique(sort(GeneNames)),collapse = ", "))
   Comm_Drivers<-data.frame(Comm_Drivers)%>%mutate(Community=paste0("<a href=\"./communities/",paste0("Community_",Community),".html\">",paste0("Community ",Community), "</a>"))
   Comm_Drivers<-Comm_Drivers[stringr::str_order(Comm_Drivers$Community, numeric = TRUE),]
   
@@ -199,7 +199,12 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                             class = "display",
                             extensions = "Buttons",
                             rownames = FALSE,
-                            options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
+                            options = list(pageLength = 10,
+                                           dom = "Bfrtip",
+                                           scrollX=TRUE,
+                                           buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr))),
+                                           autoWidth = TRUE,
+                                           columnDefs = list(list(width = '400px', targets = c(3)))),
                             colnames = c("Gene Set Name", "Description", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
                             formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
                             formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
@@ -208,7 +213,13 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                             class = "display",
                             extensions = "Buttons",
                             rownames = FALSE,
-                            options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)))),
+                            options = list(pageLength = 10,
+                                           scrollX=TRUE,
+                                           dom = "Bfrtip",
+                                           buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr))),
+                                           autoWidth = TRUE,
+                                           columnDefs = list(list(width = '400px', targets = c(3)))
+                                           ),
                             colnames = c("Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
                             formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
                             formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")

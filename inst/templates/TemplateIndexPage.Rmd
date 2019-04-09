@@ -39,14 +39,19 @@ legend(x = 1.1, y = 1.5, legend=names(cAMARETTOnetworkC$color_list), col=cAMARET
 <br><br><br>
 ```{r CommunityModules,echo=FALSE}
 datatable(ComModulesLink %>% 
-            dplyr::rename(Edges="numTotalEdgesInCommunity",FractionEdges="fractEdgesInVsOut",FractionSize="CommsizeFrac"), class = "display",
+            dplyr::rename(Edges="numTotalEdgesInCommunity","Fraction Edges"="fractEdgesInVsOut","Fraction Size"="CommsizeFrac"), class = "display",
           extensions = "Buttons",
           rownames = FALSE,
           options = list(pageLength = 10, 
                          dom = "Bfrtip", 
+                         scrollX=TRUE,
+                         scrollY=1000,
+                        scrollCollapse= FALSE,
+                        paging = TRUE,
+                        lengthChange = FALSE,
                          buttons = list(list(extend = 'csv',text = "Save CSV", title="ComModuleRelation"))),
           escape=FALSE) %>%
-          formatSignif(c("FractionEdges","FractionSize"),2)
+          formatSignif(c("Fraction Edges","Fraction Size"),2)
 ```
 <br><br><br>
 
@@ -64,7 +69,9 @@ DTComDrivers
 datatable(GeneComLink, class = "display",
           extensions = "Buttons",
           rownames = FALSE,
-          options = list(pageLength = 10, 
+          options = list(pageLength = 10,
+                         autoWidth = TRUE,
+                         columnDefs = list(list(width = '50px', targets = "_all")),
                          dom = "Bfrtip", 
                          buttons = list(list(extend = 'csv',text = "Save CSV", title="ComGeneRelation"))),
           escape=FALSE)
