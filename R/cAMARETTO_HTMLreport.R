@@ -218,8 +218,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                            dom = "Bfrtip",
                                            buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr))),
                                            autoWidth = TRUE,
-                                           columnDefs = list(list(width = '400px', targets = c(3)))
-                                           ),
+                                           columnDefs = list(list(width = '400px', targets = c(3)))),
                             colnames = c("Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
                             formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
                             formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
