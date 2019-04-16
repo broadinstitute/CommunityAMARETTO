@@ -85,4 +85,11 @@ DTGSEAall
 ```
 <br><br><br>
 
+## Phenotype Association Table of Communities
+<br><br><br>
+```{r CommunityDTPhC,echo=FALSE}
+DTPhC
+```
+<br><br><br>
+
 </center>

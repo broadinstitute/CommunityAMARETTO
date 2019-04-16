@@ -39,4 +39,11 @@ DTGSEA
 ```
 <br><br><br>
 
+## Phenotype Association Table
+<br><br><br>
+```{r CommunityDTPh,echo=FALSE}
+DTPh
+```
+<br><br><br>
+
 </center>
