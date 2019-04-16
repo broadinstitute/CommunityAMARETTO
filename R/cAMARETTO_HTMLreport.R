@@ -67,8 +67,9 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
       i=i+1
     }
     RunInfo<-rownames_to_column(as.data.frame(HTMLsAMARETTOlist),"Run") %>% rename(ModuleLink="HTMLsAMARETTOlist")
+    RunToHTML<-RunInfo%>%rename(Run_Names = "Run")
   }
-  
+  print(RunToHTML)
   # Extract main dataframes
   com_gene_df<-suppressWarnings(ComRunModGenInfo(cAMARETTOresults,cAMARETTOnetworkC))
   comm_info <-  suppressWarnings(cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC))
@@ -102,6 +103,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     RunInfo <- as.data.frame(cAMARETTOresults$runnames) 
     names(RunInfo) <- c("Run")
   }
+
   ComModulesLink <- ComModulesLink %>% 
     group_by(Community, Run) %>% 
     summarise(ModuleNames=paste(ModuleName, collapse = ", "))
@@ -149,9 +151,12 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     }
   }
   # add phenotype table
-  if (!is.null(PhenotypeTables)){
+  if (!is.null(PhenotypeTablesList)){
     phenotype_table_all<-CreatePhenotypeTable(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTablesList)
+    phenotype_table_all<-phenotype_table_all%>%left_join(RunToHTML,by="Run_Names")%>%mutate(ModuleNr=paste0("<a href=",ModuleLink,"/modules/module",ModuleNr,".html>","Module ",ModuleNr,"</a>"))
+    
   }
+  print(phenotype_table_all)
   for (i in 1:nrow(comm_info)){
     community_info <- comm_info[i,]
     ComNr <- community_info$community_numb
@@ -256,9 +261,9 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   
   # add phenotype table for each community page
-  if (!is.null(PhenotypeTables)){
+  if (!is.null(PhenotypeTablesList)){
     phenotype_table_community<-phenotype_table_all%>%filter(Community==ComNr)
-    DTPhC<-datatable(phenotype_table_community,
+    DTPhC<-datatable(phenotype_table_community%>%select(-ModuleLink,-Community),
                      class = "display",
                      extensions = "Buttons",
                      rownames = FALSE,
@@ -328,8 +333,8 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                           escape=FALSE)
   
   # add phenotype table for each community page
-  if (!is.null(PhenotypeTables)){
-    DTPh<-datatable(phenotype_table_all,
+  if (!is.null(PhenotypeTablesList)){
+    DTPh<-datatable(phenotype_table_all%>%mutate(Community = paste0("<a href=./communities/Community_",Community,".html>","Community ",Community,"</a>"))%>%select(-ModuleLink),
                      class = "display",
                      extensions = "Buttons",
                      rownames = FALSE,
@@ -466,12 +471,12 @@ ComRunModGenInfo<-function(cAMARETTOresults,cAMARETTOnetworkC){
 #' @examples CreatePhenotypeTable(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTables)
 CreatePhenotypeTable<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTablesList){
   phenotype_table_all<-NULL
-  CommunityRunModuleTable<-ComRunModGenInfo(cAMARETTOresults,cAMARETTOnetworkC)%>%select(Run_Names,ModuleNr,Community)
+  CommunityRunModuleTable<-ComRunModGenInfo(cAMARETTOresults,cAMARETTOnetworkC)%>%select(Run_Names,ModuleNr,Community)%>%distinct()
   for (i in 1:length(PhenotypeTablesList)){
     if (is.null(PhenotypeTablesList[[i]])){
       next
     }
-    phenotype_table<-PhenotypeTablesList[[i]]%>%mutate(ModuleNr=as.numeric(gsub("Module ","",ModuleNr)))%>%mutate(Run_Names=names(PhenotypeTablesList)[i])%>%left_join(bb,by=c("Run_Names","ModuleNr"))%>%select(Community,Run_Names,ModuleNr,Phenotypes,Statistical_Test,p.value,q.value,Descriptive_Statistics)
+    phenotype_table<-PhenotypeTablesList[[i]]%>%mutate(ModuleNr=as.numeric(gsub("Module ","",ModuleNr)))%>%mutate(Run_Names=names(PhenotypeTablesList)[i])%>%left_join(CommunityRunModuleTable,by=c("Run_Names","ModuleNr"))%>%select(Community,Run_Names,ModuleNr,Phenotypes,Statistical_Test,p.value,q.value,Descriptive_Statistics)
     phenotype_table_all<-rbind(phenotype_table_all,phenotype_table)
   }
   return(phenotype_table_all)

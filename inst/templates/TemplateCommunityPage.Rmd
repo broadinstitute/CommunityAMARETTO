@@ -42,7 +42,7 @@ DTGSEA
 ## Phenotype Association Table
 <br><br><br>
 ```{r CommunityDTPh,echo=FALSE}
-DTPh
+DTPhC
 ```
 <br><br><br>
 

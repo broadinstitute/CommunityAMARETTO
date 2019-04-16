@@ -88,7 +88,7 @@ DTGSEAall
 ## Phenotype Association Table of Communities
 <br><br><br>
 ```{r CommunityDTPhC,echo=FALSE}
-DTPhC
+DTPh
 ```
 <br><br><br>
 
