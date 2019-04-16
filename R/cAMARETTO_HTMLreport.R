@@ -13,6 +13,7 @@
 #' @param MSIGDB Boolean if gmt is MSIGDB derived.
 #' @param NrCores Number of Cores to use during generation of the HTML report.
 #' @param driverGSEA if TRUE, driver genes beside the target genes will also be included for hypergeometric test. 
+#' @param PhenotypeTablesList 
 #'
 #' @return A set of HTMLs, giving caracteristics of the communities
 #' 
@@ -27,7 +28,7 @@
 #' cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist = HTMLsAMARETTOlist, hyper_geo_test_bool = TRUE, hyper_geo_reference = gmtfile, MSIGDB = TRUE, output_address= "./")
 #' 
 #' @export
-cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC,
+cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTablesList = NULL,
                                  output_address="./", HTMLsAMARETTOlist=NULL, CopyAMARETTOReport = TRUE,
                                  hyper_geo_test_bool = FALSE, hyper_geo_reference = NULL,
                                  MSIGDB = FALSE,driverGSEA=TRUE,
@@ -147,7 +148,10 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
       RunInfo2 <- RunInfo2 %>% mutate(ModuleLink=sub("^./","../",ModuleLink))
     }
   }
-  
+  # add phenotype table
+  if (!is.null(PhenotypeTables)){
+    phenotype_table_all<-CreatePhenotypeTable(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTablesList)
+  }
   for (i in 1:nrow(comm_info)){
     community_info <- comm_info[i,]
     ComNr <- community_info$community_numb
@@ -250,7 +254,22 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                       buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"))),
                        escape=FALSE)
   
- 
+  
+  # add phenotype table for each community page
+  if (!is.null(PhenotypeTables)){
+    phenotype_table_community<-phenotype_table_all%>%filter(Community==ComNr)
+    DTPhC<-datatable(phenotype_table_community,
+                     class = "display",
+                     extensions = "Buttons",
+                     rownames = FALSE,
+                     options = list(pageLength = 10, 
+                                    dom = "Bfrtip", 
+                                    buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"))),
+                     escape=FALSE)
+  }
+  else{ DTPhC = "Phenotype Statistical Analysis is not provided" }
+
+  
   knitr::knit_meta(class=NULL, clean = TRUE)  # cleaning memory, avoiding memory to be overloaded
   rmarkdown::render(
       system.file("templates/TemplateCommunityPage.Rmd", package = "CommunityAMARETTO"),
@@ -261,6 +280,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
         DTGSEA = DTGSEA,
         DTML = DTML,
         DTGenes = DTGenes,
+        DTPhC = DTPhC,
         cAMARETTOnetworkM = cAMARETTOnetworkM,
         cAMARETTOnetworkC = cAMARETTOnetworkC
       ), quiet = TRUE)
@@ -307,6 +327,19 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                          buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"))),
                           escape=FALSE)
   
+  # add phenotype table for each community page
+  if (!is.null(PhenotypeTables)){
+    DTPh<-datatable(phenotype_table_all,
+                     class = "display",
+                     extensions = "Buttons",
+                     rownames = FALSE,
+                     options = list(pageLength = 10, 
+                                    dom = "Bfrtip", 
+                                    buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"))),
+                     escape=FALSE)
+  }
+  else{ DTPh = "Phenotype Statistical Analysis is not provided" }
+
   rmarkdown::render(
     system.file("templates/TemplateIndexPage.Rmd", package = "CommunityAMARETTO"),
     output_dir = full_path,
@@ -318,7 +351,8 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
       DTComDrivers=DTComDrivers,
       GeneComLink = GeneComLink,
       RunInfo =  RunInfo %>% select(Run),
-      DTGSEAall = DTGSEAall
+      DTGSEAall = DTGSEAall,
+      DTPh = DTPh
     ), quiet = TRUE)
 }
 
@@ -416,6 +450,29 @@ ComRunModGenInfo<-function(cAMARETTOresults,cAMARETTOnetworkC){
   return(ComModulesLink)
 }
 
+
+
+
+#' Title
+#'
+#' @param cAMARETTOresults 
+#' @param cAMARETTOnetworkM 
+#' @param PhenotypeTablesList 
+#' @param cAMARETTOnetworkC 
+#'
+#' @return results
+#' @export
+#'
+#' @examples CreatePhenotypeTable(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTables)
+CreatePhenotypeTable<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTablesList){
+  phenotype_table_all<-NULL
+  CommunityRunModuleTable<-ComRunModGenInfo(cAMARETTOresults,cAMARETTOnetworkC)%>%select(Run_Names,ModuleNr,Community)
+  for (i in 1:length(PhenotypeTablesList)){
+    phenotype_table<-PhenotypeTablesList[[i]]%>%mutate(ModuleNr=as.numeric(gsub("Module ","",ModuleNr)))%>%mutate(Run_Names=names(PhenotypeTablesList)[i])%>%left_join(bb,by=c("Run_Names","ModuleNr"))%>%select(Community,Run_Names,ModuleNr,Phenotypes,Statistical_Test,p.value,q.value,Descriptive_Statistics)
+    phenotype_table_all<-rbind(phenotype_table_all,phenotype_table)
+  }
+  return(phenotype_table_all)
+}
 
 
 
