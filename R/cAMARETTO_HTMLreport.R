@@ -468,6 +468,9 @@ CreatePhenotypeTable<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnet
   phenotype_table_all<-NULL
   CommunityRunModuleTable<-ComRunModGenInfo(cAMARETTOresults,cAMARETTOnetworkC)%>%select(Run_Names,ModuleNr,Community)
   for (i in 1:length(PhenotypeTablesList)){
+    if (is.null(PhenotypeTablesList[[i]])){
+      next
+    }
     phenotype_table<-PhenotypeTablesList[[i]]%>%mutate(ModuleNr=as.numeric(gsub("Module ","",ModuleNr)))%>%mutate(Run_Names=names(PhenotypeTablesList)[i])%>%left_join(bb,by=c("Run_Names","ModuleNr"))%>%select(Community,Run_Names,ModuleNr,Phenotypes,Statistical_Test,p.value,q.value,Descriptive_Statistics)
     phenotype_table_all<-rbind(phenotype_table_all,phenotype_table)
   }
