@@ -28,7 +28,7 @@
 #' @source \url{CommunityAMARETTO}
 "AMARETTOresults_all"
 
-#' CNV_matrix_LIHC
+#' Driver_Genes
 #'
 #' A dataframe containing of MSIGDB geneset names, their urls and descriptions.
 #'
@@ -36,46 +36,26 @@
 #'   ...
 #' }
 #' @source \url{CommunityAMARETTO}
-"CNV_matrix_LIHC"
+"Driver_Genes"
 
-#' Driver_List
+#' ProcessedDataTCGA
 #'
-#' A dataframe containing of MSIGDB geneset names, their urls and descriptions.
+#' A list of dataframes of processed toy example dataset from TCGA-LIHC.
 #'
 #' @format List
 #'   ...
 #' }
 #' @source \url{CommunityAMARETTO}
-"Driver_List"
+"ProcessedDataTCGA"
 
-#' MA_matrix_CCLE
+
+#' ProcessedDataCCLE
 #'
-#' A dataframe containing of MSIGDB geneset names, their urls and descriptions.
+#' A list of dataframes of processed toy example dataset from CCLE-LIVER.
 #'
 #' @format List
 #'   ...
 #' }
 #' @source \url{CommunityAMARETTO}
-"MA_matrix_CCLE"
-
-
-#' MA_matrix_LIHC
-#'
-#' A dataframe containing of MSIGDB geneset names, their urls and descriptions.
-#'
-#' @format List
-#'   ...
-#' }
-#' @source \url{CommunityAMARETTO}
-"MA_matrix_LIHC"
-
-#' MET_matrix_LIHC
-#'
-#' A dataframe containing of MSIGDB geneset names, their urls and descriptions.
-#'
-#' @format List
-#'   ...
-#' }
-#' @source \url{CommunityAMARETTO}
-"MET_matrix_LIHC"
+"ProcessedDataCCLE"
 
