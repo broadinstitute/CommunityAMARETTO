@@ -6,7 +6,7 @@
 \usage{
 cAMARETTO_IdentifyCom(cAMARETTOnetworkM, color_list = NULL,
   filterComm = TRUE, ratioCommSize = 0.01, MinRuns = 2,
-  ratioRunSize = 0.1, ratioEdgesInOut = 0.5)
+  ratioRunSize = 0.1, ratioEdgesInOut = 0.5, plot_network = TRUE)
 }
 \arguments{
 \item{cAMARETTOnetworkM}{The output of the Module Network function.}
@@ -23,7 +23,7 @@ cAMARETTO_IdentifyCom(cAMARETTOnetworkM, color_list = NULL,
 
 \item{ratioEdgesInOut}{Filer on edges in the community versus edges going out.}
 
-\item{edge_method}{Define edge weights based p-values or overlap between the gene sets.}
+\item{plot_network}{If TRUE, plots the Community Network at the end.}
 }
 \value{
 a list with the module network, a community list, community edge information and color list.

@@ -7,7 +7,7 @@
 Creates a module network.}
 \usage{
 cAMARETTO_ModuleNetwork(cAMARETTOresults, pvalue = 0.05, inter = 5,
-  color_list = NULL, edge_method = "pvalue")
+  color_list = NULL, edge_method = "pvalue", plot_network = TRUE)
 }
 \arguments{
 \item{cAMARETTOresults}{}
@@ -19,6 +19,8 @@ cAMARETTO_ModuleNetwork(cAMARETTOresults, pvalue = 0.05, inter = 5,
 \item{color_list}{An optional list with colors}
 
 \item{edge_method}{Define edge weights based p-values or overlap between the gene sets.}
+
+\item{plot_network}{If TRUE, plots the Community Network at the end.}
 }
 \value{
 a list with the module network, layout for the network, used p-value, used overlap en colors
