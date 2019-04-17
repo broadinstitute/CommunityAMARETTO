@@ -6,8 +6,8 @@
 #' @param ratioCommSize Filter nodes in the community versus nodes out of the community.
 #' @param MinRuns Filter on minimum number of runs in the community.
 #' @param ratioRunSize Filter on percentage of runs in the community versus total number of runs.
+#' @param plot_network If TRUE, plots the Community Network at the end.
 #' @param ratioEdgesInOut Filer on edges in the community versus edges going out.
-#' @param edge_method Define edge weights based p-values or overlap between the gene sets.
 #'
 #' @return a list with the module network, a community list, community edge information and color list.
 #' 
@@ -19,7 +19,7 @@
 #' cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
 #' 
 #' @export
-cAMARETTO_IdentifyCom <- function(cAMARETTOnetworkM, color_list=NULL, filterComm=TRUE, ratioCommSize=0.01, MinRuns=2, ratioRunSize=0.1, ratioEdgesInOut=0.5 ){
+cAMARETTO_IdentifyCom <- function(cAMARETTOnetworkM, color_list=NULL, filterComm=TRUE, ratioCommSize=0.01, MinRuns=2, ratioRunSize=0.1, ratioEdgesInOut=0.5, plot_network = TRUE){
   
   comm <- edge.betweenness.community(cAMARETTOnetworkM$module_network, directed=FALSE, merges=TRUE, modularity=TRUE, membership=TRUE)
   
@@ -95,17 +95,17 @@ cAMARETTO_IdentifyCom <- function(cAMARETTOnetworkM, color_list=NULL, filterComm
   } else {
     length(color_list) >= length(community_list)
   }
-  
-  plot(CommGraph,layout = cAMARETTOnetworkM$layoutMN,
-       vertex.color = as.character(Nodes_Mnetwork$color),
-       vertex.label = NA,
-       vertex.frame.color = NA,
-       edge.color = "gray80",
-       mark.groups = community_list,
-       mark.col = color_list,
-       mark.border = NA,
-       main = "Community network")
-  
+  if (plot_network) {
+    plot(CommGraph,layout = cAMARETTOnetworkM$layoutMN,
+         vertex.color = as.character(Nodes_Mnetwork$color),
+         vertex.label = NA,
+         vertex.frame.color = NA,
+         edge.color = "gray80",
+         mark.groups = community_list,
+         mark.col = color_list,
+         mark.border = NA,
+         main = "Community network")
+  }
   legendMN <- legend(x = -1.5, y = -1.1+0.05*length(cAMARETTOnetworkM$colMN), legend = names(cAMARETTOnetworkM$colMN), col = cAMARETTOnetworkM$colMN, pch=19, bty="n",ncol=ceiling(length(cAMARETTOnetworkM$colMN)/5))
   legendMN
   

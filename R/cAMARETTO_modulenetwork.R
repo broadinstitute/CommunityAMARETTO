@@ -7,6 +7,7 @@
 #' @param inter minimal overlap between two gene sets
 #' @param color_list An optional list with colors
 #' @param edge_method Define edge weights based p-values or overlap between the gene sets.
+#' @param plot_network If TRUE, plots the Community Network at the end.
 #'
 #' @return a list with the module network, layout for the network, used p-value, used overlap en colors
 #' 
@@ -19,7 +20,7 @@
 #' cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,0.10,5)
 #' 
 #' @export
-cAMARETTO_ModuleNetwork<-function(cAMARETTOresults, pvalue=0.05, inter=5, color_list=NULL, edge_method="pvalue"){
+cAMARETTO_ModuleNetwork<-function(cAMARETTOresults, pvalue = 0.05, inter = 5, color_list = NULL, edge_method = "pvalue", plot_network = TRUE){
   
   output_hgt_allcombinations_filtered <- cAMARETTOresults$hgt_modules %>% 
                                             filter(padj<=pvalue & n_Overlapping>=inter)
@@ -44,7 +45,9 @@ cAMARETTO_ModuleNetwork<-function(cAMARETTOresults, pvalue=0.05, inter=5, color_
     stop("The edge method is not properly defined.")
   }
   layoutMN <- layout_with_fr(module_network)
-  plot(module_network, vertex.frame.color=NA, layout=layoutMN, vertex.label=NA, main="Module network", edge.color="gray80")
+  if(plot_network){
+    plot(module_network, vertex.frame.color=NA, layout=layoutMN, vertex.label=NA, main="Module network", edge.color="gray80")
+  }
   legendMN <- legend(x = -1.5, y = -1.1+0.05*length(color_list), legend = names(color_list), col = color_list, pch=19, bty="n",ncol=ceiling(length(color_list)/5))
   legendMN
   return(list(module_network=module_network, layoutMN=layoutMN, pvalue=pvalue, inter=inter, colMN=color_list))
