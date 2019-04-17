@@ -1,7 +1,42 @@
 library(CommunityAMARETTO)
 context("AMARETTO output data objects testing")
 
-data("ProcessedDataLIHC")
+
+data("AMARETTOinit_all")
+data("AMARETTOresults_all")
+
+cAMARETTOresults<-cAMARETTO_Results(AMARETTOinit_all = AMARETTOinit_all,
+                                    AMARETTOresults_all = AMARETTOresults_all,
+                                    gmt_filelist = list(ImmuneSignature = "ciberSort.gmt"),
+                                    NrCores = 4,
+                                    drivers=TRUE)
+
+cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,
+                                           pvalue=0.05,
+                                           inter=5)
+
+#Identify significantly connected subnetworks using the Girvan-Newman algorithm
+cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,
+                                         filterComm = FALSE,
+                                         ratioCommSize=0.01,
+                                         MinRuns=2,
+                                         ratioRunSize=0.1,
+                                         ratioEdgesInOut=0.5)
+
+cAMARETTO_HTMLreport(cAMARETTOresults = cAMARETTOresults,
+                     cAMARETTOnetworkM = cAMARETTOnetworkM,
+                     cAMARETTOnetworkC = cAMARETTOnetworkC,
+                     HTMLsAMARETTOlist = HTMLsAMARETTOlist,
+                     CopyAMARETTOReport = FALSE,
+                     hyper_geo_test_bool = TRUE,
+                     hyper_geo_reference = hyper_geo_reference ,
+                     MSIGDB = TRUE,
+                     output_address= "./cAmaretto_report")
+
+##########
+
+
+
 NrModules<-5
 VarPercentage<-10
 AMARETTOinit <- AMARETTO_Initialize(ProcessedDataLIHC,
