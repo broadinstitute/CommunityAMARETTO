@@ -7,10 +7,10 @@
 Creates a HTMLreport for the community AMARETTO results}
 \usage{
 cAMARETTO_HTMLreport(cAMARETTOresults, cAMARETTOnetworkM,
-  cAMARETTOnetworkC, output_address = "./", HTMLsAMARETTOlist = NULL,
-  CopyAMARETTOReport = TRUE, hyper_geo_test_bool = FALSE,
-  hyper_geo_reference = NULL, MSIGDB = FALSE, driverGSEA = TRUE,
-  NrCores = 2)
+  cAMARETTOnetworkC, PhenotypeTablesList = NULL, output_address = "./",
+  HTMLsAMARETTOlist = NULL, CopyAMARETTOReport = TRUE,
+  hyper_geo_test_bool = FALSE, hyper_geo_reference = NULL,
+  MSIGDB = FALSE, driverGSEA = TRUE, NrCores = 2)
 }
 \arguments{
 \item{cAMARETTOresults}{The output of the Results function.}
@@ -18,6 +18,8 @@ cAMARETTO_HTMLreport(cAMARETTOresults, cAMARETTOnetworkM,
 \item{cAMARETTOnetworkM}{The output of the Module Network function.}
 
 \item{cAMARETTOnetworkC}{The output of the Identify Communities function.}
+
+\item{PhenotypeTablesList}{}
 
 \item{output_address}{The output repository for the HTML report.}
 
