@@ -1,7 +1,6 @@
 devtools::install_github("broadinstitute/CommunityAMARETTO",ref="develop")
 library(CommunityAMARETTO)
-library(CommunityAMARETTO)
-context("AMARETTO output data objects testing")
+context("CommunityAMARETTO output data objects testing")
 
 
 data("AMARETTOinit_all")
@@ -15,7 +14,8 @@ cAMARETTOresults<-cAMARETTO_Results(AMARETTOinit_all =AMARETTOinit_all ,
 
 cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,
                                            pvalue = 0.05,
-                                           inter = 5)
+                                           inter = 5,
+                                           plot_network = FALSE)
 
 #Identify significantly connected subnetworks using the Girvan-Newman algorithm
 cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,
@@ -23,7 +23,8 @@ cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,
                                          ratioCommSize = 0.01,
                                          MinRuns = 2,
                                          ratioRunSize = 0.1,
-                                         ratioEdgesInOut = 0.5)
+                                         ratioEdgesInOut = 0.5,
+                                         plot_network = FALSE)
 
 
 

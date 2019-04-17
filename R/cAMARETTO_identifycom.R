@@ -105,12 +105,12 @@ cAMARETTO_IdentifyCom <- function(cAMARETTOnetworkM, color_list=NULL, filterComm
          mark.col = color_list,
          mark.border = NA,
          main = "Community network")
-  }
+  
   legendMN <- legend(x = -1.5, y = -1.1+0.05*length(cAMARETTOnetworkM$colMN), legend = names(cAMARETTOnetworkM$colMN), col = cAMARETTOnetworkM$colMN, pch=19, bty="n",ncol=ceiling(length(cAMARETTOnetworkM$colMN)/5))
   legendMN
   
   legendCOM <- legend(x = 1.5, y = 1.5, legend=names(color_list), col=color_list, pch=19, bty="n",cex=max(0.9,1/(1+0.02*length(color_list))),ncol=ceiling(length(color_list)/15))
   legendCOM
-  
+  }
   return(list(CommGraph=CommGraph, community_list=community_list, commEdgeInfo = commEdgeInfo, color_list=color_list))
 }

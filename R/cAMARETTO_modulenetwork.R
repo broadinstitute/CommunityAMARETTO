@@ -47,8 +47,8 @@ cAMARETTO_ModuleNetwork<-function(cAMARETTOresults, pvalue = 0.05, inter = 5, co
   layoutMN <- layout_with_fr(module_network)
   if(plot_network){
     plot(module_network, vertex.frame.color=NA, layout=layoutMN, vertex.label=NA, main="Module network", edge.color="gray80")
-  }
   legendMN <- legend(x = -1.5, y = -1.1+0.05*length(color_list), legend = names(color_list), col = color_list, pch=19, bty="n",ncol=ceiling(length(color_list)/5))
   legendMN
+  }
   return(list(module_network=module_network, layoutMN=layoutMN, pvalue=pvalue, inter=inter, colMN=color_list))
 }
