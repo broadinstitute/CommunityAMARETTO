@@ -19,11 +19,9 @@
 #' 
 #' @import igraph
 #' @import DT
-#' @import tidyverse
-#' @import reshape2
-#' @import rmarkdown render
-#' @import stringr str_order
-#' @importFrom dplyr arrange group_by left_join mutate select summarise  rename  filter separate everything pull distinct
+#' @importFrom rmarkdown render
+#' @importFrom stringr str_order
+#' @importFrom dplyr arrange group_by left_join mutate select summarise  rename  filter everything pull distinct
 #' @importFrom tibble tibble rownames_to_column
 #' @importFrom knitr knit_meta
 #' @importFrom reshape2 dcast
@@ -375,8 +373,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
 #' @param gmtfile The gmt file with gene sets to test. In our case, the gmt file of the modules.
 #' @param NrCores Number of cores used for parallelization.
 #' @param ref.numb.genes The total number of genes teste, standard equal to 45 956 (MSIGDB standard).
-#'
-#' @importFrom  doParallel registerDoParallel
+#' @importFrom doParallel registerDoParallel
 #' @importFrom parallel makeCluster stopCluster
 #' @importFrom foreach foreach %dopar% %do%
 #' @importFrom stats p.adjust phyper
@@ -419,10 +416,9 @@ HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 4
 #' @param filename The name of the gmt file.
 #' @param MSIGDB TRUE or FALSE
 #' @importFrom utils data
-#' @return
+#' @return provides descriptions of MSIGDB Genesets
 #' @keywords internal
-#' @examples
-#' @export
+#' @examples GeneSetDescription(filename,MSIGDB)
 GeneSetDescription<-function(filename,MSIGDB){
   utils::data(MsigdbMapping)
   gmtLines<-strsplit(readLines(filename),"\t")
@@ -445,10 +441,10 @@ GeneSetDescription<-function(filename,MSIGDB){
 #'
 #' @param cAMARETTOresults 
 #' @param cAMARETTOnetworkC 
+#' @import igraph
 #' @importFrom dplyr arrange rename left_join mutate
 #' @importFrom utils stack 
-#' @importFrom igraph
-#' @importFrom purr map
+#' @importFrom purrr map
 #' @return a dataframe contaning all communities, runname, and modules relationships. 
 #' @export
 #'
@@ -457,7 +453,7 @@ ComRunModGenInfo<-function(cAMARETTOresults,cAMARETTOnetworkC){
   ComModulesLink <- utils::stack(cAMARETTOnetworkC$community_list) %>% dplyr::rename(Module="values", Community="ind")
   all_module_names <- unique(c(cAMARETTOresults$hgt_modules$Geneset1,cAMARETTOresults$hgt_modules$Geneset2))
   suppressWarnings(ComModulesLink <- dplyr::left_join(as.data.frame(all_module_names) %>% dplyr::rename(Module="all_module_names"),ComModulesLink, by="Module"))
-  ComModulesLink<-ComModulesLink%>%dplyr::mutate(ModuleNr=as.numeric(gsub("Module_","",unlist(purr::map(strsplit(Module,"\\|"),2)))))%>% dplyr::mutate(Run_Names=unlist(purr::map(strsplit(Module,"\\|"),1)))
+  ComModulesLink<-ComModulesLink%>%dplyr::mutate(ModuleNr=as.numeric(gsub("Module_","",unlist(purrr::map(strsplit(Module,"\\|"),2)))))%>% dplyr::mutate(Run_Names=unlist(purrr::map(strsplit(Module,"\\|"),1)))
   all_module_names <- ComModulesLink[is.na(ComModulesLink[,"Community"]),"Module"]
   Nodes_Mnetwork <- igraph::as_data_frame(cAMARETTOnetworkM$module_network, what="vertices")
   Module_no_Network <- all_module_names[!all_module_names %in% Nodes_Mnetwork$name]
