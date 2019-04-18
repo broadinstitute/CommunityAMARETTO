@@ -145,7 +145,6 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   #HGT to test for gene set enrichment
   options('DT.warn.size'=FALSE) # avoid showing datatable size-related warnings.
   if (hyper_geo_test_bool) {
-    all_hgt_output <- tibble::tibble("Community"=character(),"Geneset"=character(),"Description"=character(),"n_Overlapping"=numeric(),"Overlapping_genes"=character(),"overlap_perc"=numeric(),"p_value="=numeric(),"padj"=numeric())
     GeneSetDescriptions <- GeneSetDescription(hyper_geo_reference,MSIGDB)
   }
   if(is.null(HTMLsAMARETTOlist)==FALSE){
@@ -179,17 +178,19 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
       }  
       DTML <- DT::datatable(ModuleList %>% dplyr::select(-ModuleLink), 
                         class = "display",
-                        extensions = "Buttons",
+                        filter = 'top',
+                        extensions = c('Buttons','KeyTable'),
                         rownames = FALSE,
-                        options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("ModulesCom",ComNr)))),
+                        options = list(pageLength = 10, lengthMenu = c(5, 10, 20, 50, 100), keys = TRUE, dom = "Blfrtip", buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title=paste0("ModulesCom",ComNr)))),
                         escape = FALSE)
     } else {
       ModuleList <- as.data.frame(ModuleList) %>% tidyr::separate(ModuleList,c("Run","ModuleName"),"\\|",extra = "merge") %>% dplyr::mutate(ModuleName = sub("_"," ",ModuleName))
       DTML <- DT::datatable(ModuleList, 
                         class = "display",
-                        extensions = "Buttons",
+                        filter = 'top',
+                        extensions = c('Buttons','KeyTable'),
                         rownames = FALSE,
-                        options = list(pageLength = 10, dom = "Bfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("ModulesCom",ComNr)))),
+                        options = list(pageLength = 10, lengthMenu = c(5, 10, 20, 50, 100), keys = TRUE, dom = "Blfrtip", buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title=paste0("ModulesCom",ComNr)))),
                         escape = FALSE)
     }
     
@@ -210,12 +211,15 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
         if (MSIGDB == TRUE) {
           DTGSEA <- DT::datatable(outputHGT %>% dplyr::mutate(Geneset = paste0("<a href=\"http://software.broadinstitute.org/gsea/msigdb/cards/", Geneset, "\">", gsub("_", " ", Geneset),"</a>")),
                             class = "display",
-                            extensions = "Buttons",
+                            filter = 'top',
+                            extensions = c('Buttons','KeyTable'),
                             rownames = FALSE,
                             options = list(pageLength = 10,
-                                           dom = "Bfrtip",
+                                           lengthMenu = c(5, 10, 20, 50, 100),
+                                           keys = TRUE,
+                                           dom = "Blfrtip",
                                            scrollX=TRUE,
-                                           buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr))),
+                                           buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title=paste0("HGTresults_Com",ComNr))),
                                            autoWidth = TRUE,
                                            columnDefs = list(list(width = '400px', targets = c(3)))),
                             colnames = c("Gene Set Name", "Description", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
@@ -224,12 +228,15 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
         } else {
           DTGSEA <- DT::datatable(outputHGT,
                             class = "display",
-                            extensions = "Buttons",
+                            filter = 'top',
+                            extensions = c('Buttons','KeyTable'),
                             rownames = FALSE,
                             options = list(pageLength = 10,
+                                           lengthMenu = c(5, 10, 20, 50, 100),
+                                           keys = TRUE,
                                            scrollX=TRUE,
-                                           dom = "Bfrtip",
-                                           buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr))),
+                                           dom = "Blfrtip",
+                                           buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title=paste0("HGTresults_Com",ComNr))),
                                            autoWidth = TRUE,
                                            columnDefs = list(list(width = '400px', targets = c(3)))),
                             colnames = c("Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
@@ -256,11 +263,14 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   }
   DTGenes <- DT::datatable(genelists_module,
                        class = "display",
-                       extensions = "Buttons",
+                       filter = 'top',
+                       extensions = c('Buttons','KeyTable'),
                        rownames = FALSE,
                        options = list(pageLength = 10, 
-                                      dom = "Bfrtip", 
-                                      buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"))),
+                                      lengthMenu = c(5, 10, 20, 50, 100),
+                                      keys = TRUE,
+                                      dom = "Blfrtip", 
+                                      buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title="GeneModuleLink"))),
                        escape=FALSE)
   
   
@@ -269,11 +279,14 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     phenotype_table_community<-phenotype_table_all%>%dplyr::filter(Community==ComNr)
     DTPhC<-DT::datatable(phenotype_table_community%>%dplyr::select(-ModuleLink,-Community),
                      class = "display",
-                     extensions = "Buttons",
+                     filter = 'top',
+                     extensions = c('Buttons','KeyTable'),
                      rownames = FALSE,
-                     options = list(pageLength = 10, 
-                                    dom = "Bfrtip", 
-                                    buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"))),
+                     options = list(pageLength = 10,
+                                    lengthMenu = c(5, 10, 20, 50, 100),
+                                    keys = TRUE,
+                                    dom = "Blfrtip", 
+                                    buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title="GeneModuleLink"))),
                      escape=FALSE)
   }
   else{ DTPhC = "Phenotype Statistical Analysis is not provided" }
@@ -298,12 +311,15 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     if (MSIGDB == TRUE) {
       DTGSEAall <- DT::datatable(all_hgt_output %>% dplyr::mutate(Geneset = paste0("<a href=\"http://software.broadinstitute.org/gsea/msigdb/cards/", Geneset, "\">", gsub("_", " ", Geneset),"</a>")),
                         class = "display",
-                        extensions = "Buttons",
+                        filter = 'top',
+                        extensions = c('Buttons','KeyTable'),
                         rownames = FALSE,
                         options = list(pageLength = 10,
-                                       dom = "Bfrtip",
-                                       scrollX=TRUE,
-                                       buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr))),
+                                       lengthMenu = c(5, 10, 20, 50, 100),
+                                       keys = TRUE,
+                                       dom = "Blfrtip",
+                                       #scrollX=TRUE,
+                                       buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title=paste0("HGTresults_Com",ComNr))),
                                        autoWidth = TRUE,
                                        columnDefs = list(list(width = '400px', targets = c(4)))),
                         colnames = c("Community","Gene Set Name", "Description", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
@@ -312,12 +328,15 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     } else {
       DTGSEAall <- DT::datatable(all_hgt_output,
                         class = "display",
-                        extensions = "Buttons",
+                        filter = 'top',
+                        extensions = c('Buttons','KeyTable'),
                         rownames = FALSE,
                         options = list(pageLength = 10,
-                                       dom = "Bfrtip",
-                                       scrollX=TRUE,
-                                       buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr))),
+                                       lengthMenu = c(5, 10, 20, 50, 100),
+                                       keys = TRUE,
+                                       dom = "Blfrtip",
+                                       #scrollX=TRUE,
+                                       buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title=paste0("HGTresults_Com",ComNr))),
                                        autoWidth = TRUE,
                                        columnDefs = list(list(width = '400px', targets = c(4)))),
                         colnames = c("Community","Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
@@ -329,22 +348,28 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   }
   DTComDrivers<- DT::datatable(Comm_Drivers,
                           class = "display",
-                          extensions = "Buttons",
+                          filter = 'top',
+                          extensions = c('Buttons','KeyTable'),
                           rownames = FALSE,
-                          options = list(pageLength = 10, 
-                                         dom = "Bfrtip", 
-                                         buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"))),
+                          options = list(pageLength = 10,
+                                         lengthMenu = c(5, 10, 20, 50, 100),
+                                         keys = TRUE,
+                                         dom = "Blfrtip", 
+                                         buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title="GeneModuleLink"))),
                           escape=FALSE)
   
   # add phenotype table for each community page
   if (!is.null(PhenotypeTablesList)){
     DTPh<-DT::datatable(phenotype_table_all%>%dplyr::mutate(Community = paste0("<a href=./communities/Community_",Community,".html>","Community ",Community,"</a>"))%>%select(-ModuleLink),
                      class = "display",
-                     extensions = "Buttons",
+                     filter = 'top',
+                     extensions = c('Buttons','KeyTable'),
                      rownames = FALSE,
-                     options = list(pageLength = 10, 
-                                    dom = "Bfrtip", 
-                                    buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"))),
+                     options = list(pageLength = 10,
+                                    lengthMenu = c(5, 10, 20, 50, 100),
+                                    keys = TRUE,
+                                    dom = "Blfrtip", 
+                                    buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title="GeneModuleLink", 'colvis'))),
                      escape=FALSE)
   }
   else{ DTPh = "Phenotype Statistical Analysis is not provided" }
