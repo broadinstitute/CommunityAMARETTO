@@ -6,6 +6,7 @@
 #' @return an information table about the communities containing the included nodes and overlapping genes per community.
 #' 
 #' @import igraph
+#' @importFrom tibble add_row tibble
 #' 
 #' @examples 
 #' 
@@ -15,7 +16,7 @@
 cAMARETTO_InformationTable <- function(cAMARETTOnetworkM, cAMARETTOnetworkC) {
   Nodes_Cnetwork <- igraph::as_data_frame(cAMARETTOnetworkC$CommGraph, what="vertices")
   Edges_Cnetwork <- igraph::as_data_frame(cAMARETTOnetworkC$CommGraph, what="edges")
-  Comm_Info <- tibble(community_numb = as.numeric(), included_nodes = as.character(), overlapping_genes = as.character())
+  Comm_Info <- tibble::tibble(community_numb = as.numeric(), included_nodes = as.character(), overlapping_genes = as.character())
   i=1
   for (comm in cAMARETTOnetworkC$community_list) {
     Edges_Cnetwork_comm <- Edges_Cnetwork %>% 

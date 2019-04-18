@@ -10,9 +10,9 @@
 #' @param drivers Boolean that defines if only targets or drivers and targets are used to calculate the HGT.
 #'
 #' @return a list with AMARETTOinit and AMARETTOresults data objects from multiple runs
-#' @import gtools
-#' @import tidyverse
-#' 
+#' @importFrom gtools combinations
+#' @importFrom dplyr arrange group_by left_join mutate select summarise  rename  filter everything pull distinct case_when
+#' @importFrom stats p.adjust phyper
 #' @examples 
 #' 
 #' Cibersortgmt <- "ciberSort.gmt"
@@ -63,7 +63,7 @@ cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, 
   }
   
   # compare gmts pairwise between runs
-  all_run_combinations <- as.data.frame(combinations(n=length(all_gmt_files_list), r=2, v=names(all_gmt_files_list), repeats.allowed=F))
+  all_run_combinations <- as.data.frame(gtools::combinations(n=length(all_gmt_files_list), r=2, v=names(all_gmt_files_list), repeats.allowed=F))
   
   output_hgt_allcombinations <- apply(all_run_combinations, 1, function(x) {
     gmt_run1 <- all_gmt_files_list[x["V1"]]
@@ -79,10 +79,10 @@ cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, 
   })
   
   output_hgt_allcombinations <- do.call(rbind, output_hgt_allcombinations)
-  output_hgt_allcombinations$padj <- p.adjust(output_hgt_allcombinations$p_value, method="BH")
+  output_hgt_allcombinations$padj <- stats::p.adjust(output_hgt_allcombinations$p_value, method="BH")
   output_hgt_allcombinations <- output_hgt_allcombinations %>% 
-                                    mutate(p_value=case_when(Geneset1 == Geneset2~NA_real_, TRUE~p_value))
-  output_hgt_allcombinations <- output_hgt_allcombinations %>% mutate(Geneset1=ifelse(RunName1%in%names(given_gmt_filelist),paste0(RunName1,"|",gsub(" ","_",Geneset1)),Geneset1),Geneset2=ifelse(RunName2%in%names(given_gmt_filelist),paste0(RunName2,"|",gsub(" ","_",Geneset2)),Geneset2))
+    dplyr::mutate(p_value=dplyr::case_when(Geneset1 == Geneset2~NA_real_, TRUE~p_value))
+  output_hgt_allcombinations <- output_hgt_allcombinations %>% dplyr::mutate(Geneset1=ifelse(RunName1%in%names(given_gmt_filelist),paste0(RunName1,"|",gsub(" ","_",Geneset1)),Geneset1),Geneset2=ifelse(RunName2%in%names(given_gmt_filelist),paste0(RunName2,"|",gsub(" ","_",Geneset2)),Geneset2))
   
   return(list(runnames=runnames,gmtnames=names(given_gmt_filelist),hgt_modules=output_hgt_allcombinations, genelists = genelists, all_genes_modules_df=all_genes_modules_df, NrCores=NrCores))
 }
@@ -95,18 +95,18 @@ cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, 
 #' @param Drivers Add drivers to the gmt-file
 #'
 #' @return Creates a gmt file for a AMARETTO run
-#'
-#' @import tidyverse
+#' @importFrom utils write.table
+#' @importFrom dplyr select arrange
 #' @export
 GmtFromModules <- function(AMARETTOresults,gmt_file,run,Drivers=FALSE){
   ModuleMembership<-ExtractGenesInfo(AMARETTOresults,run)
   if (Drivers == FALSE){
     ModuleMembership<-dplyr::filter(ModuleMembership,Type=="Target")
   }
-  ModuleMembership<-ModuleMembership%>%select(GeneNames,ModuleNr)%>%arrange(GeneNames)
+  ModuleMembership<-ModuleMembership%>%dplyr::select(GeneNames,ModuleNr)%>%dplyr::arrange(GeneNames)
   ModuleMembers_list<-split(ModuleMembership$GeneNames,ModuleMembership$ModuleNr)
   names(ModuleMembers_list)<-paste0(run,"|Module_",names(ModuleMembers_list))
-  write.table(sapply(names(ModuleMembers_list),function(x) paste(x,paste(ModuleMembers_list[[x]],collapse="\t"),sep="\t")),gmt_file,quote = FALSE,row.names = TRUE,col.names = FALSE,sep='\t')
+  utils::write.table(sapply(names(ModuleMembers_list),function(x) paste(x,paste(ModuleMembers_list[[x]],collapse="\t"),sep="\t")),gmt_file,quote = FALSE,row.names = TRUE,col.names = FALSE,sep='\t')
 }
 
 #' @title readGMT
@@ -128,14 +128,17 @@ readGMT<-function(filename){
 #'
 #' @param gmtfile1 A gmtfilename that you want to compare
 #' @param gmtfile2 A second gmtfile to compare with.
-#' @param runname1
-#' @param runname2
-#' @param NrCores
+#' @param runname1 name of the first dataset.
+#' @param runname2 name of the second dataset.
+#' @param NrCores  Number of cores for parallel computing. 
 #' @param ref.numb.genes The reference number of genes.
+#' @importFrom doParallel registerDoParallel 
+#' @importFrom parallel makeCluster stopCluster
+#' @importFrom foreach foreach %dopar% %do%
+#' @importFrom stats p.adjust phyper
 #' 
 #' @return Creates resultfile with p-values and padj when comparing two gmt files with a hyper geometric test.
-#'
-#' @import doParallel
+#' 
 #' @export
 HyperGTestGeneEnrichment<-function(gmtfile1, gmtfile2, runname1, runname2, NrCores, ref.numb.genes=45956){
   
@@ -143,18 +146,18 @@ HyperGTestGeneEnrichment<-function(gmtfile1, gmtfile2, runname1, runname2, NrCor
   gmtfile2<-readGMT(gmtfile2)  # the hallmarks_and_co2...
   
   ###########################  Parallelizing :
-  cluster <- makeCluster(c(rep("localhost", NrCores)), type = "SOCK")
-  registerDoParallel(cluster,cores=NrCores)
+  cluster <- parallel::makeCluster(c(rep("localhost", NrCores)), type = "SOCK")
+  doParallel::registerDoParallel(cluster,cores=NrCores)
   
-  resultloop<-foreach(j=1:length(gmtfile2), .combine='rbind') %do% {
+  resultloop<-foreach::foreach(j=1:length(gmtfile2), .combine='rbind') %do% {
     #print(j)
-    foreach(i=1:length(gmtfile1),.combine='rbind') %dopar% {
+    foreach::foreach(i=1:length(gmtfile1),.combine='rbind') %dopar% {
       #print(i)
       l<-length(gmtfile1[[i]])
       k<-sum(gmtfile1[[i]] %in% gmtfile2[[j]])
       m<-ref.numb.genes
       n<-length(gmtfile2[[j]])
-      p1<-phyper(k-1,l,m-l,n,lower.tail=FALSE)
+      p1<-stats::phyper(k-1,l,m-l,n,lower.tail=FALSE)
       
       overlapping.genes<-gmtfile1[[i]][gmtfile1[[i]] %in% gmtfile2[[j]]]
       overlapping.genes<-paste(overlapping.genes,collapse = ', ')
@@ -162,11 +165,11 @@ HyperGTestGeneEnrichment<-function(gmtfile1, gmtfile2, runname1, runname2, NrCor
     }
   }
   
-  stopCluster(cluster)
+  parallel::stopCluster(cluster)
   resultloop<-as.data.frame(resultloop,stringsAsFactors=FALSE)
   resultloop$p_value<-as.numeric(resultloop$p_value)
   resultloop$n_Overlapping<-as.numeric((resultloop$n_Overlapping))
-  resultloop[,"padj"]<-p.adjust(resultloop[,"p_value"],method='BH')
+  resultloop[,"padj"]<-stats::p.adjust(resultloop[,"p_value"],method='BH')
   return(resultloop)
 }
 
@@ -178,7 +181,7 @@ HyperGTestGeneEnrichment<-function(gmtfile1, gmtfile2, runname1, runname2, NrCor
 #' @return returns a dataframe with columns of runname, module-number, genename, gene-types, and weights of the driver genes.
 #' @export
 #'
-#' @examples 
+#' @examples ExtractGenesInfo(AMARETTOresults,"TCGA-LIHC")
 ExtractGenesInfo<-function(AMARETTOresults,run){
   ModuleMembership<-NULL
   for (ModuleNr in 1:AMARETTOresults$NrModules){
