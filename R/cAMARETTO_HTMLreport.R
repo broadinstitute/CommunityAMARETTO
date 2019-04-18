@@ -131,7 +131,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     }
   }))%>%dplyr::mutate(TypeColored=paste0('<font color=',Color,'>',Type,'</font>'))
   #[stringr::str_order(Community, numeric = TRUE),]
-  GeneComLink<-com_gene_df%>%rename(GeneName = GeneNames)%>%
+  GeneComLink<-com_gene_df%>%dplyr::rename(GeneName = GeneNames)%>%
     dplyr::mutate(GeneName = paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", GeneName, "\">", GeneName, "</a>"))%>%
     dplyr::select(c(GeneName,TypeColored,Community))%>%dplyr::rename(Type=TypeColored)%>%
     dplyr::mutate(Community=paste0("<a href=\"./communities/",paste0("Community_",Community),".html\">",paste0("Community ",Community), "</a>"))%>%dplyr::arrange(GeneName)
@@ -140,7 +140,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   #adding Community to driver genes table 
   Comm_Drivers<-com_gene_df%>%dplyr::filter(Type=="Driver")%>%
     dplyr::mutate(GeneNames=paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", GeneNames, "\">", GeneNames, "</a>"))%>%
-    group_by(Community,Run_Names)%>%dplyr::summarise(Drivers=paste(unique(sort(GeneNames)),collapse = ", "))
+    dplyr::group_by(Community,Run_Names)%>%dplyr::summarise(Drivers=paste(unique(sort(GeneNames)),collapse = ", "))
   Comm_Drivers<-data.frame(Comm_Drivers)%>%dplyr::mutate(Community=paste0("<a href=\"./communities/",paste0("Community_",Community),".html\">",paste0("Community ",Community), "</a>"))
   Comm_Drivers<-Comm_Drivers[stringr::str_order(Comm_Drivers$Community, numeric = TRUE),]
   
@@ -166,10 +166,10 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   for (i in 1:nrow(comm_info)){
     community_info <- comm_info[i,]
     ComNr <- community_info$community_numb
-    target_genes<-com_gene_df%>%dplyr::filter(Community==ComNr)%>%dplyr::filter(Type=="Target")%>%dplyr::arrange(GeneNames)%>%pull(GeneNames)
-    driver_genes<-com_gene_df%>%dplyr::filter(Community==ComNr)%>%dplyr::filter(Type=="Driver")%>%dplyr::arrange(GeneNames)%>%pull(GeneNames)
+    target_genes<-com_gene_df%>%dplyr::filter(Community==ComNr)%>%dplyr::filter(Type=="Target")%>%dplyr::arrange(GeneNames)%>%dplyr::pull(GeneNames)
+    driver_genes<-com_gene_df%>%dplyr::filter(Community==ComNr)%>%dplyr::filter(Type=="Driver")%>%dplyr::arrange(GeneNames)%>%dplyr::pull(GeneNames)
     
-    driver_genes_weights<-com_gene_df%>%dplyr::filter(Community==ComNr)%>%dplyr::filter(Type=="Driver")%>%dplyr::arrange(GeneNames)%>%pull(Weights)
+    driver_genes_weights<-com_gene_df%>%dplyr::filter(Community==ComNr)%>%dplyr::filter(Type=="Driver")%>%dplyr::arrange(GeneNames)%>%dplyr::pull(Weights)
     
     ModuleList <- unlist(strsplit(community_info$included_nodes,", "))
     if(is.null(HTMLsAMARETTOlist)==FALSE){
@@ -221,8 +221,8 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                            autoWidth = TRUE,
                                            columnDefs = list(list(width = '400px', targets = c(3)))),
                             colnames = c("Gene Set Name", "Description", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
-                            formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
-                            formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
+                            DT::formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
+                            DT::formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
         } else {
           DTGSEA <- DT::datatable(outputHGT,
                             class = "display",
@@ -235,8 +235,8 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                            autoWidth = TRUE,
                                            columnDefs = list(list(width = '400px', targets = c(3)))),
                             colnames = c("Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
-                            formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
-                            formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
+                            DT::formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
+                            DT::formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
         }
       } else{
         DTGSEA <- "No significant overlap was identified in the geneset enrichment analysis."
@@ -309,8 +309,8 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                        autoWidth = TRUE,
                                        columnDefs = list(list(width = '400px', targets = c(4)))),
                         colnames = c("Community","Gene Set Name", "Description", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
-                        formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
-                        formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
+                        DT::formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
+                        DT::formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
     } else {
       DTGSEAall <- DT::datatable(all_hgt_output,
                         class = "display",
@@ -323,8 +323,8 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                        autoWidth = TRUE,
                                        columnDefs = list(list(width = '400px', targets = c(4)))),
                         colnames = c("Community","Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
-      formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
-      formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
+      DT::formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
+      DT::formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")
     }
   } else{
     DTGSEAall <- "Genesets were not analysed as they were not provided."
