@@ -7,7 +7,9 @@
 #'
 #' @return a list with the AMARETTOinit and AMARETTOresults
 #' 
-#' @import rlist
+#' @importFrom  rlist list.append
+#' @importFrom  stringr str_count
+#' @importFrom  utils zip unzip
 #' @examples
 #' AMARETTOdirectories <- list(LIHC="AMARETTOresults_20181102_142532.zip",BLCA="AMARETTOresults_20181102_142602.zip",GBM="AMARETTOresults_20181102_142636.zip")
 #' AMARETTO_all <- cAMARETTO_Read(AMARETTOdirectories)
@@ -23,7 +25,7 @@ cAMARETTO_Read<-function(AMARETTOdirectories,unzipParentDirectory=getwd()){
   if(length(directories_to_unzip)>0){
     for(i in 1:length(directories_to_unzip)){
       if(file.exists(directories_to_unzip[[i]])){
-        if (str_count(directories_to_unzip[[i]],"/")>=str_count(directories_to_unzip[[i]],"\\\\")){   #linux or windows addresses
+        if (stringr::str_count(directories_to_unzip[[i]],"/")>=str_count(directories_to_unzip[[i]],"\\\\")){   #linux or windows addresses
           extdir=paste(sub("/$","",unzipParentDirectory),names(directories_to_unzip)[i],sep="/")
         }
         else{
@@ -45,7 +47,7 @@ cAMARETTO_Read<-function(AMARETTOdirectories,unzipParentDirectory=getwd()){
     tmp = load(paste0(AMARETTOdirectory,"/amarettoInit.RData"))
     assign(paste0("AMARETTOinit_",names(AMARETTOdirectories)[i]),get(tmp))
     rm(tmp)
-    AMARETTOinit_all<-list.append(AMARETTOinit_all,eval(parse(text=paste0("AMARETTOinit_",names(AMARETTOdirectories)[i])),envir = environment()))
+    AMARETTOinit_all<-rlist::list.append(AMARETTOinit_all,eval(parse(text=paste0("AMARETTOinit_",names(AMARETTOdirectories)[i])),envir = environment()))
     tmp = load(paste0(AMARETTOdirectory,"/amarettoResults.RData"))
     assign(paste0("AMARETTOresults_",names(AMARETTOdirectories)[i]),get(tmp))
     rm(tmp)
@@ -64,6 +66,7 @@ cAMARETTO_Read<-function(AMARETTOdirectories,unzipParentDirectory=getwd()){
 #' @param HTMLsAMARETTOZips a list of directories for each AMARETTO HTML.zip report, the output of AMARETTO.
 #'
 #' @return a named vector with directories of unzipped HTML reprorts.
+#' @importFrom  utils zip unzip
 #' @export
 #'
 #' @examples cAMARETTO_HTML_Read(list(TCGA_LIHC="TCGA_LIHC_report.zip",TCGA_GBM="TCGA_GBM_report.zip"))
@@ -73,7 +76,7 @@ cAMARETTO_HTML_Read<-function(HTMLsAMARETTOZips,unzipParentDirectory=getwd()){
     for (i in 1:length(HTMLsAMARETTOZips)){
       if(file.exists(HTMLsAMARETTOZips[[i]])){
         extdir=sub("/$","",unzipParentDirectory)
-        unzip(HTMLsAMARETTOZips[[i]],exdir=extdir)
+        utils::unzip(HTMLsAMARETTOZips[[i]],exdir=extdir)
         print(paste(HTMLsAMARETTOZips[[i]],"is unzipped to",extdir))
         HTMLsAMARETTOlist[i]<-sub(".zip","",paste(extdir,basename(HTMLsAMARETTOZips[[i]]),sep="/"))
       }
@@ -90,12 +93,12 @@ cAMARETTO_HTML_Read<-function(HTMLsAMARETTOZips,unzipParentDirectory=getwd()){
 
 #' @title cAMARETTO_ExportResults
 #'
-#' @param cAMARETTOresults
-#' @param cAMARETTOnetworkM
-#' @param cAMARETTOnetworkC
-#' @param output_address
-#'
-#' @return 
+#' @param cAMARETTOresults The output of the Results function.
+#' @param cAMARETTOnetworkM The output of the Module Network function.
+#' @param cAMARETTOnetworkC The output of the Identify Communities function.
+#' @param output_address The address where the zipfile will be generated in. 
+#' @importFrom  utils zip unzip
+#' @return a zipfile containing cAmaretto results
 #' 
 #' @export
 cAMARETTO_ExportResults<-function(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC, output_address="./"){
@@ -113,6 +116,6 @@ cAMARETTO_ExportResults<-function(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOn
   save(cAMARETTOnetworkM, file=file.path(output_address,output_dir,"/cAMARETTOnetworkM.RData"))
   save(cAMARETTOnetworkC, file=file.path(output_address,output_dir,"/cAMARETTOnetworkC.RData"))
 
-  zip(zipfile = file.path(output_address,output_dir),files=file.path(output_address,output_dir))
+  utils::zip(zipfile = file.path(output_address,output_dir),files=file.path(output_address,output_dir))
   unlink(output_dir,recursive = TRUE)
 }
