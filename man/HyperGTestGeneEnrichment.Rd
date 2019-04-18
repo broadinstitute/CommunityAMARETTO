@@ -12,6 +12,12 @@ HyperGTestGeneEnrichment(gmtfile1, gmtfile2, runname1, runname2, NrCores,
 
 \item{gmtfile2}{A second gmtfile to compare with.}
 
+\item{runname1}{name of the first dataset.}
+
+\item{runname2}{name of the second dataset.}
+
+\item{NrCores}{Number of cores for parallel computing.}
+
 \item{ref.numb.genes}{The reference number of genes.}
 }
 \value{

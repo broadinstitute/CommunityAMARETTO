@@ -17,3 +17,6 @@ returns a dataframe with columns of runname, module-number, genename, gene-types
 \description{
 Title  ExtractGenesInfo
 }
+\examples{
+ExtractGenesInfo(AMARETTOresults,"TCGA-LIHC")
+}

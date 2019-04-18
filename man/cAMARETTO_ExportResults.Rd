@@ -8,7 +8,16 @@ cAMARETTO_ExportResults(cAMARETTOresults, cAMARETTOnetworkM,
   cAMARETTOnetworkC, output_address = "./")
 }
 \arguments{
-\item{output_address}{}
+\item{cAMARETTOresults}{The output of the Results function.}
+
+\item{cAMARETTOnetworkM}{The output of the Module Network function.}
+
+\item{cAMARETTOnetworkC}{The output of the Identify Communities function.}
+
+\item{output_address}{The address where the zipfile will be generated in.}
+}
+\value{
+a zipfile containing cAmaretto results
 }
 \description{
 cAMARETTO_ExportResults

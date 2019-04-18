@@ -11,7 +11,13 @@ GeneSetDescription(filename, MSIGDB)
 
 \item{MSIGDB}{TRUE or FALSE}
 }
+\value{
+provides descriptions of MSIGDB Genesets
+}
 \description{
 GeneSetDescription
+}
+\examples{
+GeneSetDescription(filename,MSIGDB)
 }
 \keyword{internal}

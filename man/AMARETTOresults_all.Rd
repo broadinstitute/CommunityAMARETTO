@@ -4,7 +4,7 @@
 \name{AMARETTOresults_all}
 \alias{AMARETTOresults_all}
 \title{AMARETTOresults_all}
-\format{An object of class \code{list} of length 2.}
+\format{List}
 \source{
 \url{CommunityAMARETTO}
 }
