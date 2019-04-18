@@ -181,7 +181,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                         filter = 'top',
                         extensions = c('Buttons','KeyTable'),
                         rownames = FALSE,
-                        options = list(pageLength = 10, lengthMenu = c(5, 10, 20, 50, 100), keys = TRUE, dom = "Blfrtip", buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title=paste0("ModulesCom",ComNr)))),
+                        options = list(pageLength = 10, lengthMenu = c(5, 10, 20, 50, 100), keys = TRUE, dom = "Blfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("ModulesCom",ComNr)),'colvis')),
                         escape = FALSE)
     } else {
       ModuleList <- as.data.frame(ModuleList) %>% tidyr::separate(ModuleList,c("Run","ModuleName"),"\\|",extra = "merge") %>% dplyr::mutate(ModuleName = sub("_"," ",ModuleName))
@@ -190,7 +190,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                         filter = 'top',
                         extensions = c('Buttons','KeyTable'),
                         rownames = FALSE,
-                        options = list(pageLength = 10, lengthMenu = c(5, 10, 20, 50, 100), keys = TRUE, dom = "Blfrtip", buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title=paste0("ModulesCom",ComNr)))),
+                        options = list(pageLength = 10, lengthMenu = c(5, 10, 20, 50, 100), keys = TRUE, dom = "Blfrtip", buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("ModulesCom",ComNr)),'colvis')),
                         escape = FALSE)
     }
     
@@ -219,7 +219,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                            keys = TRUE,
                                            dom = "Blfrtip",
                                            scrollX=TRUE,
-                                           buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title=paste0("HGTresults_Com",ComNr))),
+                                           buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)),'colvis'),
                                            autoWidth = TRUE,
                                            columnDefs = list(list(width = '400px', targets = c(3)))),
                             colnames = c("Gene Set Name", "Description", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
@@ -236,7 +236,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                            keys = TRUE,
                                            scrollX=TRUE,
                                            dom = "Blfrtip",
-                                           buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title=paste0("HGTresults_Com",ComNr))),
+                                           buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)),'colvis'),
                                            autoWidth = TRUE,
                                            columnDefs = list(list(width = '400px', targets = c(3)))),
                             colnames = c("Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
@@ -270,7 +270,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                       lengthMenu = c(5, 10, 20, 50, 100),
                                       keys = TRUE,
                                       dom = "Blfrtip", 
-                                      buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title="GeneModuleLink"))),
+                                      buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"),'colvis')),
                        escape=FALSE)
   
   
@@ -286,7 +286,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                     lengthMenu = c(5, 10, 20, 50, 100),
                                     keys = TRUE,
                                     dom = "Blfrtip", 
-                                    buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title="GeneModuleLink"))),
+                                    buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"),'colvis')),
                      escape=FALSE)
   }
   else{ DTPhC = "Phenotype Statistical Analysis is not provided" }
@@ -319,7 +319,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                        keys = TRUE,
                                        dom = "Blfrtip",
                                        #scrollX=TRUE,
-                                       buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title=paste0("HGTresults_Com",ComNr))),
+                                       buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)),'colvis'),
                                        autoWidth = TRUE,
                                        columnDefs = list(list(width = '400px', targets = c(4)))),
                         colnames = c("Community","Gene Set Name", "Description", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
@@ -336,7 +336,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                        keys = TRUE,
                                        dom = "Blfrtip",
                                        #scrollX=TRUE,
-                                       buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title=paste0("HGTresults_Com",ComNr))),
+                                       buttons = list(list(extend = 'csv',text = "Save CSV", title=paste0("HGTresults_Com",ComNr)),'colvis'),
                                        autoWidth = TRUE,
                                        columnDefs = list(list(width = '400px', targets = c(4)))),
                         colnames = c("Community","Gene Set Name", "# Genes in Overlap",  "Overlapping Genes", "Percent of GeneSet overlapping", "p-value", "FDR q-value"), escape = FALSE) %>% 
@@ -355,7 +355,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                          lengthMenu = c(5, 10, 20, 50, 100),
                                          keys = TRUE,
                                          dom = "Blfrtip", 
-                                         buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title="GeneModuleLink"))),
+                                         buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"),'colvis')),
                           escape=FALSE)
   
   # add phenotype table for each community page
@@ -369,7 +369,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                                     lengthMenu = c(5, 10, 20, 50, 100),
                                     keys = TRUE,
                                     dom = "Blfrtip", 
-                                    buttons = list(list(extend = 'csv',text = "Save CSV",'colvis', title="GeneModuleLink", 'colvis'))),
+                                    buttons = list(list(extend = 'csv',text = "Save CSV", title="GeneModuleLink"),'colvis')),
                      escape=FALSE)
   }
   else{ DTPh = "Phenotype Statistical Analysis is not provided" }
