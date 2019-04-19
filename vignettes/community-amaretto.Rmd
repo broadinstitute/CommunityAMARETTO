@@ -62,10 +62,13 @@ Installing and loading AMARETTO
 Installing the latest versions of AMARETTO. This may take a few minutes...
 
 ```{r}
-devtools::install_github("gevaertlab/AMARETTO", ref="for35_develop", dependencies=TRUE)
+library(devtools)
+install_github("broadinstitute/CommunityAMARETTO",ref='develop',force = 'TRUE')
+library("CommunityAMARETTO")
 ```
 
 ```{r}
+devtools::install_github("gevaertlab/AMARETTO",ref="for35_develop",quiet = FALSE)
 library("AMARETTO")
 ```
 
@@ -76,55 +79,77 @@ Loading multi-omics data from TCGA LIHC cohort
 
 Loading Gene Expression (MA) data from TCGA LIHC patient cohort (Required)
 ```{r}
-MA_matrix_LIHC <- readRDS(url("https://www.broadinstitute.org/~npochet/NotebookExample/ExampleData/MA_matrix_LIHC.rds"))
+data("ProcessedDataTCGA")
+data("ProcessedDataCCLE")
+data("Driver_Genes")
 ```
 
 Loading Copy Number Variation (CNV) data from TCGA LIHC cohort (Optional)
 ```{r}
-CNV_matrix_LIHC <- readRDS(url("https://www.broadinstitute.org/~npochet/NotebookExample/ExampleData/CNV_matrix_LIHC.rds"))
+AMARETTOinit_TCGA <- AMARETTO::AMARETTO_Initialize(ProcessedData=ProcessedDataTCGA,
+                                            Driver_list = Driver_Genes$TFs_TFutils_union,
+                                            method = "union",
+                                            NrCores = 1,
+                                            NrModules = 10,
+                                            VarPercentage = 10)
+
+
+AMARETTOResults_TCGA<-AMARETTO::AMARETTO_Run(AMARETTOinit_TCGA)
+```
+```{r}
+samples_TCGA<-readr::read_delim('./sample_info/Samples_LIHC_phenotypes.txt','\t')
+phenotype_tests_TCGA<-readr::read_delim("./sample_info/Samples_LIHC_statistics.txt",delim="\t",col_names=TRUE)
 ```
 
-Loading DNA Methylation (MET) data from TCGA LIHC cohort (Optional)
-
 ```{r}
-MET_matrix_LIHC <- readRDS(url("https://www.broadinstitute.org/~npochet/NotebookExample/ExampleData/MET_matrix_LIHC.rds"))
-```
-
-Defining List(s) of Candidate Driver Genes (Required)
-In case CNV and/or MET data are submitted in addition to MA data, you can choose to either (1) use those as candidate drivers, or (2) take the union of these with predefined lists of candidate drivers, or (3) take the intersection with predefined lists of candidate drivers.
-
-Alternatively, for example, if only MA data is available, you should select or upload a predefined list of candidate driver genes (required).
-
-```{r}
-data("Driver_Genes")
-TF_candidate_drivers <- Driver_Genes$TFs_TFutils_union
-
-combination_method <- "union"
-```
-
-
-```{r}
-NrModules = 100
-VarPercentage = 50
+LIHC_phenotype_tests_all<-AMARETTO::AMARETTO_unite_results(AMARETTO::AMARETTO_statistical_test(AMARETTOinit_TCGA,
+                                                                                               AMARETTOResults_TCGA,
+                                                                                               samples_TCGA,
+                                                                                               phenotype_tests_TCGA))
 ```
 
 
 ```{r}
-genesets_database_reference <- "H_C2_genesets.gmt"
-download.file(url="https://www.broadinstitute.org/~npochet/NotebookExample/ExampleData/H_C2_genesets.gmt", destfile=genesets_database_reference)
+html_report_TCGA_address<-'html_report_TCGA_address'
+hyper_geo_reference_address<-'../inst/extdata/h.all.v6.2.symbols.gmt'
+AMARETTO_HTMLreport(AMARETTOinit_TCGA,
+                    AMARETTOResults_TCGA,
+                    ProcessedData = ProcessedDataTCGA,
+                    hyper_geo_test_bool = TRUE,
+                    hyper_geo_reference = hyper_geo_reference_address,
+                    output_address = html_report_TCGA_address,
+                    MSIGDB = TRUE,
+                    SAMPLE_annotation = NULL)
+```
+
+
+```{r}
+AMARETTOinit_CCLE <- AMARETTO::AMARETTO_Initialize(ProcessedData = ProcessedDataCCLE,
+                                            Driver_list = Driver_Genes$TFs_TFutils_union,
+                                            method = "union",
+                                            NrCores = 1,
+                                            NrModules = 10,
+                                            VarPercentage = 10)
+AMARETTOResults_CCLE<-AMARETTO::AMARETTO_Run(AMARETTOinit_CCLE)
+```
+
+```{r}
+
+
 
 ```
 
 ```{r}
-output_directory_TCGA = "./AMARETTO_report_TCGA/"
-dir.create(output_directory_TCGA) 
-```
-
-
-
-```{r}
-
-
+html_report_CCLE_address<-'html_report_CCLE_address'
+hyper_geo_reference_address<-'../inst/templates/h.all.v6.2.symbols.gmt'
+AMARETTO_HTMLreport(AMARETTOinit_CCLE,
+                    AMARETTOResults_CCLE,
+                    ProcessedData = ProcessedDataCCLE,
+                    hyper_geo_test_bool = TRUE,
+                    hyper_geo_reference = hyper_geo_reference_address,
+                    output_address = html_report_CCLE_address,
+                    MSIGDB = TRUE,
+                    SAMPLE_annotation = NULL)
 
 ```
 
@@ -136,106 +161,30 @@ dir.create(output_directory_TCGA)
 Running AMARETTO for inferring regulatory networks from multi-omics data
 By running the following code cell, you can now run the AMARETTO algorithm.
 
-```{r}
-AMARETTOinit <- AMARETTO_Initialize(ProcessedData = ProcessedData_LIHC,
-                                    Driver_list = TF_candidate_drivers,
-                                    method = combination_method,
-                                    NrModules = NrModules,
-                                    VarPercentage = VarPercentage,
-                                    NrCores = NrCores)
-
-AMARETTOresults <- AMARETTO_Run(AMARETTOinit)
-```
-
-```{r}
-AMARETTO_HTMLreport(AMARETTOinit = AMARETTOinit,
-                    AMARETTOresults = AMARETTOresults,
-                    ProcessedData = ProcessedData_LIHC,
-                    hyper_geo_test_bool = TRUE,
-                    hyper_geo_reference = genesets_database_reference,
-                    output_address = output_directory_TCGA,
-                    SAMPLE_annotation = samples_phenotypes_annotation,
-                    ID = 'Sample')
-
-```
 
 
 ## Step 4. Running AMARETTO on second example study: inferring regulatory networks from RNA-Seq data from CCLE liver cell lines
 The AMARETTO algorithm that infers regulatory networks within one cohort or biological system can be run in multiple ways: (1) via multi-omics data fusion in case genetic, epigenetic and functional genomics data are available (see example in previous Step 3 for multi-omics data from TCGA), or (2) if only functional genomics data are available (see example in this Step 4 for transcriptomic data from CCLE). See Step 3 for more detailed information.
 
 Loading Gene Expression (MA) data from CCLE liver cell lines (Required)
-
-```{r}
-MA_matrix_CCLE <- readRDS(url("https://www.broadinstitute.org/~npochet/NotebookExample/ExampleData/MA_matrix_CCLE.rds"))
-ProcessedData_CCLE = list(MA_matrix=MA_matrix_CCLE, CNV_matrix=NULL, MET_matrix=NULL)
-
-```
 Defining List(s) of Candidate Driver Genes (Required)
 In this example, we precompiled a list of candidate driver genes that takes the union of TCGA genetic and epigenetic drivers with TFutils transcription factors (same list of candidate drivers as in Step 3)
-```{r}
-candidate_drivers_CCLE <- readRDS(url("https://www.broadinstitute.org/~npochet/NotebookExample/ExampleData/candidate_drivers_CCLE.rds"))
-
-```
-
 
 ##Setting parameters for running AMARETTO (Required)
 Core parameters that can be set by the user for running AMARETTO. See Step 3 for more detailed information.
 
-```{r}
-NrModules = 100
-VarPercentage = 50
-
-```
 
 Setting parameters for generating HTML results reports (Optional)
 Additional parameters that can be set by the user for running AMARETTO. See Step 3 for more detailed information.
 
-```{r}
-enesets_database_reference <- "H_C2_genesets.gmt"
-download.file(url="https://www.broadinstitute.org/~npochet/NotebookExample/ExampleData/H_C2_genesets.gmt", destfile=genesets_database_reference)
-
-output_directory_CCLE = "./AMARETTO_report_CCLE/"
-dir.create(output_directory_CCLE)
-```
-Setting parameters for computing on servers (Optional)
+tting parameters for computing on servers (Optional)
 Selecting the number of cores for parallel computing.
 
-```{r}
-NrCores = 4
-```
 
 ##Step 4.b. Running AMARETTO on transcriptomics data
 
 Running AMARETTO for inferring regulatory networks from transcriptomics data
 By running the following code cell, you can now run the AMARETTO algorithm.
-
-```{r}
- AMARETTOinit <- AMARETTO_Initialize(ProcessedData = ProcessedData_CCLE,
-                                    Driver_list = candidate_drivers_CCLE,
-                                    NrModules = NrModules,
-                                    VarPercentage = VarPercentage,
-                                    NrCores = NrCores)
-
-AMARETTOresults <- AMARETTO_Run(AMARETTOinit)
-
-```
-
-Generating an HTML report for AMARETTO results
-By running the following code cell, the AMARETTO report will be generated and can be accessed in the left panel.
-
-```{r}
-AMARETTO_HTMLreport(AMARETTOinit = AMARETTOinit,
-                    AMARETTOresults = AMARETTOresults,
-                    ProcessedData = ProcessedData_CCLE,
-                    hyper_geo_test_bool = TRUE,
-                    hyper_geo_reference = genesets_database_reference,
-                    output_address = output_directory_CCLE,
-                    SAMPLE_annotation = NULL,
-                    ID = 'Sample')
-
-
-```
-
 
 ##Step 5. Running Community-AMARETTO to combine both example studies: identifying regulatory subnetworks or communities shared and distinct across TCGA and CCLE cohorts
 
