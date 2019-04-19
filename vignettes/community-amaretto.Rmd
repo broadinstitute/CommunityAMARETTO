@@ -102,12 +102,16 @@ phenotype_tests_TCGA<-readr::read_delim("./sample_info/Samples_LIHC_statistics.t
 ```
 
 ```{r}
-LIHC_phenotype_tests_all<-AMARETTO::AMARETTO_unite_results(AMARETTO::AMARETTO_statistical_test(AMARETTOinit_TCGA,
+TCGA_phenotype_tests_all<-AMARETTO::AMARETTO_unite_results(AMARETTO::AMARETTO_statistical_test(AMARETTOinit_TCGA,
                                                                                                AMARETTOResults_TCGA,
                                                                                                samples_TCGA,
                                                                                                phenotype_tests_TCGA))
 ```
 
+```{r}
+samples_LIHC$SurvivalTime<-as.factor(cut(samples_LIHC$SurvivalTime, 7, include.lowest=TRUE, dig.lab = 5))
+samples_LIHC$SurvivalCensoring<-as.factor(samples_LIHC$SurvivalCensoring)
+```
 
 ```{r}
 html_report_TCGA_address<-'html_report_TCGA_address'
