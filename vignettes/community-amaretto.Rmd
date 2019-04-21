@@ -97,8 +97,8 @@ AMARETTOinit_TCGA <- AMARETTO::AMARETTO_Initialize(ProcessedData=ProcessedDataTC
 AMARETTOResults_TCGA<-AMARETTO::AMARETTO_Run(AMARETTOinit_TCGA)
 ```
 ```{r}
-samples_TCGA<-readr::read_delim('./sample_info/Samples_LIHC_phenotypes.txt','\t')
-phenotype_tests_TCGA<-readr::read_delim("./sample_info/Samples_LIHC_statistics.txt",delim="\t",col_names=TRUE)
+samples_TCGA<-readr::read_delim('../inst/extdata/Samples_LIHC_phenotypes.txt','\t')
+phenotype_tests_TCGA<-readr::read_delim("../inst/extdata/Samples_LIHC_statistics.txt",delim="\t",col_names=TRUE)
 ```
 
 ```{r}
@@ -137,11 +137,6 @@ AMARETTOinit_CCLE <- AMARETTO::AMARETTO_Initialize(ProcessedData = ProcessedData
 AMARETTOResults_CCLE<-AMARETTO::AMARETTO_Run(AMARETTOinit_CCLE)
 ```
 
-```{r}
-
-
-
-```
 
 ```{r}
 html_report_CCLE_address<-'html_report_CCLE_address'
@@ -154,6 +149,20 @@ AMARETTO_HTMLreport(AMARETTOinit_CCLE,
                     output_address = html_report_CCLE_address,
                     MSIGDB = TRUE,
                     SAMPLE_annotation = NULL)
+
+```
+
+
+```{r}
+cAMARETTOresults<-cAMARETTO_Results(AMARETTOinit_all_75,AMARETTOresults_all_75,gmt_filelist=gmt_filelist,NrCores = 4,output_dir = "./",drivers=TRUE)
+cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,0.10,5)
+cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
+
+HTMLsAMARETTOlist <- c("TCGA"='html_report_TCGA_address',"CCLE"='html_report_CCLE_address')
+
+
+
+cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist=HTMLsAMARETTOlist,CopyAMARETTOReport = FALSE, hyper_geo_test_bool = FALSE, hyper_geo_reference = './H_C2_genesets.gmt', MSIGDB = TRUE,output_address= "./",PhenotypeTablesList=PhenotypeTables)
 
 ```
 
@@ -203,7 +212,7 @@ AMARETTOresults_TCGA <- readRDS(file="TCGA_AMARETTOresults.rds")
 AMARETTOinit_CCLE <- readRDS(file="CCLE_AMARETTOinit.rds")
 AMARETTOresults_CCLE <- readRDS(file="CCLE_AMARETTOresults.rds")
 
-HTMLsAMARETTOlist <- c("TCGA"=output_directory_TCGA,"CCLE"=output_directory_CCLE)
+
 ```
 
 Loading additional networks as a set of signatures in .GMT format (Optional)
