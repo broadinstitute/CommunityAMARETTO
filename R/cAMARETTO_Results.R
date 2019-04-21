@@ -35,14 +35,14 @@ cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, 
   
   # for each file a gmt for the modules
   create_gmt_filelist<-c()
-  all_genes_modules_df<-NULL
+
   for (run in runnames){
     gmt_file <- file.path(output_dir,"gmt_files",paste0(run, "_modules.gmt"))
     GmtFromModules(AMARETTOresults_all[[run]], gmt_file, run, Drivers = drivers)
     create_gmt_filelist <- c(create_gmt_filelist,gmt_file)
-    all_genes_modules_df<-rbind(all_genes_modules_df,ExtractGenesInfo(AMARETTOresults_all[[run]],run))
   }
   names(create_gmt_filelist)<-runnames
+
   # add extra gmt files to compare with
   given_gmt_filelist <- c()
   if (!is.null(gmt_filelist)){
@@ -83,6 +83,9 @@ cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, 
   output_hgt_allcombinations <- output_hgt_allcombinations %>% 
     dplyr::mutate(p_value=dplyr::case_when(Geneset1 == Geneset2~NA_real_, TRUE~p_value))
   output_hgt_allcombinations <- output_hgt_allcombinations %>% dplyr::mutate(Geneset1=ifelse(RunName1%in%names(given_gmt_filelist),paste0(RunName1,"|",gsub(" ","_",Geneset1)),Geneset1),Geneset2=ifelse(RunName2%in%names(given_gmt_filelist),paste0(RunName2,"|",gsub(" ","_",Geneset2)),Geneset2))
+  
+  # Extract relationship between genes and modules for all AMARETTo files and the given gmt files.
+  all_genes_modules_df<-Extract_Genes_Modules_All(AMARETTOresults_all,gmt_filelist)
   
   return(list(runnames=runnames,gmtnames=names(given_gmt_filelist),hgt_modules=output_hgt_allcombinations, genelists = genelists, all_genes_modules_df=all_genes_modules_df, NrCores=NrCores))
 }
@@ -186,7 +189,7 @@ ExtractGenesInfo<-function(AMARETTOresults,run){
   ModuleMembership<-NULL
   for (ModuleNr in 1:AMARETTOresults$NrModules){
     Targets<- names(AMARETTOresults$ModuleMembership[which(AMARETTOresults$ModuleMembership==ModuleNr),1])
-    Target_df<-data.frame(Run_Names=run,ModuleNr=ModuleNr,GeneNames=Targets,Type="Target",Weights=NA,stringsAsFactors = FALSE) 
+    Target_df<-data.frame(Run_Names=run,ModuleNr=ModuleNr,GeneNames=Targets,Type="Target",Weights=0,stringsAsFactors = FALSE) 
     Drivers <- names(which(AMARETTOresults$RegulatoryPrograms[ModuleNr,] != 0))
     Weight_Driver<-AMARETTOresults$RegulatoryPrograms[ModuleNr,Drivers]
     Drivers_df<-data.frame(Run_Names=run,ModuleNr=ModuleNr,GeneNames=Drivers,Type="Driver",Weights=Weight_Driver,stringsAsFactors = FALSE) 
@@ -195,3 +198,25 @@ ExtractGenesInfo<-function(AMARETTOresults,run){
   return(ModuleMembership)
 }
 
+#' Title Extract_Genes_Modules_All
+#'
+#' @param AMARETTOresults_all 
+#' @param gmt_filelist 
+#'
+#' @importFrom utils stack
+#' @importFrom dplyr mutate rename select
+#' @return a dataframe for all AMARETTO files and given gmt file with the following structure :  runname, module-number, genename, gene-types, and weights of the driver genes.
+#' @export
+#' @examples Extract_Genes_Modules_All(AMARETTOresults_all,gmt_filelist)
+Extract_Genes_Modules_All<-function(AMARETTOresults_all,gmt_filelist){
+  all_genes_modules_df<-NULL
+  for (run in names(AMARETTOresults_all)){
+    all_genes_modules_df<-rbind(all_genes_modules_df,ExtractGenesInfo(AMARETTOresults_all[[run]],run))
+  }
+  for (run in names(gmt_filelist)){
+  gmt_genes_df<-utils::stack(readGMT(ImmuneSignatures))%>%dplyr::mutate(Run_Names=run)%>%dplyr::rename(ModuleNr=ind)%>%dplyr::rename(GeneNames=values)%>%
+    dplyr::mutate(Type="Target")%>%dplyr::mutate(Weights=0)%>%dplyr::select(Run_Names,ModuleNr,GeneNames,Type,Weights)
+  all_genes_modules_df<-rbind(all_genes_modules_df,gmt_genes_df)
+  }
+  return(all_genes_modules_df)
+}
