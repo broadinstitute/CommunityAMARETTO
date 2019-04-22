@@ -2,7 +2,7 @@
 % Please edit documentation in R/cAMARETTO_HTMLreport.R
 \name{CreatePhenotypeTable}
 \alias{CreatePhenotypeTable}
-\title{Title}
+\title{Title CreatePhenotypeTable}
 \usage{
 CreatePhenotypeTable(cAMARETTOresults, cAMARETTOnetworkM,
   cAMARETTOnetworkC, PhenotypeTablesList)
@@ -20,7 +20,7 @@ CreatePhenotypeTable(cAMARETTOresults, cAMARETTOnetworkM,
 results
 }
 \description{
-Title
+Title CreatePhenotypeTable
 }
 \examples{
 CreatePhenotypeTable(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTables)

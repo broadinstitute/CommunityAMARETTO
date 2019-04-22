@@ -4,10 +4,12 @@
 \alias{ComRunModGenInfo}
 \title{Title ComRunModGenInfo}
 \usage{
-ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkC)
+ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)
 }
 \arguments{
 \item{cAMARETTOresults}{}
+
+\item{cAMARETTOnetworkM}{}
 
 \item{cAMARETTOnetworkC}{}
 }
@@ -18,5 +20,5 @@ a dataframe contaning all communities, runname, and modules relationships.
 Title ComRunModGenInfo
 }
 \examples{
-ComRunModGenInfo(cAMARETTOresults,cAMARETTOnetworkC)
+ComRunModGenInfo(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC)
 }
