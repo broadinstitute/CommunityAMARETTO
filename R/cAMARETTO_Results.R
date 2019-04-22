@@ -2,34 +2,31 @@
 #' 
 #' To initiate the community AMARETTO this results functions performs hyper geometric tests between all modules and gene sets.
 #'
-#' @param AMARETTOinit_all A list of multiple AMARETTO_Initialize outputs. The names are run names.
 #' @param AMARETTOresults_all A list of multiple AMARETTO_Run outputs. The names are run names.
 #' @param NrCores Nr of Cores that can be used to calculated the results.
 #' @param output_dir A directory that stores gmt files for the runs
 #' @param gmt_filelist A list with gmt files that are added into the communities. The names of the list are used in the networks. NULL if no list is added.
 #' @param drivers Boolean that defines if only targets or drivers and targets are used to calculate the HGT.
 #'
-#' @return a list with AMARETTOinit and AMARETTOresults data objects from multiple runs
+#' @return a list with cAMARETTOresults data objects from multiple runs
 #' @importFrom gtools combinations
 #' @importFrom dplyr arrange group_by left_join mutate select summarise  rename  filter everything pull distinct case_when
 #' @importFrom stats p.adjust phyper
 #' @examples 
 #' 
 #' Cibersortgmt <- "ciberSort.gmt"
-#' cAMARETTOresults <- cAMARETTO_Results(AMARETTOinit_all, AMARETTOresults_all, gmt_filelist=list(ImmuneSignature = Cibersortgmt), NrCores = 4 , output_dir = "./")
+#' cAMARETTOresults <- cAMARETTO_Results(AMARETTOresults_all, gmt_filelist=list(ImmuneSignature = Cibersortgmt), NrCores = 4 , output_dir = "./")
 #' 
 #' @export
-cAMARETTO_Results <- function(AMARETTOinit_all, AMARETTOresults_all, NrCores=1, output_dir="./", gmt_filelist=NULL, drivers = FALSE){
+cAMARETTO_Results <- function(AMARETTOresults_all, NrCores=1, output_dir="./", gmt_filelist=NULL, drivers = FALSE){
   
   #test if names are matching
-  if (all(names(AMARETTOinit_all) == names(AMARETTOresults_all))) {
-    runnames <- names(AMARETTOresults_all)
-    if (!length(unique(runnames)) == length(runnames)){
-      stop("The run names are not unique. Give unique names.")
-    }
-  } else {
-    stop("The names of the lists are not matching.")
+  
+  runnames <- names(AMARETTOresults_all)
+  if (!length(unique(runnames)) == length(runnames)){
+    stop("The run names are not unique. Give unique names.")
   }
+
   
   dir.create(file.path(output_dir, "gmt_files"), recursive = FALSE, showWarnings = FALSE)
   
@@ -205,7 +202,7 @@ ExtractGenesInfo<-function(AMARETTOresults,run){
 #'
 #' @importFrom utils stack
 #' @importFrom dplyr mutate rename select
-#' @return a dataframe for all AMARETTO files and given gmt file with the following structure :  runname, module-number, genename, gene-types, and weights of the driver genes.
+#' @return a dataframe for all AMARETTO files and given gmt file with the following structure :  runname, ModuleNr, genename, gene-types, and weights of the driver genes.
 #' @export
 #' @examples Extract_Genes_Modules_All(AMARETTOresults_all,gmt_filelist)
 Extract_Genes_Modules_All<-function(AMARETTOresults_all,gmt_filelist){
@@ -213,9 +210,11 @@ Extract_Genes_Modules_All<-function(AMARETTOresults_all,gmt_filelist){
   for (run in names(AMARETTOresults_all)){
     all_genes_modules_df<-rbind(all_genes_modules_df,ExtractGenesInfo(AMARETTOresults_all[[run]],run))
   }
+  all_genes_modules_df<-all_genes_modules_df%>%dplyr::mutate(ModuleNr=paste0("Module_",ModuleNr))%>%dplyr::mutate(AMARETTOres=1)
+  
   for (run in names(gmt_filelist)){
   gmt_genes_df<-utils::stack(readGMT(ImmuneSignatures))%>%dplyr::mutate(Run_Names=run)%>%dplyr::rename(ModuleNr=ind)%>%dplyr::rename(GeneNames=values)%>%
-    dplyr::mutate(Type="Target")%>%dplyr::mutate(Weights=0)%>%dplyr::select(Run_Names,ModuleNr,GeneNames,Type,Weights)
+    dplyr::mutate(Type="Target")%>%dplyr::mutate(Weights=0)%>%dplyr::mutate(AMARETTOres=0)%>%dplyr::select(Run_Names,ModuleNr,GeneNames,Type,Weights,AMARETTOres)
   all_genes_modules_df<-rbind(all_genes_modules_df,gmt_genes_df)
   }
   return(all_genes_modules_df)
