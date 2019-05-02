@@ -1,10 +1,26 @@
 ---
-title: <center>Community AMARETTO Report</center>
+title: <center>Community-AMARETTO Report</center>
 output: 
   html_document:
     theme: cerulean
     highlight: NULL
 ---
+
+
+<style>
+  .main-container {
+    max-width:  100% !important;
+    padding-right: 1% !important;
+    padding-left: 1% !important;
+    margin-right: 1% !important;
+    margin-left: 1% !important;
+    table-layout: fixed !important;
+  }
+</style>
+
+
+
+
 
 <center>
 
@@ -12,15 +28,11 @@ output:
 ## Run Information
 <br><br><br>
 ```{r RunInfo,echo=FALSE}
-datatable(RunInfo,class = "display",
-          filter = 'top',
-          extensions = c('Buttons','KeyTable'),
-          escape=FALSE,
-          rownames = FALSE)
+DTRunInfo
 ```
 <br><br><br>
 
-## Community Network
+## Community Network Visualization
 <br><br><br>
 ```{r network,echo=FALSE}
 Nodes_Mnetwork<-igraph::as_data_frame(cAMARETTOnetworkM$module_network,what="vertices")
@@ -39,26 +51,17 @@ legend(x = 1.1, y = 1.5, legend=names(cAMARETTOnetworkC$color_list), col=cAMARET
 ```
 <br><br><br>
 
-## Assignments of Modules to Communities
+## Shared or Distinct Assignments of Regulatory Modules to Communities
 <br><br><br>
 ```{r CommunityModules,echo=FALSE}
-datatable(ComModulesLink %>% 
-            dplyr::rename(Edges="numTotalEdgesInCommunity","Fraction Edges"="fractEdgesInVsOut","Fraction Size"="CommsizeFrac"), class = "display",
-          filter = 'top',
-          extensions = c('Buttons','KeyTable'),
-          rownames = FALSE,
-          options = list(pageLength = 10,
-                         lengthMenu = c(5, 10, 20, 50, 100),
-                        keys = TRUE,
-                         dom = "Blfrtip", 
-                         scrollX=TRUE,
-                         scrollY=1000,
-                        scrollCollapse= FALSE,
-                        paging = TRUE,
-                        lengthChange = FALSE,
-                         buttons = list(list(extend = 'csv',text = "Save CSV", title="ComModuleRelation"),'colvis')),
-          escape=FALSE) %>%
-          formatSignif(c("Fraction Edges","Fraction Size"),2)
+DTComModulesLink
+```
+<br><br><br>
+
+## Shared Drivers Across Communities and Datasets
+<br><br><br>
+```{r DTdriverFreq,echo=FALSE}
+DTdriverFreq
 ```
 <br><br><br>
 
@@ -73,18 +76,7 @@ DTComDrivers
 ## Assignments of Genes to Communities
 <br><br><br>
 ```{r CommunityGenes, echo=FALSE}
-datatable(GeneComLink, class = "display",
-         filter = 'top',
-          extensions = c('Buttons','KeyTable'),
-          rownames = FALSE,
-          options = list(pageLength = 10,
-                         lengthMenu = c(5, 10, 20, 50, 100),
-                         keys = TRUE,
-                         autoWidth = TRUE,
-                         columnDefs = list(list(width = '50px', targets = "_all")),
-                         dom = "Blfrtip", 
-                         buttons = list(list(extend = 'csv',text = "Save CSV", title="ComGeneRelation"),'colvis')),
-          escape=FALSE)
+DTGeneComLink
 ```
 <br><br><br>
 
@@ -95,11 +87,13 @@ DTGSEAall
 ```
 <br><br><br>
 
-## Phenotype Association Table of Communities
+## Association of Phenotypes to Communities
 <br><br><br>
 ```{r CommunityDTPhC,echo=FALSE}
 DTPh
 ```
 <br><br><br>
+
+
 
 </center>

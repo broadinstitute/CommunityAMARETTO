@@ -28,7 +28,7 @@ function(cAMARETTOnetworkM, cAMARETTOnetworkC, ModuleNr) {
        mark.groups = selected_group,
        mark.col=color_group,
        mark.border=NA,
-       main="Community network")
+       main=NA)
   
   legend(x = -1.5, y = -1.1+0.05*length(cAMARETTOnetworkM$colMN), legend = names(cAMARETTOnetworkM$colMN), col = cAMARETTOnetworkM$colMN, pch=19, bty="n",ncol=ceiling(length(cAMARETTOnetworkM$colMN)/5))
 }
