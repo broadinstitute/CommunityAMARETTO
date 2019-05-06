@@ -38,7 +38,6 @@
 #' @source \url{CommunityAMARETTO}
 "ProcessedDataTCGA"
 
-
 #' ProcessedDataCCLE
 #'
 #' A list of dataframes of processed toy example dataset from CCLE-LIVER.
@@ -46,4 +45,3 @@
 #' @format List
 #' @source \url{CommunityAMARETTO}
 "ProcessedDataCCLE"
-

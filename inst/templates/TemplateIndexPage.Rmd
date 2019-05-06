@@ -5,8 +5,6 @@ output:
     theme: cerulean
     highlight: NULL
 ---
-
-
 <style>
   .main-container {
     max-width:  100% !important;
@@ -18,12 +16,7 @@ output:
   }
 </style>
 
-
-
-
-
 <center>
-
 
 ## Run Information
 <br><br><br>
@@ -51,14 +44,14 @@ legend(x = 1.1, y = 1.5, legend=names(cAMARETTOnetworkC$color_list), col=cAMARET
 ```
 <br><br><br>
 
-## Shared or Distinct Assignments of Regulatory Modules to Communities
+## Assignment of Regulatory Modules Shared or Distinct across Communities and Data Sets
 <br><br><br>
 ```{r CommunityModules,echo=FALSE}
 DTComModulesLink
 ```
 <br><br><br>
 
-## Shared Drivers Across Communities and Datasets
+## Assignment of Driver Genes Shared or Distinct across Communities and Data Sets
 <br><br><br>
 ```{r DTdriverFreq,echo=FALSE}
 DTdriverFreq
@@ -71,7 +64,6 @@ DTdriverFreq
 DTComDrivers
 ```
 <br><br><br>
-
 
 ## Assignments of Genes to Communities
 <br><br><br>
@@ -93,7 +85,5 @@ DTGSEAall
 DTPh
 ```
 <br><br><br>
-
-
 
 </center>

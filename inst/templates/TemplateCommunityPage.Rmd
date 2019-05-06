@@ -1,5 +1,5 @@
 ---
-title: <center>Community-AMARETTO Community `r ComNr` Report</center>
+title: <center>Community-AMARETTO `r ComTitle` Report</center>
 output: 
   html_document:
     theme: cerulean
@@ -16,8 +16,6 @@ output:
     table-layout: fixed !important;
   }
 </style>
-
-
 
 <center>
 

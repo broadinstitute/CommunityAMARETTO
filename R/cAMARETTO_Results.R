@@ -213,7 +213,7 @@ Extract_Genes_Modules_All<-function(AMARETTOresults_all,gmt_filelist){
   all_genes_modules_df<-all_genes_modules_df%>%dplyr::mutate(ModuleNr=paste0("Module_",ModuleNr))%>%dplyr::mutate(AMARETTOres=1)
   
   for (run in names(gmt_filelist)){
-  gmt_genes_df<-utils::stack(readGMT(ImmuneSignatures))%>%dplyr::mutate(Run_Names=run)%>%dplyr::rename(ModuleNr=ind)%>%dplyr::rename(GeneNames=values)%>%
+  gmt_genes_df<-utils::stack(readGMT(gmt_filelist[[run]]))%>%dplyr::mutate(Run_Names=run)%>%dplyr::rename(ModuleNr=ind)%>%dplyr::rename(GeneNames=values)%>%
     dplyr::mutate(Type="Target")%>%dplyr::mutate(Weights=0)%>%dplyr::mutate(AMARETTOres=0)%>%dplyr::select(Run_Names,ModuleNr,GeneNames,Type,Weights,AMARETTOres)
   all_genes_modules_df<-rbind(all_genes_modules_df,gmt_genes_df)
   }
