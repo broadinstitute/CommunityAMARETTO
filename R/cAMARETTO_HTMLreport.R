@@ -629,6 +629,19 @@ DriversSharedTbl<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetwork
 }
 
 
+#' Title ModuleHyperLink
+#'
+#' @param Module 
+#' @param Run_Names 
+#' @param AMARETTOres 
+#' @param HTMLsAMARETTOlist 
+#' @param CopyAMARETTOReport 
+#' @param page 
+#'
+#' @return Hyperlinks for Modules
+#' @export
+#'
+#' @examples ModuleHyperLink(Module,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport,page=1)
 ModuleHyperLink<-function(Module,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport,page=1){
   # htmldir = "someLocalAdress/LIHC_Report_75/AMARETTOhtmls"
   # if CopyAMARETTOReport ==TRUE :
@@ -647,6 +660,18 @@ ModuleHyperLink<-function(Module,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMA
 }
 
 
+#' Title RunHyperLink
+#'
+#' @param Run_Names 
+#' @param AMARETTOres 
+#' @param HTMLsAMARETTOlist 
+#' @param CopyAMARETTOReport 
+#' @param page 1 for index page and 2 for community page
+#'
+#' @return Hyperlinks for Run Names
+#' @export
+#'
+#' @examples RunHyperLink(Run_Names, AMARETTOres, HTMLsAMARETTOlist, CopyAMARETTOReport, page=1)
 RunHyperLink<-function(Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport,page=1){
   if(is.null(HTMLsAMARETTOlist)==FALSE){
     RunInfo<-rownames_to_column(as.data.frame(HTMLsAMARETTOlist),"Run_Names") %>% dplyr::rename(RunLink="HTMLsAMARETTOlist")

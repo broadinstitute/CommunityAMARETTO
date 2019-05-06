@@ -5,7 +5,7 @@
 \title{Title CommunityModuleTableCreate}
 \usage{
 CommunityModuleTableCreate(cAMARETTOresults, cAMARETTOnetworkM,
-  cAMARETTOnetworkC, RunInfo)
+  cAMARETTOnetworkC, HTMLsAMARETTOlist, CopyAMARETTOReport)
 }
 \arguments{
 \item{cAMARETTOresults}{}
@@ -14,7 +14,9 @@ CommunityModuleTableCreate(cAMARETTOresults, cAMARETTOnetworkM,
 
 \item{cAMARETTOnetworkC}{}
 
-\item{RunInfo}{}
+\item{HTMLsAMARETTOlist}{}
+
+\item{CopyAMARETTOReport}{}
 }
 \value{
 Community To Module Dataframe
