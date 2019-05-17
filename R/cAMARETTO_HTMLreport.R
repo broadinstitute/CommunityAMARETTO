@@ -28,9 +28,7 @@
 #' @importFrom utils stack
 #' @importFrom tidyr separate
 #' @importFrom R.utils insert
-#' @examples
-#' 
-#' cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist = HTMLsAMARETTOlist, hyper_geo_test_bool = TRUE, hyper_geo_reference = gmtfile, MSIGDB = TRUE, output_address= "./")
+#' @examples cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist = HTMLsAMARETTOlist, hyper_geo_test_bool = TRUE, hyper_geo_reference = gmtfile, MSIGDB = TRUE, output_address= "./")
 #' 
 #' @export
 cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTablesList = NULL,
@@ -43,22 +41,16 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   RunInfo<-RunInfoList$RunInfo
   RunInfo2<-RunInfoList$RunInfo2
   full_path<-RunInfoList$full_path
-  print(HTMLsAMARETTOlist)
   HTMLsAMARETTOlist<-RunInfoList$HTMLsAMARETTOlist
-  print(HTMLsAMARETTOlist)
-  print("ali1")
   #==============================================================================================================
   # Extract main dataframes
   com_gene_df<-suppressWarnings(ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC))
-  print("ali2")
   comm_info <-suppressWarnings(cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC))
-  print("ali3")
   #==============================================================================================================
   Runs_AMARETTOs_info<-com_gene_df%>%dplyr::select(Run_Names,AMARETTOres)%>%dplyr::distinct()%>%dplyr::mutate(Run_Names = RunHyperLink(Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport))%>%filter(AMARETTOres==1)%>%select(Run_Names)
   #==============================================================================================================
   ComModulesLink<-CommunityModuleTableCreate(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist,CopyAMARETTOReport)
   #==============================================================================================================
-  print("ali4")
   com_gene_df<-com_gene_df%>%dplyr::mutate(Color=sapply(as.numeric(Weights), function(x){
     if(is.na(x)){
       return("")
@@ -75,7 +67,6 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   }))%>%dplyr::mutate(TypeColored=paste0('<font color=',Color,'>',Type,'</font>'))
   #==============================================================================================================
   #[stringr::str_order(Community, numeric = TRUE),]
-  print("ali5")
   GeneComLink<-com_gene_df%>%filter(AMARETTOres==1)%>%dplyr::rename(GeneName = GeneNames)%>%
     dplyr::mutate(GeneName = paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", GeneName, "\">", GeneName, "</a>"))%>%
     dplyr::select(c(GeneName,Community,TypeColored,Community_key,Community_type))%>%dplyr::rename(Type=TypeColored)%>%
@@ -84,26 +75,18 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   #GeneComLink<-GeneComLink[stringr::str_order(GeneComLink$Community, numeric = TRUE),]
   #==============================================================================================================
   #adding Community to driver genes table 
-  print("ali6")
   Comm_Drivers<-com_gene_df%>%dplyr::filter(Type=="Driver")%>%
     dplyr::mutate(GeneNames=paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", GeneNames, "\">", GeneNames, "</a>"))%>%
     dplyr::group_by(Community_key,Run_Names,Community_type,Community)%>%dplyr::summarise(Drivers=paste(unique(sort(GeneNames)),collapse = ", "))
   Comm_Drivers<-data.frame(Comm_Drivers)%>%dplyr::mutate(Community = CommunityHyperLink(Community,Community_key,Community_type))
   Comm_Drivers<-Comm_Drivers[stringr::str_order(Comm_Drivers$Community, numeric = TRUE),]
-  print("ali7")
   #==============================================================================================================
-
   #HGT to test for gene set enrichment
    # avoid showing datatable size-related warnings.
-
-  print("ali8")
-
   #==============================================================================================================
   # add phenotype table
-  print("ali11")
   if (!is.null(PhenotypeTablesList)){
     phenotype_table_all<-CreatePhenotypeTable(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTablesList)
-    print(head(phenotype_table_all))
   }
   #==============================================================================================================
   # do hypergeometric test
@@ -126,10 +109,8 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   # Community Pages : 
   for (ComNr in unique(com_gene_df$Community_key)){
     
-    print(ComNr)
-
     ModuleList<-com_gene_df%>%filter(Community_key==ComNr)%>%select(Run_Names,ModuleNr,AMARETTOres)%>%distinct()%>%mutate(ModuleNr=ModuleHyperLink(ModuleNr,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport,page=2))%>%select(-AMARETTOres)
-
+    
     DTML <- DT::datatable(ModuleList, 
                         class = "display",
                         filter = 'top',
@@ -151,8 +132,6 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                              options = optionsList,
                              colnames = c("Data Set", "Module", "Gene", "Gene Type"),
                              escape=FALSE)
-    
-    print("maman joonam")
     
     if (hyper_geo_test_bool) {
         outputHGT<-all_hgt_output%>%filter(Community_key==ComNr)%>%select(-Community_key,-Community_type,-Community)
@@ -178,7 +157,6 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   } else {
     DTGSEA <- "Genesets were not analysed as they were not provided."
   }
-  print("hadi")
   # add phenotype table for each community page
   if (!is.null(PhenotypeTablesList)){
     phenotype_table_community<-phenotype_table_all%>%dplyr::filter(Community_key==ComNr)%>%select(Run_Names,everything())%>%dplyr::mutate(ModuleNr=ModuleHyperLink(ModuleNr,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport,page=2))%>%select(-AMARETTOres)
@@ -202,7 +180,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   knitr::knit_meta(class=NULL, clean = TRUE)  # cleaning memory, avoiding memory to be overloaded
   rmarkdown::render(
-      system.file("templates/TemplateCommunityPage.Rmd", package = "CommunityAMARETTO"),
+      system.file("templates/community_page_template/TemplateCommunityPage.Rmd", package = "CommunityAMARETTO"),
       output_dir = paste0(full_path, "/communities"),
       output_file = paste0("Community_",ComNr,".html"),
       params = list(
@@ -217,6 +195,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
       ), quiet = TRUE)
   }
   file_remove<-suppressWarnings(suppressMessages(file.remove(paste0(full_path,"/communities/Community_",c(1:length(unique(com_gene_df$Community_key))),"_files"))))
+  file_remove<-suppressWarnings(suppressMessages(file.remove(paste0(full_path,"index_files"))))
   #==============================================================================================================
   # index page : 
   DTRunInfo<-datatable(Runs_AMARETTOs_info,class = "display",
@@ -305,12 +284,63 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
       cAMARETTOnetworkM = cAMARETTOnetworkM,
       cAMARETTOnetworkC = cAMARETTOnetworkC,
       DTComModulesLink = DTComModulesLink,
+      DTRunInfo =  DTRunInfo
+    ), quiet = TRUE)
+  
+  rmarkdown::render(
+    system.file("templates/TemplateIndexPage_RunsInfo.Rmd", package = "CommunityAMARETTO"),
+    output_dir = full_path,
+    output_file = "index_RunsInfo.html",
+    params = list(
+      DTRunInfo =  DTRunInfo
+    ), quiet = TRUE)
+  
+  rmarkdown::render(
+    system.file("templates/TemplateIndexPage_AllCommunities.Rmd", package = "CommunityAMARETTO"),
+    output_dir = full_path,
+    output_file = "index_AllCommunities.html",
+    params = list(
+      DTRunInfo =  DTRunInfo
+    ), quiet = TRUE)
+  
+  rmarkdown::render(
+    system.file("templates/TemplateIndexPage_Drivers.Rmd", package = "CommunityAMARETTO"),
+    output_dir = full_path,
+    output_file = "index_Drivers.html",
+    params = list(
+      DTdriverFreq = DTdriverFreq
+    ), quiet = TRUE)
+  
+  rmarkdown::render(
+    system.file("templates/TemplateIndexPage_Drivers2.Rmd", package = "CommunityAMARETTO"),
+    output_dir = full_path,
+    output_file = "index_Drivers2.html",
+    params = list(
       DTComDrivers=DTComDrivers,
-      DTGeneComLink = DTGeneComLink,
-      DTRunInfo =  DTRunInfo,
-      DTGSEAall = DTGSEAall,
-      DTPh = DTPh,
-      DTdriverFreq = DTdriverFreq,
+    ), quiet = TRUE)
+  
+  rmarkdown::render(
+    system.file("templates/TemplateIndexPage_AllGenes.Rmd", package = "CommunityAMARETTO"),
+    output_dir = full_path,
+    output_file = "index_AllGenes.html",
+    params = list(
+      DTGeneComLink = DTGeneComLink
+    ), quiet = TRUE)
+  
+  rmarkdown::render(
+    system.file("templates/TemplateIndexPage_GenesetsEnrichment.Rmd", package = "CommunityAMARETTO"),
+    output_dir = full_path,
+    output_file = "index_GenesetsEnrichment.html",
+    params = list(
+      DTGSEAall = DTGSEAall
+    ), quiet = TRUE)
+
+  rmarkdown::render(
+    system.file("templates/TemplateIndexPage_PhenoAssociation.Rmd", package = "CommunityAMARETTO"),
+    output_dir = full_path,
+    output_file = "index_PhenoAssociation.html",
+    params = list(
+      DTPh = DTPh
     ), quiet = TRUE)
 }
 
@@ -322,6 +352,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
 #' @param gmtfile The gmt file with gene sets to test. In our case, the gmt file of the modules.
 #' @param NrCores Number of cores used for parallelization.
 #' @param ref.numb.genes The total number of genes teste, standard equal to 45 956 (MSIGDB standard).
+#'
 #' @importFrom doParallel registerDoParallel
 #' @importFrom parallel makeCluster stopCluster
 #' @importFrom foreach foreach %dopar% %do%
@@ -365,6 +396,7 @@ HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 4
 #'
 #' @param filename The name of the gmt file.
 #' @param MSIGDB TRUE or FALSE
+#'
 #' @importFrom utils data
 #' @return provides descriptions of MSIGDB Genesets
 #' @keywords internal
@@ -441,6 +473,7 @@ ComRunModGenInfo<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC)
 #' @param cAMARETTOnetworkM 
 #' @param PhenotypeTablesList 
 #' @param cAMARETTOnetworkC 
+#'
 #' @importFrom dplyr select distinct mutate mutate left_join select
 #' @return results
 #' @export
@@ -520,7 +553,7 @@ CreateHyperGeoTestAll<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetw
 #' @return RunInfo dataframe
 #' @export
 #'
-#' @examples InitialCheckInputs(cAMARETTOresults,output_address="./",HTMLsAMARETTOlist,CopyAMARETTOReport=FALSE,hyper_geo_test_bool = TRUE,hyper_geo_reference){
+#' @examples InitialCheckInputs(cAMARETTOresults,output_address="./",HTMLsAMARETTOlist,CopyAMARETTOReport=FALSE,hyper_geo_test_bool = TRUE,hyper_geo_reference)
 InitialCheckInputs<-function(cAMARETTOresults,output_address,HTMLsAMARETTOlist,CopyAMARETTOReport,hyper_geo_test_bool,hyper_geo_reference){
   if (!dir.exists(output_address)) {
     stop("Output directory is not existing.")
@@ -572,7 +605,6 @@ InitialCheckInputs<-function(cAMARETTOresults,output_address,HTMLsAMARETTOlist,C
 #' @export
 #'
 #' @examples CommunityModuleTableCreate (cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, RunInfo)
-#' 
 CommunityModuleTableCreate<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist,CopyAMARETTOReport){
   com_gene_df<-suppressWarnings(ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC))%>%dplyr::select(Community_key,Community,Community_type,AMARETTOres,Run_Names,ModuleNr)%>%distinct()
   ComModule<-com_gene_df %>% dplyr::mutate(ModuleLink=ModuleHyperLink(ModuleNr,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport))
@@ -677,6 +709,7 @@ ModuleHyperLink<-function(Module,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMA
 #' @export
 #'
 #' @examples RunHyperLink(Run_Names, AMARETTOres, HTMLsAMARETTOlist, CopyAMARETTOReport, page=1)
+#' 
 RunHyperLink<-function(Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport,page=1){
   if(is.null(HTMLsAMARETTOlist)==FALSE){
     RunInfo<-(data.frame("Run_Names"=names(HTMLsAMARETTOlist),RunLink=HTMLsAMARETTOlist,stringsAsFactors = FALSE))
