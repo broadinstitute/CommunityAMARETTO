@@ -5,6 +5,8 @@ output:
     theme: cerulean
     highlight: NULL
 ---
+
+
 <style>
   .main-container {
     max-width:  100% !important;
@@ -48,41 +50,6 @@ legend(x = 1.1, y = 1.5, legend=names(cAMARETTOnetworkC$color_list), col=cAMARET
 <br><br><br>
 ```{r CommunityModules,echo=FALSE}
 DTComModulesLink
-```
-<br><br><br>
-
-## Assignment of Driver Genes Shared or Distinct across Communities and Data Sets
-<br><br><br>
-```{r DTdriverFreq,echo=FALSE}
-DTdriverFreq
-```
-<br><br><br>
-
-## Assignments of Driver Genes to Communities
-<br><br><br>
-```{r CommunityDrivers,echo=FALSE}
-DTComDrivers
-```
-<br><br><br>
-
-## Assignments of Genes to Communities
-<br><br><br>
-```{r CommunityGenes, echo=FALSE}
-DTGeneComLink
-```
-<br><br><br>
-
-## Enrichments of Functional Categories in Communities
-<br><br><br>
-```{r DTGSEAall, echo=FALSE}
-DTGSEAall
-```
-<br><br><br>
-
-## Association of Phenotypes to Communities
-<br><br><br>
-```{r CommunityDTPhC,echo=FALSE}
-DTPh
 ```
 <br><br><br>
 
