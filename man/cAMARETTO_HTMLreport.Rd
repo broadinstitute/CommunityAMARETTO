@@ -46,7 +46,6 @@ cAMARETTO_HTMLreport
 Creates a HTMLreport for the community AMARETTO results
 }
 \examples{
-
 cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist = HTMLsAMARETTOlist, hyper_geo_test_bool = TRUE, hyper_geo_reference = gmtfile, MSIGDB = TRUE, output_address= "./")
 
 }

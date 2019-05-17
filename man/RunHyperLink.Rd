@@ -26,4 +26,5 @@ Title RunHyperLink
 }
 \examples{
 RunHyperLink(Run_Names, AMARETTOres, HTMLsAMARETTOlist, CopyAMARETTOReport, page=1)
+
 }

@@ -26,5 +26,4 @@ Title CommunityModuleTableCreate
 }
 \examples{
 CommunityModuleTableCreate (cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, RunInfo)
-
 }

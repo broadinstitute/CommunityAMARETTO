@@ -26,3 +26,6 @@ RunInfo dataframe
 \description{
 Title InitialCheckInputs
 }
+\examples{
+InitialCheckInputs(cAMARETTOresults,output_address="./",HTMLsAMARETTOlist,CopyAMARETTOReport=FALSE,hyper_geo_test_bool = TRUE,hyper_geo_reference)
+}
