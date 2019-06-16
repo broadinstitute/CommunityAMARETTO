@@ -13,7 +13,7 @@
 #' @param MSIGDB Boolean if gmt is MSIGDB derived.
 #' @param NrCores Number of Cores to use during generation of the HTML report.
 #' @param driverGSEA if TRUE, driver genes beside the target genes will also be included for hypergeometric test. 
-#' @param PhenotypeTablesList 
+#' @param PhenotypeTablesList List of Phenotype Association Tables for different AMARETTO runs.
 #'
 #' @return A set of HTMLs, giving caracteristics of the communities
 #' 
@@ -740,7 +740,7 @@ RunHyperLink<-function(Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTORepor
 #' @return result
 #' @import RCy3
 #' @import igraph
-#' @import purrr
+#' @importFrom  purrr map
 #' @import tidyverse
 #' @export
 #'
@@ -763,8 +763,8 @@ cAMARETTO_Cytoscape<-function(cAMARETTOsList,communityReportURL = "",cytoscape_n
   nodes_df<-nodes_df%>%dplyr::select(-c("Module_name","run_URL","NewComNumber"))
   
   edges_df<-igraph::as_data_frame(graph, what="edges")
-  edges_df<-suppressWarnings(edges_df%>%dplyr::mutate(from_Run=unlist(map(strsplit(from,"\\|"),1)))%>%dplyr::mutate(from_Module=unlist(map(strsplit(from,"\\|"),2)))%>%dplyr::mutate(from_Module=gsub("Module_","module",from_Module))%>%dplyr::left_join(runURLs,by=c("from_Run"="run"))%>%dplyr::rename(from_run_URL=run_URL)%>%dplyr::mutate(from_URL=ifelse(from_Run %in% runnames,paste0('<a href="',from_run_URL,'/AMARETTOhtmls/modules/',from_Module,'.html">URL</a>'),'')))
-  edges_df<-suppressWarnings(edges_df%>%dplyr::mutate(to_Run=unlist(map(strsplit(to,"\\|"),1)))%>%dplyr::mutate(to_Module=unlist(map(strsplit(to,"\\|"),2)))%>%dplyr::mutate(to_Module=gsub("Module_","module",to_Module))%>%dplyr::left_join(runURLs,by=c("to_Run"="run"))%>%dplyr::rename(to_run_URL=run_URL)%>%dplyr::mutate(to_URL=ifelse(to_Run %in% runnames,paste0('<a href="',to_run_URL,'/AMARETTOhtmls/modules/',to_Module,'.html">URL</a>'),'')))
+  edges_df<-suppressWarnings(edges_df%>%dplyr::mutate(from_Run=unlist(purrr::map(strsplit(from,"\\|"),1)))%>%dplyr::mutate(from_Module=unlist(map(strsplit(from,"\\|"),2)))%>%dplyr::mutate(from_Module=gsub("Module_","module",from_Module))%>%dplyr::left_join(runURLs,by=c("from_Run"="run"))%>%dplyr::rename(from_run_URL=run_URL)%>%dplyr::mutate(from_URL=ifelse(from_Run %in% runnames,paste0('<a href="',from_run_URL,'/AMARETTOhtmls/modules/',from_Module,'.html">URL</a>'),'')))
+  edges_df<-suppressWarnings(edges_df%>%dplyr::mutate(to_Run=unlist(purrr::map(strsplit(to,"\\|"),1)))%>%dplyr::mutate(to_Module=unlist(map(strsplit(to,"\\|"),2)))%>%dplyr::mutate(to_Module=gsub("Module_","module",to_Module))%>%dplyr::left_join(runURLs,by=c("to_Run"="run"))%>%dplyr::rename(to_run_URL=run_URL)%>%dplyr::mutate(to_URL=ifelse(to_Run %in% runnames,paste0('<a href="',to_run_URL,'/AMARETTOhtmls/modules/',to_Module,'.html">URL</a>'),'')))
   edges_df<-edges_df%>%dplyr::select(-c("from_Run","from_Module","from_run_URL","to_Run","to_Module","to_run_URL"))%>%dplyr::rename(source_URL=from_URL,target_URL=to_URL)
 
   graph_new<-igraph::graph_from_data_frame(edges_df, directed=FALSE, vertices=nodes_df)

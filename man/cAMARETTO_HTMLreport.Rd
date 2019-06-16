@@ -19,7 +19,7 @@ cAMARETTO_HTMLreport(cAMARETTOresults, cAMARETTOnetworkM,
 
 \item{cAMARETTOnetworkC}{The output of the Identify Communities function.}
 
-\item{PhenotypeTablesList}{}
+\item{PhenotypeTablesList}{List of Phenotype Association Tables for different AMARETTO runs.}
 
 \item{output_address}{The output repository for the HTML report.}
 
