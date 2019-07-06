@@ -9,8 +9,7 @@ Creates a HTMLreport for the community AMARETTO results}
 cAMARETTO_HTMLreport(cAMARETTOresults, cAMARETTOnetworkM,
   cAMARETTOnetworkC, PhenotypeTablesList = NULL, output_address = "./",
   HTMLsAMARETTOlist = NULL, CopyAMARETTOReport = TRUE,
-  hyper_geo_test_bool = FALSE, hyper_geo_reference = NULL,
-  MSIGDB = FALSE, driverGSEA = TRUE, NrCores = 2)
+  hyper_geo_reference = NULL, driverGSEA = TRUE, NrCores = 2)
 }
 \arguments{
 \item{cAMARETTOresults}{The output of the Results function.}
@@ -27,11 +26,7 @@ cAMARETTO_HTMLreport(cAMARETTOresults, cAMARETTOnetworkM,
 
 \item{CopyAMARETTOReport}{Boolean to indicate if the AMARETTO reports needs to be copied in the AMARETTO report directory. In this way links are contained when moving the HTML directory.}
 
-\item{hyper_geo_test_bool}{Boolean if Hyper Geometric Test needs to be performed.}
-
 \item{hyper_geo_reference}{A reference gmt file to perform the Hyper Geometric Test.}
-
-\item{MSIGDB}{Boolean if gmt is MSIGDB derived.}
 
 \item{driverGSEA}{if TRUE, driver genes beside the target genes will also be included for hypergeometric test.}
 
@@ -46,6 +41,6 @@ cAMARETTO_HTMLreport
 Creates a HTMLreport for the community AMARETTO results
 }
 \examples{
-cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist = HTMLsAMARETTOlist, hyper_geo_test_bool = TRUE, hyper_geo_reference = gmtfile, MSIGDB = TRUE, output_address= "./")
+cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist = HTMLsAMARETTOlist, hyper_geo_reference = gmtfile, output_address= "./")
 
 }

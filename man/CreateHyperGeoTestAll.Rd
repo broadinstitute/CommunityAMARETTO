@@ -5,7 +5,8 @@
 \title{Title CreateHyperGeoTestAll}
 \usage{
 CreateHyperGeoTestAll(cAMARETTOresults, cAMARETTOnetworkM,
-  cAMARETTOnetworkC, hyper_geo_reference, MSIGDB, driverGSEA, NrCores)
+  cAMARETTOnetworkC, hyper_geo_reference, driverGSEA = TRUE,
+  NrCores = 4)
 }
 \arguments{
 \item{cAMARETTOresults}{}
@@ -15,8 +16,6 @@ CreateHyperGeoTestAll(cAMARETTOresults, cAMARETTOnetworkM,
 \item{cAMARETTOnetworkC}{}
 
 \item{hyper_geo_reference}{}
-
-\item{MSIGDB}{}
 
 \item{driverGSEA}{}
 
@@ -29,5 +28,5 @@ Geneset Enrichment Analysis for the entire communities.
 Title CreateHyperGeoTestAll
 }
 \examples{
-CreateHyperGeoTestAll(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, hyper_geo_reference = './h.all.v6.2.symbols.gmt', MSIGDB=TRUE, driverGSEA=TRUE,NrCores=4)
+CreateHyperGeoTestAll(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, hyper_geo_reference = './h.all.v6.2.symbols.gmt', driverGSEA=TRUE,NrCores=4)
 }

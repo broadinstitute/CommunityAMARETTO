@@ -15,7 +15,7 @@ HGTGeneEnrichmentList(genelist, gmtfile, NrCores, ref.numb.genes = 45956)
 
 \item{NrCores}{Number of cores used for parallelization.}
 
-\item{ref.numb.genes}{The total number of genes teste, standard equal to 45 956 (MSIGDB standard).}
+\item{ref.numb.genes}{The total number of genes teste, standard equal to 45956 (MSIGDB standard).}
 }
 \description{
 HGTGeneEnrichmentList

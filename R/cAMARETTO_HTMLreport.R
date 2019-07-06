@@ -8,9 +8,7 @@
 #' @param output_address The output repository for the HTML report.
 #' @param HTMLsAMARETTOlist A list with AMARETTO reports to link with the Community AMARETTO report. If NULL, no links are added.
 #' @param CopyAMARETTOReport Boolean to indicate if the AMARETTO reports needs to be copied in the AMARETTO report directory. In this way links are contained when moving the HTML directory.
-#' @param hyper_geo_test_bool Boolean if Hyper Geometric Test needs to be performed.
 #' @param hyper_geo_reference A reference gmt file to perform the Hyper Geometric Test.
-#' @param MSIGDB Boolean if gmt is MSIGDB derived.
 #' @param NrCores Number of Cores to use during generation of the HTML report.
 #' @param driverGSEA if TRUE, driver genes beside the target genes will also be included for hypergeometric test. 
 #' @param PhenotypeTablesList List of Phenotype Association Tables for different AMARETTO runs.
@@ -28,16 +26,15 @@
 #' @importFrom utils stack
 #' @importFrom tidyr separate
 #' @importFrom R.utils insert
-#' @examples cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist = HTMLsAMARETTOlist, hyper_geo_test_bool = TRUE, hyper_geo_reference = gmtfile, MSIGDB = TRUE, output_address= "./")
+#' @examples cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist = HTMLsAMARETTOlist, hyper_geo_reference = gmtfile, output_address= "./")
 #' 
 #' @export
 cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTablesList = NULL,
                                  output_address="./", HTMLsAMARETTOlist=NULL, CopyAMARETTOReport = TRUE,
-                                 hyper_geo_test_bool = FALSE, hyper_geo_reference = NULL,
-                                 MSIGDB = FALSE,driverGSEA=TRUE,
-                                 NrCores=2){
+                                 hyper_geo_reference = NULL,
+                                 driverGSEA=TRUE,NrCores=2){
   
-  RunInfoList<-InitialCheckInputs(cAMARETTOresults,output_address,HTMLsAMARETTOlist,CopyAMARETTOReport,hyper_geo_test_bool,hyper_geo_reference)
+  RunInfoList<-InitialCheckInputs(cAMARETTOresults,output_address,HTMLsAMARETTOlist,CopyAMARETTOReport,hyper_geo_reference)
   RunInfo<-RunInfoList$RunInfo
   RunInfo2<-RunInfoList$RunInfo2
   full_path<-RunInfoList$full_path
@@ -90,9 +87,18 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   }
   #==============================================================================================================
   # do hypergeometric test
-  if (hyper_geo_test_bool == TRUE) {
-    all_hgt_output<-CreateHyperGeoTestAll(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC,hyper_geo_reference,MSIGDB,driverGSEA)
+  if(!is.null(hyper_geo_reference)){
+    if (is.character(hyper_geo_reference)){
+      all_hgt_output<-CreateHyperGeoTestAll(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC,hyper_geo_reference,driverGSEA)
+    }
+    else if (is.data.frame(hyper_geo_reference)){
+      all_hgt_output<-hyper_geo_reference
+    }
+    else{
+      stop("hyper_geo_reference is not in the correct format!")
+    }
   }
+
   #============================================================================================================== 
   options('DT.warn.size'=FALSE)
   buttons_list = list(list(extend ='csv'), list(extend ='excel'), list(extend = 'pdf', pageSize = 'A4', orientation = 'landscape'),list(extend ='print'), list(extend ='colvis'))
@@ -133,28 +139,8 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                              colnames = c("Data Set", "Module", "Gene", "Gene Type"),
                              escape=FALSE)
     
-    if (hyper_geo_test_bool) {
-        outputHGT<-all_hgt_output%>%filter(Community_key==ComNr)%>%select(-Community_key,-Community_type,-Community)
-        if (nrow(outputHGT)>0){
-          DTGSEA_colnames<-c("Gene Set Name","# Genes in Gene Set","# Genes in Overlap","Genes in Overlap","% Genes in overlap","P-value","FDR Q-value")
-          if (MSIGDB == TRUE) {
-            outputHGT<-outputHGT %>% dplyr::mutate(Geneset = paste0("<a href=\"http://software.broadinstitute.org/gsea/msigdb/cards/", Geneset, "\">", gsub("_", " ", Geneset),"</a>"))
-            DTGSEA_colnames<-R.utils::insert(DTGSEA_colnames,2,"Gene Set Description")
-          }
-          outputHGT<-outputHGT%>%dplyr::arrange(padj)
-          DTGSEA <- DT::datatable(outputHGT,
-                            class = "display",
-                            filter = 'top',
-                            extensions = c('Buttons','KeyTable'),
-                            rownames = FALSE,
-                            options = optionsList,
-                            colnames = DTGSEA_colnames , escape = FALSE) %>% 
-                            DT::formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
-                            DT::formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")%>%DT::formatStyle(columns = c(5), fontSize = '60%')
-        } 
-       else{
-        DTGSEA <- "No significant overlap was identified in the geneset enrichment analysis."
-        }
+    if(!is.null(hyper_geo_reference)) {
+      DTGSEA<-create_hgt_datatable(all_hgt_output, com_table=TRUE, ComNr = ComNr)
   } else {
     DTGSEA <- "Genesets were not analysed as they were not provided."
   }
@@ -228,22 +214,8 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
             colnames = c("Gene", "Community", "Gene Type"),
             escape=FALSE)
 
-  if (hyper_geo_test_bool) {
-    all_hgt_output<-all_hgt_output%>%filter(n_Overlapping>2)%>%dplyr::mutate(Community=CommunityHyperLink(Community,Community_key,Community_type))%>%select(-Community_type,-Community_key)%>%select(Community,everything())%>% dplyr::arrange(padj,Community)
-    DTGSEA_colnames<-c("Community","Gene Set Name","# Genes in Gene Set","# Genes in Overlap","Genes in Overlap","% Genes in overlap","P-value","FDR Q-value")
-    if (MSIGDB == TRUE) {
-      DTGSEA_colnames<-R.utils::insert(DTGSEA_colnames,3,"Gene Set Description")
-    }
-    all_hgt_output<-all_hgt_output %>% dplyr::mutate(Geneset = paste0("<a href=\"http://software.broadinstitute.org/gsea/msigdb/cards/", Geneset, "\">", gsub("_", " ", Geneset),"</a>"))
-    DTGSEAall <- DT::datatable(all_hgt_output,
-                        class = "display",
-                        filter = 'top',
-                        extensions = c('Buttons','KeyTable'),
-                        rownames = FALSE,
-                        options = optionsList,
-                        colnames = DTGSEA_colnames, escape = FALSE)%>%
-                        DT::formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
-                        DT::formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")%>%DT::formatStyle(columns = c(6), fontSize = '60%')
+  if (!is.null(hyper_geo_reference)) {
+    DTGSEAall <-create_hgt_datatable(all_hgt_output, com_table=FALSE)
     }
   else{
     DTGSEAall <- "Genesets were not analysed as they were not provided."
@@ -358,7 +330,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
 #' @param genelist The gmt file with reference gene set.
 #' @param gmtfile The gmt file with gene sets to test. In our case, the gmt file of the modules.
 #' @param NrCores Number of cores used for parallelization.
-#' @param ref.numb.genes The total number of genes teste, standard equal to 45 956 (MSIGDB standard).
+#' @param ref.numb.genes The total number of genes teste, standard equal to 45956 (MSIGDB standard).
 #'
 #' @importFrom doParallel registerDoParallel
 #' @importFrom parallel makeCluster stopCluster
@@ -373,13 +345,15 @@ HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 4
     doParallel::registerDoParallel(cluster, cores = NrCores)
     resultHGT<-foreach::foreach(i = 1:length(gmtset), .combine = "rbind") %dopar% {
         l <- length(gmtset[[i]])
-        k <- sum(gmtset[[i]] %in% genelist)
+        # k <- sum(gmtset[[i]] %in% genelist)
+        k <- length(intersect(gmtset[[i]],genelist))
         m <- ref.numb.genes
         n <- length(genelist)
         p1 <- stats::phyper(k - 1, l, m - l, n, lower.tail = FALSE)
           
         if (k > 0) {
-          overlapping.genes <- gmtset[[i]][gmtset[[i]] %in% genelist]
+          overlapping.genes <- intersect(gmtset[[i]],genelist)
+          #overlapping.genes <- gmtset[[i]][gmtset[[i]] %in% genelist]
           overlapping.genes <- paste(overlapping.genes, collapse = ", ")
           c(Geneset = names(gmtset[i]),
             Testset = names(genelist),
@@ -397,33 +371,6 @@ HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 4
     resultHGT$n_RefGeneset<-as.numeric(resultHGT$n_RefGeneset)
     resultHGT[, "padj"] <- stats::p.adjust(resultHGT[, "p_value"], method = "BH")
     return(resultHGT)
-}
-
-#' @title GeneSetDescription
-#'
-#' @param filename The name of the gmt file.
-#' @param MSIGDB TRUE or FALSE
-#'
-#' @importFrom utils data
-#' @return provides descriptions of MSIGDB Genesets
-#' @keywords internal
-#' @examples GeneSetDescription(filename,MSIGDB)
-GeneSetDescription<-function(filename,MSIGDB){
-  utils::data(MsigdbMapping)
-  gmtLines<-strsplit(readLines(filename),"\t")
-  gmtLines_description <- lapply(gmtLines, function(x) {
-    c(x[[1]],x[[2]],length(x)-2)
-  })
-  gmtLines_description<-data.frame(matrix(unlist(gmtLines_description),byrow=T,ncol=3),stringsAsFactors=FALSE)
-  rownames(gmtLines_description)<-NULL
-  colnames(gmtLines_description)<-c("GeneSet","Description","NumberGenes")
-  gmtLines_description$NumberGenes<-as.numeric(gmtLines_description$NumberGenes)
-  if(MSIGDB){
-    gmtLines_description$Description<-sapply(gmtLines_description$GeneSet, function(x) {
-      index<-which(MsigdbMapping$geneset==x)
-      ifelse(length(index)!=0, MsigdbMapping$description[index],gmtLines_description$Description[which(gmtLines_description$GeneSet==x)]) 
-    })}
-  return(gmtLines_description)
 }
 
 #' Title ComRunModGenInfo
@@ -473,7 +420,6 @@ ComRunModGenInfo<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC)
   return(ComModulesLink)
 }
 
-
 #' Title CreatePhenotypeTable
 #'
 #' @param cAMARETTOresults 
@@ -499,54 +445,63 @@ CreatePhenotypeTable<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnet
   return(phenotype_table_all)
 }
 
-
-
 #' Title CreateHyperGeoTestAll
 #'
 #' @param cAMARETTOresults 
 #' @param cAMARETTOnetworkM 
 #' @param cAMARETTOnetworkC 
 #' @param hyper_geo_reference 
-#' @param MSIGDB 
 #' @param driverGSEA 
 #' @param NrCores 
 #'
 #' @return Geneset Enrichment Analysis for the entire communities. 
 #' @export
 #'
-#' @examples CreateHyperGeoTestAll(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, hyper_geo_reference = './h.all.v6.2.symbols.gmt', MSIGDB=TRUE, driverGSEA=TRUE,NrCores=4)
-CreateHyperGeoTestAll<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC,hyper_geo_reference,MSIGDB,driverGSEA,NrCores){
+#' @examples CreateHyperGeoTestAll(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, hyper_geo_reference = './h.all.v6.2.symbols.gmt', driverGSEA=TRUE,NrCores=4)
+CreateHyperGeoTestAll<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC,hyper_geo_reference,driverGSEA=TRUE,NrCores=4){
   print("Performing Geneset Enrichment Analysis ...")
   com_gene_df<-suppressWarnings(ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC))
   communities_all<-unique(com_gene_df$Community_key)
   all_hgt_output<-NULL
-  GeneSetDescriptions <- GeneSetDescription(hyper_geo_reference,MSIGDB)
-  for (ComNr in communities_all){
-    target_genes<-com_gene_df%>%dplyr::filter(Community_key==ComNr)%>%dplyr::filter(Type=="Target")%>%dplyr::arrange(GeneNames)%>%dplyr::pull(GeneNames)
-    driver_genes<-com_gene_df%>%dplyr::filter(Community_key==ComNr)%>%dplyr::filter(Type=="Driver")%>%dplyr::arrange(GeneNames)%>%dplyr::pull(GeneNames)
-    driver_genes_weights<-com_gene_df%>%dplyr::filter(Community_key==ComNr)%>%dplyr::filter(Type=="Driver")%>%dplyr::arrange(GeneNames)%>%dplyr::pull(Weights)
-    if(driverGSEA){
-      genelist<-unique(c(target_genes,driver_genes))
+  if (is.null(cAMARETTOresults)){return(1)}
+  for(i in 1:length(hyper_geo_reference)){
+    for (ComNr in communities_all){
+      print(ComNr)
+      target_genes<-com_gene_df%>%dplyr::filter(Community_key==ComNr)%>%dplyr::filter(Type=="Target")%>%dplyr::arrange(GeneNames)%>%dplyr::pull(GeneNames)
+      driver_genes<-com_gene_df%>%dplyr::filter(Community_key==ComNr)%>%dplyr::filter(Type=="Driver")%>%dplyr::arrange(GeneNames)%>%dplyr::pull(GeneNames)
+      driver_genes_weights<-com_gene_df%>%dplyr::filter(Community_key==ComNr)%>%dplyr::filter(Type=="Driver")%>%dplyr::arrange(GeneNames)%>%dplyr::pull(Weights)
+      if(driverGSEA){
+        genelist<-unique(c(target_genes,driver_genes))
+      }
+      else{
+        genelist<-unique(target_genes)
+      }
+      outputHGT <- HGTGeneEnrichmentList(genelist, hyper_geo_reference[i], NrCores = NrCores)
+      if (nrow(outputHGT)>0){
+
+        all_hgt_output<-rbind(all_hgt_output, outputHGT%>%mutate(Community_key=ComNr)) 
+      }
+      else{
+        all_hgt_output<-rbind(all_hgt_output, NULL) 
+      }
     }
-    else{
-      genelist<-unique(target_genes)
-    }
-    outputHGT <- HGTGeneEnrichmentList(genelist, hyper_geo_reference, NrCores = NrCores)
-    if (nrow(outputHGT)>0){
-      outputHGT <- dplyr::left_join(outputHGT,GeneSetDescriptions, by = c(Geneset = "GeneSet")) %>%
-        dplyr::mutate(overlap_perc = n_Overlapping / NumberGenes) %>% dplyr::select(Geneset, Description,n_RefGeneset, n_Overlapping, Overlapping_genes, overlap_perc, p_value, padj) %>% dplyr::arrange(padj)
-      
-      all_hgt_output<-rbind(all_hgt_output, outputHGT%>%mutate(Community_key=ComNr)) 
-    }
-    else{
-      all_hgt_output<-rbind(all_hgt_output, NULL) 
-    }
+    cat("The hyper geometric test results are calculated.\n")
   }
-  all_hgt_output<-all_hgt_output%>% dplyr::select(Community_key,everything())%>%left_join(com_gene_df%>%select(Community_key,Community,Community_type)%>%distinct(),by="Community_key")
+  print(head(all_hgt_output))
+  print(dim(all_hgt_output))
+  #Community_key
+  utils::data(MsigdbMapping)
+  MsigdbMapping<-MsigdbMapping%>%dplyr::mutate(url=paste0('<a href="http://software.broadinstitute.org/gsea/msigdb/cards/',geneset,'">',gsub("_"," ",geneset),'</a>'))
+  all_hgt_output<-all_hgt_output%>%dplyr::left_join(MsigdbMapping,by=c("Geneset"="geneset"))%>%
+    dplyr::mutate(description=ifelse(is.na(description),Geneset,description))%>%
+    dplyr::mutate(Geneset=ifelse(is.na(url),Geneset,url))%>%dplyr::rename("Description"="description")%>%dplyr::select(-url)
+  
+  all_hgt_output <- all_hgt_output %>% dplyr::mutate(overlap_perc = n_Overlapping / n_RefGeneset) %>% dplyr::select(Community_key,Geneset, Description,n_RefGeneset, n_Overlapping, Overlapping_genes, overlap_perc, p_value, padj) %>% dplyr::arrange(padj)
+  
+  all_hgt_output<-all_hgt_output%>%left_join(com_gene_df%>%select(Community_key,Community,Community_type)%>%distinct(),by="Community_key")
   print("Geneset Enrichment Analysis is done!")
   return(all_hgt_output)
 }
-
 
 #' Title InitialCheckInputs
 #'
@@ -554,14 +509,13 @@ CreateHyperGeoTestAll<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetw
 #' @param output_address 
 #' @param HTMLsAMARETTOlist 
 #' @param CopyAMARETTOReport 
-#' @param hyper_geo_test_bool 
 #' @param hyper_geo_reference 
 #'
 #' @return RunInfo dataframe
 #' @export
 #'
-#' @examples InitialCheckInputs(cAMARETTOresults,output_address="./",HTMLsAMARETTOlist,CopyAMARETTOReport=FALSE,hyper_geo_test_bool = TRUE,hyper_geo_reference)
-InitialCheckInputs<-function(cAMARETTOresults,output_address,HTMLsAMARETTOlist,CopyAMARETTOReport,hyper_geo_test_bool,hyper_geo_reference){
+#' @examples InitialCheckInputs(cAMARETTOresults,output_address="./",HTMLsAMARETTOlist,CopyAMARETTOReport=FALSE,hyper_geo_reference)
+InitialCheckInputs<-function(cAMARETTOresults,output_address,HTMLsAMARETTOlist,CopyAMARETTOReport,hyper_geo_reference){
   if (!dir.exists(output_address)) {
     stop("Output directory is not existing.")
   } else {
@@ -569,9 +523,11 @@ InitialCheckInputs<-function(cAMARETTOresults,output_address,HTMLsAMARETTOlist,C
     full_path <- file.path(normalizePath(output_address),"htmls")
     print(paste0("The output directory is: ",full_path))
   }
-  if (hyper_geo_test_bool == TRUE) {
-    if (!file.exists(hyper_geo_reference)) {
-      stop("GMT for hyper geometric test is not existing.")
+  if (!is.null(hyper_geo_reference)) {
+    if(is.character(hyper_geo_reference)){
+      if (!file.exists(hyper_geo_reference[1])) {
+        stop("GMT for hyper geometric test is not existing.")
+      }
     }
   }
   
@@ -770,4 +726,53 @@ cAMARETTO_Cytoscape<-function(cAMARETTOsList,communityReportURL = "",cytoscape_n
   graph_new<-igraph::graph_from_data_frame(edges_df, directed=FALSE, vertices=nodes_df)
   try(RCy3::createNetworkFromIgraph(graph_new,cytoscape_name),silent=TRUE)
   return(graph_new)
+}
+
+
+
+#' Title create_hgt_datatable
+#'
+#' @param output_hgt 
+#' @param com_table 
+#' @param ComNr 
+#'
+#' @return DataTable
+#'
+#' @examples 
+create_hgt_datatable<-function(output_hgt, com_table=FALSE, ComNr = 1){
+  if (com_table){
+    outputHGT<-all_hgt_output%>%filter(Community_key==ComNr)%>%select(-Community_key,-Community_type,-Community)
+    if (nrow(outputHGT)>0){
+      DTGSEA_colnames<-c("Gene Set Name","Gene Set Description","# Genes in Gene Set","# Genes in Overlap","Genes in Overlap","% Genes in overlap","P-value","FDR Q-value")
+      outputHGT<-outputHGT%>%dplyr::arrange(padj)
+      DTGSEA <- DT::datatable(outputHGT,
+                              class = "display",
+                              filter = 'top',
+                              extensions = c('Buttons','KeyTable'),
+                              rownames = FALSE,
+                              options = optionsList,
+                              colnames = DTGSEA_colnames , escape = FALSE) %>% 
+        DT::formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
+        DT::formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")%>%DT::formatStyle(columns = c(5), fontSize = '60%')
+    } 
+    else{
+      DTGSEA <- "No significant overlap was identified in the geneset enrichment analysis."
+    }
+   return(DTGSEA)
+  }
+  else{
+    all_hgt_output<-all_hgt_output%>%filter(n_Overlapping>2)%>%dplyr::mutate(Community=CommunityHyperLink(Community,Community_key,Community_type))%>%select(-Community_type,-Community_key)%>%select(Community,everything())%>% dplyr::arrange(padj,Community)
+    DTGSEA_colnames<-c("Community","Gene Set Name","Gene Set Description","# Genes in Gene Set","# Genes in Overlap","Genes in Overlap","% Genes in overlap","P-value","FDR Q-value")
+    all_hgt_output<-all_hgt_output %>% dplyr::mutate(Geneset = paste0("<a href=\"http://software.broadinstitute.org/gsea/msigdb/cards/", Geneset, "\">", gsub("_", " ", Geneset),"</a>"))
+    DTGSEAall <- DT::datatable(all_hgt_output,
+                               class = "display",
+                               filter = 'top',
+                               extensions = c('Buttons','KeyTable'),
+                               rownames = FALSE,
+                               options = optionsList,
+                               colnames = DTGSEA_colnames, escape = FALSE)%>%
+      DT::formatSignif(c("p_value", "padj","overlap_perc"), 2) %>% 
+      DT::formatStyle("overlap_perc", background = styleColorBar(c(0, 1), "lightblue"), backgroundSize = "98% 88%", backgroundRepeat = "no-repeat", backgroundPosition = "center")%>%DT::formatStyle(columns = c(6), fontSize = '60%')
+    return(DTGSEAall)
+  }
 }

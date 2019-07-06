@@ -5,7 +5,7 @@
 \title{Title InitialCheckInputs}
 \usage{
 InitialCheckInputs(cAMARETTOresults, output_address, HTMLsAMARETTOlist,
-  CopyAMARETTOReport, hyper_geo_test_bool, hyper_geo_reference)
+  CopyAMARETTOReport, hyper_geo_reference)
 }
 \arguments{
 \item{cAMARETTOresults}{}
@@ -16,8 +16,6 @@ InitialCheckInputs(cAMARETTOresults, output_address, HTMLsAMARETTOlist,
 
 \item{CopyAMARETTOReport}{}
 
-\item{hyper_geo_test_bool}{}
-
 \item{hyper_geo_reference}{}
 }
 \value{
@@ -27,5 +25,5 @@ RunInfo dataframe
 Title InitialCheckInputs
 }
 \examples{
-InitialCheckInputs(cAMARETTOresults,output_address="./",HTMLsAMARETTOlist,CopyAMARETTOReport=FALSE,hyper_geo_test_bool = TRUE,hyper_geo_reference)
+InitialCheckInputs(cAMARETTOresults,output_address="./",HTMLsAMARETTOlist,CopyAMARETTOReport=FALSE,hyper_geo_reference)
 }
