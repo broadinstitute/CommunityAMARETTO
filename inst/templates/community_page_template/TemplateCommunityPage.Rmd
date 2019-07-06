@@ -47,6 +47,20 @@ DTGSEA
 ```
 <br><br><br>
 
+## Enrichments of Driver Perturbations in Community
+<br><br><br>
+```{r CommunityGSEAgp,echo=FALSE}
+DTGSEA_gp
+```
+<br><br><br>
+
+## Enrichments of Chemical Perturbations in Community
+<br><br><br>
+```{r CommunityGSEAcp,echo=FALSE}
+DTGSEA_cp
+```
+<br><br><br>
+
 ## Association of Phenotypes to Community
 <br><br><br>
 ```{r CommunityDTPh,echo=FALSE}

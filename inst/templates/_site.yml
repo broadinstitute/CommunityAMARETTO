@@ -21,6 +21,10 @@ navbar:
           href: index_Drivers2.html
         - text: "Enrichments of Functional Categories in Communities"
           href: index_GenesetsEnrichment.html
+        - text: "Enrichments of Driver Perturbations in Communities"
+          href: index_GenesetsEnrichment_gp.html
+        - text: "Enrichments of Chemical Perturbations in Communities"
+          href: index_GenesetsEnrichment_cp.html
         - text: "Association of Phenotypes to Communities"
           href: index_PhenoAssociation.html
   right:

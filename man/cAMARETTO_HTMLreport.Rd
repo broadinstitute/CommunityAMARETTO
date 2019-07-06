@@ -9,7 +9,8 @@ Creates a HTMLreport for the community AMARETTO results}
 cAMARETTO_HTMLreport(cAMARETTOresults, cAMARETTOnetworkM,
   cAMARETTOnetworkC, PhenotypeTablesList = NULL, output_address = "./",
   HTMLsAMARETTOlist = NULL, CopyAMARETTOReport = TRUE,
-  hyper_geo_reference = NULL, driverGSEA = TRUE, NrCores = 2)
+  hyper_geo_reference = NULL, hyper_geo_reference_gp = NULL,
+  hyper_geo_reference_cp = NULL, driverGSEA = TRUE, NrCores = 2)
 }
 \arguments{
 \item{cAMARETTOresults}{The output of the Results function.}
