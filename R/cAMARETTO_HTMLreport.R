@@ -542,8 +542,8 @@ CreateHyperGeoTestAll<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetw
   cluster <- parallel::makeCluster(c(rep("localhost", NrCores)), type = "SOCK")
   doParallel::registerDoParallel(cluster, cores = NrCores)
   for(i in 1:length(hyper_geo_reference)){
-
-    all_hgt_output<-foreach::foreach(j =1:length(communities_all), .combine = "rbind") %dopar% {
+    hgt_output_gmt<-NULL
+    hgt_output_gmt<-foreach::foreach(j =1:length(communities_all), .combine = "rbind") %dopar% {
     #for (ComNr in communities_all){
       #print(ComNr)
       ComNr<-communities_all[j]
@@ -567,6 +567,7 @@ CreateHyperGeoTestAll<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetw
         return(NULL) 
       }
     }
+    all_hgt_output<-rbind(all_hgt_output,hgt_output_gmt)
     cat("The hyper geometric test with ", hyper_geo_reference[i], " gmt file is calculated.\n")
   }
   #Community_key
