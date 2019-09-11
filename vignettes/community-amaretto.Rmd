@@ -10,10 +10,10 @@ vignette: >
 ---
 
 ```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+# knitr::opts_chunk$set(
+#   collapse = TRUE,
+#   comment = "#>"
+# )
 ```
 
 ## Introduction to the (community-) AMARETTO algorithm and software toolbox :
@@ -62,14 +62,14 @@ Installing and loading AMARETTO
 Installing the latest versions of AMARETTO. This may take a few minutes...
 
 ```{r}
-library(devtools)
-install_github("broadinstitute/CommunityAMARETTO",ref='develop',force = 'TRUE')
-library("CommunityAMARETTO")
+# library(devtools)
+# install_github("broadinstitute/CommunityAMARETTO",ref='develop',force = 'TRUE')
+# library("CommunityAMARETTO")
 ```
 
 ```{r}
-devtools::install_github("gevaertlab/AMARETTO",ref="for35_develop",quiet = FALSE)
-library("AMARETTO")
+# devtools::install_github("gevaertlab/AMARETTO",ref="for35_develop",quiet = FALSE)
+# library("AMARETTO")
 ```
 
 
@@ -79,90 +79,90 @@ Loading multi-omics data from TCGA LIHC cohort
 
 Loading Gene Expression (MA) data from TCGA LIHC patient cohort (Required)
 ```{r}
-data("ProcessedDataTCGA")
-data("ProcessedDataCCLE")
-data("Driver_Genes")
+# data("ProcessedDataTCGA")
+# data("ProcessedDataCCLE")
+# data("Driver_Genes")
 ```
 
 Loading Copy Number Variation (CNV) data from TCGA LIHC cohort (Optional)
 ```{r}
-AMARETTOinit_TCGA <- AMARETTO::AMARETTO_Initialize(ProcessedData=ProcessedDataTCGA,
-                                            Driver_list = Driver_Genes$TFs_TFutils_union,
-                                            method = "union",
-                                            NrCores = 1,
-                                            NrModules = 10,
-                                            VarPercentage = 10)
-
-
-AMARETTOResults_TCGA<-AMARETTO::AMARETTO_Run(AMARETTOinit_TCGA)
+# AMARETTOinit_TCGA <- AMARETTO::AMARETTO_Initialize(ProcessedData=ProcessedDataTCGA,
+#                                             Driver_list = Driver_Genes$TFs_TFutils_union,
+#                                             method = "union",
+#                                             NrCores = 1,
+#                                             NrModules = 10,
+#                                             VarPercentage = 10)
+# 
+# 
+# AMARETTOResults_TCGA<-AMARETTO::AMARETTO_Run(AMARETTOinit_TCGA)
 ```
 ```{r}
-samples_TCGA<-readr::read_delim('../inst/extdata/Samples_LIHC_phenotypes.txt','\t')
-phenotype_tests_TCGA<-readr::read_delim("../inst/extdata/Samples_LIHC_statistics.txt",delim="\t",col_names=TRUE)
-```
-
-```{r}
-TCGA_phenotype_tests_all<-AMARETTO::AMARETTO_unite_results(AMARETTO::AMARETTO_statistical_test(AMARETTOinit_TCGA,
-                                                                                               AMARETTOResults_TCGA,
-                                                                                               samples_TCGA,
-                                                                                               phenotype_tests_TCGA))
+# samples_TCGA<-readr::read_delim('../inst/extdata/Samples_LIHC_phenotypes.txt','\t')
+# phenotype_tests_TCGA<-readr::read_delim("../inst/extdata/Samples_LIHC_statistics.txt",delim="\t",col_names=TRUE)
 ```
 
 ```{r}
-samples_LIHC$SurvivalTime<-as.factor(cut(samples_LIHC$SurvivalTime, 7, include.lowest=TRUE, dig.lab = 5))
-samples_LIHC$SurvivalCensoring<-as.factor(samples_LIHC$SurvivalCensoring)
+# TCGA_phenotype_tests_all<-AMARETTO::AMARETTO_unite_results(AMARETTO::AMARETTO_statistical_test(AMARETTOinit_TCGA,
+#                                                                                                AMARETTOResults_TCGA,
+#                                                                                                samples_TCGA,
+#                                                                                                phenotype_tests_TCGA))
 ```
 
 ```{r}
-html_report_TCGA_address<-'html_report_TCGA_address'
-hyper_geo_reference_address<-'../inst/extdata/h.all.v6.2.symbols.gmt'
-AMARETTO_HTMLreport(AMARETTOinit_TCGA,
-                    AMARETTOResults_TCGA,
-                    ProcessedData = ProcessedDataTCGA,
-                    hyper_geo_test_bool = TRUE,
-                    hyper_geo_reference = hyper_geo_reference_address,
-                    output_address = html_report_TCGA_address,
-                    MSIGDB = TRUE,
-                    SAMPLE_annotation = NULL)
+# samples_LIHC$SurvivalTime<-as.factor(cut(samples_LIHC$SurvivalTime, 7, include.lowest=TRUE, dig.lab = 5))
+# samples_LIHC$SurvivalCensoring<-as.factor(samples_LIHC$SurvivalCensoring)
 ```
 
-
 ```{r}
-AMARETTOinit_CCLE <- AMARETTO::AMARETTO_Initialize(ProcessedData = ProcessedDataCCLE,
-                                            Driver_list = Driver_Genes$TFs_TFutils_union,
-                                            method = "union",
-                                            NrCores = 1,
-                                            NrModules = 10,
-                                            VarPercentage = 10)
-AMARETTOResults_CCLE<-AMARETTO::AMARETTO_Run(AMARETTOinit_CCLE)
+# html_report_TCGA_address<-'html_report_TCGA_address'
+# hyper_geo_reference_address<-'../inst/extdata/h.all.v6.2.symbols.gmt'
+# AMARETTO_HTMLreport(AMARETTOinit_TCGA,
+#                     AMARETTOResults_TCGA,
+#                     ProcessedData = ProcessedDataTCGA,
+#                     hyper_geo_test_bool = TRUE,
+#                     hyper_geo_reference = hyper_geo_reference_address,
+#                     output_address = html_report_TCGA_address,
+#                     MSIGDB = TRUE,
+#                     SAMPLE_annotation = NULL)
 ```
 
 
 ```{r}
-html_report_CCLE_address<-'html_report_CCLE_address'
-hyper_geo_reference_address<-'../inst/templates/h.all.v6.2.symbols.gmt'
-AMARETTO_HTMLreport(AMARETTOinit_CCLE,
-                    AMARETTOResults_CCLE,
-                    ProcessedData = ProcessedDataCCLE,
-                    hyper_geo_test_bool = TRUE,
-                    hyper_geo_reference = hyper_geo_reference_address,
-                    output_address = html_report_CCLE_address,
-                    MSIGDB = TRUE,
-                    SAMPLE_annotation = NULL)
+# AMARETTOinit_CCLE <- AMARETTO::AMARETTO_Initialize(ProcessedData = ProcessedDataCCLE,
+#                                             Driver_list = Driver_Genes$TFs_TFutils_union,
+#                                             method = "union",
+#                                             NrCores = 1,
+#                                             NrModules = 10,
+#                                             VarPercentage = 10)
+# AMARETTOResults_CCLE<-AMARETTO::AMARETTO_Run(AMARETTOinit_CCLE)
+```
+
+
+```{r}
+# html_report_CCLE_address<-'html_report_CCLE_address'
+# hyper_geo_reference_address<-'../inst/templates/h.all.v6.2.symbols.gmt'
+# AMARETTO_HTMLreport(AMARETTOinit_CCLE,
+#                     AMARETTOResults_CCLE,
+#                     ProcessedData = ProcessedDataCCLE,
+#                     hyper_geo_test_bool = TRUE,
+#                     hyper_geo_reference = hyper_geo_reference_address,
+#                     output_address = html_report_CCLE_address,
+#                     MSIGDB = TRUE,
+#                     SAMPLE_annotation = NULL)
 
 ```
 
 
 ```{r}
-cAMARETTOresults<-cAMARETTO_Results(AMARETTOinit_all_75,AMARETTOresults_all_75,gmt_filelist=gmt_filelist,NrCores = 4,output_dir = "./",drivers=TRUE)
-cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,0.10,5)
-cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
-
-HTMLsAMARETTOlist <- c("TCGA"='html_report_TCGA_address',"CCLE"='html_report_CCLE_address')
-
-
-
-cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist=HTMLsAMARETTOlist,CopyAMARETTOReport = FALSE, hyper_geo_test_bool = FALSE, hyper_geo_reference = './H_C2_genesets.gmt', MSIGDB = TRUE,output_address= "./",PhenotypeTablesList=PhenotypeTables)
+# cAMARETTOresults<-cAMARETTO_Results(AMARETTOinit_all_75,AMARETTOresults_all_75,gmt_filelist=gmt_filelist,NrCores = 4,output_dir = "./",drivers=TRUE)
+# cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,0.10,5)
+# cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
+# 
+# HTMLsAMARETTOlist <- c("TCGA"='html_report_TCGA_address',"CCLE"='html_report_CCLE_address')
+# 
+# 
+# 
+# cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist=HTMLsAMARETTOlist,CopyAMARETTOReport = FALSE, hyper_geo_test_bool = FALSE, hyper_geo_reference = './H_C2_genesets.gmt', MSIGDB = TRUE,output_address= "./",PhenotypeTablesList=PhenotypeTables)
 
 ```
 
@@ -206,12 +206,12 @@ Loading two or more results from AMARETTO, in this example the previous TCGA and
 Selecting AMARETTO analyses for Community-AMARETTO analysis. The user can submit the .rds files that represent the corresponding results from at least two or more previous AMARETTO analyses (see above, run in Steps 3 and 4).
 
 ```{r}
-AMARETTOinit_TCGA <- readRDS(file="TCGA_AMARETTOinit.rds")
-AMARETTOresults_TCGA <- readRDS(file="TCGA_AMARETTOresults.rds")
-
-AMARETTOinit_CCLE <- readRDS(file="CCLE_AMARETTOinit.rds")
-AMARETTOresults_CCLE <- readRDS(file="CCLE_AMARETTOresults.rds")
-
+# AMARETTOinit_TCGA <- readRDS(file="TCGA_AMARETTOinit.rds")
+# AMARETTOresults_TCGA <- readRDS(file="TCGA_AMARETTOresults.rds")
+# 
+# AMARETTOinit_CCLE <- readRDS(file="CCLE_AMARETTOinit.rds")
+# AMARETTOresults_CCLE <- readRDS(file="CCLE_AMARETTOresults.rds")
+# 
 
 ```
 
@@ -223,20 +223,20 @@ If additional networks are submitted, please run following cell code to include 
 
 
 ```{r}
-ImmuneSignatures <- "ImmuneSignatures.gmt"
-download.file(url="https://www.broadinstitute.org/~npochet/NotebookExample/ExampleData/ImmuneSignatures.gmt", destfile=ImmuneSignatures)
-
-StemSignatures <- "StemSignatures.gmt"
-download.file(url="https://www.broadinstitute.org/~npochet/NotebookExample/ExampleData/StemSignatures.gmt", destfile=StemSignatures)
-
-LiverSignatures <- "LiverSignatures.gmt"
-download.file(url="https://www.broadinstitute.org/~npochet/NotebookExample/ExampleData/LiverSignatures.gmt", destfile=LiverSignatures)
-
-list_additional_networks = list(ImmuneSignatures = "ImmuneSignatures.gmt", StemSignatures = "StemSignatures.gmt", LiverSignatures = "LiverSignatures.gmt")
+# ImmuneSignatures <- "ImmuneSignatures.gmt"
+# download.file(url="https://www.broadinstitute.org/~npochet/NotebookExample/ExampleData/ImmuneSignatures.gmt", destfile=ImmuneSignatures)
+# 
+# StemSignatures <- "StemSignatures.gmt"
+# download.file(url="https://www.broadinstitute.org/~npochet/NotebookExample/ExampleData/StemSignatures.gmt", destfile=StemSignatures)
+# 
+# LiverSignatures <- "LiverSignatures.gmt"
+# download.file(url="https://www.broadinstitute.org/~npochet/NotebookExample/ExampleData/LiverSignatures.gmt", destfile=LiverSignatures)
+# 
+# list_additional_networks = list(ImmuneSignatures = "ImmuneSignatures.gmt", StemSignatures = "StemSignatures.gmt", LiverSignatures = "LiverSignatures.gmt")
 ```
 
 ```{r}
-list_additional_networks = NULL
+# list_additional_networks = NULL
 ```
 
 
@@ -249,11 +249,11 @@ Additional parameters that can be set by the user for running Community-AMARETTO
 (2) Provide a base "file name" for output files generated by the Community-AMARETTO analysis (e.g., myCommunityAmarettoAnalysis).
 
 ```{r}
-genesets_database_reference <- "H_C2_genesets.gmt"
-download.file(url="https://www.broadinstitute.org/~npochet/NotebookExample/ExampleData/H_C2_genesets.gmt", destfile=genesets_database_reference) 
-
-output_directory_cAMARETTO = "./cAMARETTO_report/"
-dir.create(output_directory_cAMARETTO)
+# genesets_database_reference <- "H_C2_genesets.gmt"
+# download.file(url="https://www.broadinstitute.org/~npochet/NotebookExample/ExampleData/H_C2_genesets.gmt", destfile=genesets_database_reference) 
+# 
+# output_directory_cAMARETTO = "./cAMARETTO_report/"
+# dir.create(output_directory_cAMARETTO)
 ```
 
 
@@ -269,11 +269,11 @@ Step 5.b. Running Community-AMARETTO
 By running the following code cells, you can now run the Community-AMARETTO algorithm.
 You can run the following code cell for computing the extent of overlaps between all regulatory modules learned across data cohorts.
 ```{r}
-cAMARETTOresults<-cAMARETTO_Results(AMARETTOinit_all = list(TCGA=AMARETTOinit_TCGA,CCLE=AMARETTOinit_CCLE) ,
-                                    AMARETTOresults_all = list(TCGA=AMARETTOresults_TCGA,CCLE=AMARETTOresults_CCLE),
-                                    gmt_filelist = list_additional_networks,
-                                    NrCores = NrCores,
-                                    drivers = FALSE)
+# cAMARETTOresults<-cAMARETTO_Results(AMARETTOinit_all = list(TCGA=AMARETTOinit_TCGA,CCLE=AMARETTOinit_CCLE) ,
+#                                     AMARETTOresults_all = list(TCGA=AMARETTOresults_TCGA,CCLE=AMARETTOresults_CCLE),
+#                                     gmt_filelist = list_additional_networks,
+#                                     NrCores = NrCores,
+#                                     drivers = FALSE)
 ```
                                     Creating and filtering edges in the module networks across data cohorts. Additional parameters that can be set by the user in this step include:
 
@@ -282,9 +282,9 @@ cAMARETTOresults<-cAMARETTO_Results(AMARETTOinit_all = list(TCGA=AMARETTOinit_TC
 (2) Filtering edges in the subnetworks or communities based on the minimum number overlapping genes. Edges in the network with the number of overlapping genes less than the cutoff value will be filtered out. The default cutoff value is 5 overlapping genes.
 
 ```{r}
-cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,
-                                           pvalue = 0.05,
-                                           inter = 5)
+# cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,
+#                                            pvalue = 0.05,
+#                                            inter = 5)
 ```
 
 
@@ -299,26 +299,26 @@ The user can choose between filtering according to these criteria, in which case
 
 
 ```{r}
-cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,
-                                         filterComm = FALSE,
-                                         ratioCommSize = 0.01,
-                                         MinRuns = 2,
-                                         ratioRunSize = 0.1,
-                                         ratioEdgesInOut = 0.5)
+# cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,
+#                                          filterComm = FALSE,
+#                                          ratioCommSize = 0.01,
+#                                          MinRuns = 2,
+#                                          ratioRunSize = 0.1,
+#                                          ratioEdgesInOut = 0.5)
 ```
 
 Generating the Community-AMARETTO .html reports that directly links to the original AMARETTO .html reports.
 
 ```{r}
-cAMARETTO_HTMLreport(cAMARETTOresults = cAMARETTOresults,
-                     cAMARETTOnetworkM = cAMARETTOnetworkM,
-                     cAMARETTOnetworkC = cAMARETTOnetworkC,
-                     HTMLsAMARETTOlist = HTMLsAMARETTOlist,
-                     CopyAMARETTOReport = TRUE,
-                     hyper_geo_test_bool = TRUE,
-                     hyper_geo_reference = genesets_database_reference,
-                     MSIGDB = TRUE,
-                     output_address= output_directory_cAMARETTO)
+# cAMARETTO_HTMLreport(cAMARETTOresults = cAMARETTOresults,
+#                      cAMARETTOnetworkM = cAMARETTOnetworkM,
+#                      cAMARETTOnetworkC = cAMARETTOnetworkC,
+#                      HTMLsAMARETTOlist = HTMLsAMARETTOlist,
+#                      CopyAMARETTOReport = TRUE,
+#                      hyper_geo_test_bool = TRUE,
+#                      hyper_geo_reference = genesets_database_reference,
+#                      MSIGDB = TRUE,
+#                      output_address= output_directory_cAMARETTO)
 
 ```
 

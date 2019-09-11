@@ -19,3 +19,6 @@ DataTable
 \description{
 Title create_hgt_datatable
 }
+\examples{
+create_hgt_datatable(output_hgt, com_table=FALSE, ComNr = 1)
+}

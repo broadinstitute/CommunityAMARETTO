@@ -23,7 +23,7 @@ navbar:
           href: index_GenesetsEnrichment.html
         - text: "Enrichments of Driver Perturbations in Communities"
           href: index_GenesetsEnrichment_gp.html
-        - text: "Enrichments of Chemical Perturbations in Communities"
+        - text: "Enrichments of Drug Perturbations in Communities"
           href: index_GenesetsEnrichment_cp.html
         - text: "Association of Phenotypes to Communities"
           href: index_PhenoAssociation.html

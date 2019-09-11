@@ -836,7 +836,7 @@ cAMARETTO_Cytoscape<-function(cAMARETTOsList,communityReportURL = "",cytoscape_n
 #'
 #' @return DataTable
 #'
-#' @examples 
+#' @examples create_hgt_datatable(output_hgt, com_table=FALSE, ComNr = 1)
 create_hgt_datatable<-function(output_hgt, com_table=FALSE, ComNr = 1){
   
   #============================================================================================================== 
