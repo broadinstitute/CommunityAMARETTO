@@ -33,14 +33,26 @@
 #' )
 #' }
 #' @export
-cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTablesList = NULL,
-                                 output_address="./", HTMLsAMARETTOlist=NULL, CopyAMARETTOReport = TRUE,
+cAMARETTO_HTMLreport <- function(cAMARETTOresults,
+                                 cAMARETTOnetworkM,
+                                 cAMARETTOnetworkC,
+                                 PhenotypeTablesList = NULL,
+                                 output_address="./",
+                                 HTMLsAMARETTOlist=NULL,
+                                 CopyAMARETTOReport = TRUE,
                                  hyper_geo_reference = NULL,
                                  hyper_geo_reference_gp = NULL,
                                  hyper_geo_reference_cp = NULL,
-                                 driverGSEA=TRUE,NrCores=2){
+                                 driverGSEA=TRUE,
+                                 NrCores=2){
   
-  RunInfoList<-InitialCheckInputs(cAMARETTOresults,output_address,HTMLsAMARETTOlist,CopyAMARETTOReport,hyper_geo_reference,hyper_geo_reference_gp,hyper_geo_reference_cp)
+  RunInfoList<-InitialCheckInputs(cAMARETTOresults,
+                                  output_address,
+                                  HTMLsAMARETTOlist,
+                                  CopyAMARETTOReport,
+                                  hyper_geo_reference,
+                                  hyper_geo_reference_gp,
+                                  hyper_geo_reference_cp)
   RunInfo<-RunInfoList$RunInfo
   RunInfo2<-RunInfoList$RunInfo2
   full_path<-RunInfoList$full_path
@@ -50,9 +62,18 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   com_gene_df<-suppressWarnings(ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC))
   comm_info <-suppressWarnings(cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC))
   #==============================================================================================================
-  Runs_AMARETTOs_info<-com_gene_df%>%dplyr::select(Run_Names,AMARETTOres)%>%dplyr::distinct()%>%dplyr::mutate(Run_Names = RunHyperLink(Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport))%>%filter(AMARETTOres==1)%>%select(Run_Names)
+  Runs_AMARETTOs_info<-com_gene_df%>%
+    dplyr::select(Run_Names,AMARETTOres)%>%
+    dplyr::distinct()%>%
+    dplyr::mutate(Run_Names = RunHyperLink(Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport))%>%
+    filter(AMARETTOres==1)%>%
+    select(Run_Names)
   #==============================================================================================================
-  ComModulesLink<-CommunityModuleTableCreate(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist,CopyAMARETTOReport)
+  ComModulesLink<-CommunityModuleTableCreate(cAMARETTOresults,
+                                             cAMARETTOnetworkM, 
+                                             cAMARETTOnetworkC,
+                                             HTMLsAMARETTOlist,
+                                             CopyAMARETTOReport)
   #==============================================================================================================
   com_gene_df<-com_gene_df%>%dplyr::mutate(Color=sapply(as.numeric(Weights), function(x){
     if(is.na(x)){
@@ -70,18 +91,38 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   }))%>%dplyr::mutate(TypeColored=paste0('<font color=',Color,'>',Type,'</font>'))
   #==============================================================================================================
   #[stringr::str_order(Community, numeric = TRUE),]
-  GeneComLink<-com_gene_df%>%filter(AMARETTOres==1)%>%dplyr::rename(GeneName = GeneNames)%>%
-    dplyr::mutate(GeneName = paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", GeneName, "\">", GeneName, "</a>"))%>%
-    dplyr::select(c(GeneName,Community,TypeColored,Community_key,Community_type))%>%dplyr::rename(Type=TypeColored)%>%
-    dplyr::mutate(Community = CommunityHyperLink(Community,Community_key,Community_type))%>%dplyr::arrange(GeneName)%>%select(-Community_key,-Community_type)%>%select(GeneName,everything())%>%distinct()
+  GeneComLink<-com_gene_df%>%
+    filter(AMARETTOres==1)%>%
+    dplyr::rename(GeneName = GeneNames)%>%
+    dplyr::mutate(GeneName = paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=",
+                                    GeneName,
+                                    "\">",
+                                    GeneName,
+                                    "</a>"))%>%
+    dplyr::select(c(GeneName,Community,TypeColored,Community_key,Community_type))%>%
+    dplyr::rename(Type=TypeColored)%>%
+    dplyr::mutate(Community = CommunityHyperLink(Community,Community_key,Community_type))%>%
+    dplyr::arrange(GeneName)%>%
+    select(-Community_key,-Community_type)%>%
+    select(GeneName,everything())%>%
+    distinct()
   #==============================================================================================================
   #GeneComLink<-GeneComLink[stringr::str_order(GeneComLink$Community, numeric = TRUE),]
   #==============================================================================================================
   #adding Community to driver genes table 
-  Comm_Drivers<-com_gene_df%>%dplyr::filter(Type=="Driver")%>%
-    dplyr::mutate(GeneNames=paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", GeneNames, "\">", GeneNames, "</a>"))%>%
-    dplyr::group_by(Community_key,Run_Names,Community_type,Community)%>%dplyr::summarise(Drivers=paste(unique(sort(GeneNames)),collapse = ", "))
-  Comm_Drivers<-data.frame(Comm_Drivers)%>%dplyr::mutate(Community = CommunityHyperLink(Community,Community_key,Community_type))
+  Comm_Drivers<-com_gene_df%>%
+    dplyr::filter(Type=="Driver")%>%
+    dplyr::mutate(GeneNames=paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=",
+                                   GeneNames,
+                                   "\">",
+                                   GeneNames,
+                                   "</a>"))%>%
+    dplyr::group_by(Community_key,Run_Names,Community_type,Community)%>%
+    dplyr::summarise(Drivers=paste(unique(sort(GeneNames)),collapse = ", "))
+  
+  Comm_Drivers<-data.frame(Comm_Drivers)%>%
+    dplyr::mutate(Community = CommunityHyperLink(Community,Community_key,Community_type))
+  
   Comm_Drivers<-Comm_Drivers[stringr::str_order(Comm_Drivers$Community, numeric = TRUE),]
   #==============================================================================================================
   #HGT to test for gene set enrichment
@@ -89,13 +130,20 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   #==============================================================================================================
   # add phenotype table
   if (!is.null(PhenotypeTablesList)){
-    phenotype_table_all<-CreatePhenotypeTable(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTablesList)
+    phenotype_table_all<-CreatePhenotypeTable(cAMARETTOresults,
+                                              cAMARETTOnetworkM,
+                                              cAMARETTOnetworkC,
+                                              PhenotypeTablesList)
   }
   #==============================================================================================================
   # do hypergeometric test
   if(!is.null(hyper_geo_reference)){
     if (is.character(hyper_geo_reference)){
-      all_hgt_output<-CreateHyperGeoTestAll(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC,hyper_geo_reference,driverGSEA)
+      all_hgt_output<-CreateHyperGeoTestAll(cAMARETTOresults,
+                                            cAMARETTOnetworkM,
+                                            cAMARETTOnetworkC,
+                                            hyper_geo_reference,
+                                            driverGSEA)
     }
     else if (is.data.frame(hyper_geo_reference)){
       all_hgt_output<-hyper_geo_reference
@@ -109,7 +157,11 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   # do hypergeometric test
   if(!is.null(hyper_geo_reference_gp)){
     if (is.character(hyper_geo_reference_gp)){
-      all_hgt_output_gp<-CreateHyperGeoTestAll(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC,hyper_geo_reference_gp,driverGSEA)
+      all_hgt_output_gp<-CreateHyperGeoTestAll(cAMARETTOresults,
+                                               cAMARETTOnetworkM,
+                                               cAMARETTOnetworkC,
+                                               hyper_geo_reference_gp,
+                                               driverGSEA)
     }
     else if (is.data.frame(hyper_geo_reference_gp)){
       all_hgt_output_gp<-hyper_geo_reference_gp
@@ -123,7 +175,11 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   # do hypergeometric test
   if(!is.null(hyper_geo_reference_cp)){
     if (is.character(hyper_geo_reference_cp)){
-      all_hgt_output_cp<-CreateHyperGeoTestAll(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC,hyper_geo_reference_cp,driverGSEA)
+      all_hgt_output_cp<-CreateHyperGeoTestAll(cAMARETTOresults,
+                                               cAMARETTOnetworkM,
+                                               cAMARETTOnetworkC,
+                                               hyper_geo_reference_cp,
+                                               driverGSEA)
     }
     else if (is.data.frame(hyper_geo_reference_cp)){
       all_hgt_output_cp<-hyper_geo_reference_cp
@@ -136,8 +192,12 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   
   options('DT.warn.size'=FALSE)
-  buttons_list = list(list(extend ='csv'), list(extend ='excel'), list(extend = 'pdf', pageSize = 'A4', orientation = 'landscape'),list(extend ='print'), list(extend ='colvis'))
-  columnDefs = list(list(className = 'dt-head-center', targets = "_all"),list(className = 'text-left',targets = "_all"))
+  buttons_list = list(list(extend ='csv'),
+                      list(extend ='excel'),
+                      list(extend = 'pdf', pageSize = 'A4', orientation = 'landscape'),
+                      list(extend ='print'), list(extend ='colvis'))
+  columnDefs = list(list(className = 'dt-head-center', targets = "_all"),
+                    list(className = 'text-left',targets = "_all"))
   optionsList = list(deferRender=TRUE,
                      pageLength = 10,
                     lengthMenu = c(5, 10, 20, 50, 100),
@@ -150,7 +210,13 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   # Community Pages : 
   for (ComNr in unique(com_gene_df$Community_key)){
     
-    ModuleList<-com_gene_df%>%filter(Community_key==ComNr)%>%select(Run_Names,ModuleNr,AMARETTOres)%>%distinct()%>%mutate(ModuleNr=ModuleHyperLink(ModuleNr,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport,page=2))%>%select(-AMARETTOres)
+    ModuleList<-com_gene_df%>%
+      filter(Community_key==ComNr)%>%
+      select(Run_Names,ModuleNr,AMARETTOres)%>%
+      distinct()%>%
+      mutate(ModuleNr=ModuleHyperLink(ModuleNr,Run_Names,AMARETTOres,
+                                      HTMLsAMARETTOlist,CopyAMARETTOReport,page=2))%>%
+      select(-AMARETTOres)
     
     DTML <- DT::datatable(ModuleList, 
                         class = "display",
@@ -162,8 +228,25 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
                         escape = FALSE)
     
     #adding Gene-Module-Run tabel
-    genelists_module<-com_gene_df%>%filter(AMARETTOres==1)%>%dplyr::filter(Community_key==ComNr)%>%dplyr::arrange(GeneNames)%>%dplyr::rename(Run=Run_Names)%>%dplyr::rename(ModuleName=ModuleNr)%>%dplyr::rename(Genes=GeneNames)%>%dplyr::select(-c(Type))%>%dplyr::rename(Type=TypeColored)
-    genelists_module <- genelists_module%>%mutate(ModuleName = ModuleHyperLink(ModuleName,Run,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport,page=2))%>%dplyr::mutate(Genes = paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", Genes, "\">", Genes, "</a>"))%>%dplyr::select(c(Run,ModuleName,Genes,Type))
+    genelists_module<-com_gene_df%>%
+      filter(AMARETTOres==1)%>%
+      dplyr::filter(Community_key==ComNr)%>%
+      dplyr::arrange(GeneNames)%>%
+      dplyr::rename(Run=Run_Names)%>%
+      dplyr::rename(ModuleName=ModuleNr)%>%
+      dplyr::rename(Genes=GeneNames)%>%
+      dplyr::select(-c(Type))%>%
+      dplyr::rename(Type=TypeColored)
+    
+    genelists_module <- genelists_module%>%
+      mutate(ModuleName = ModuleHyperLink(ModuleName,Run,AMARETTOres,
+                                          HTMLsAMARETTOlist,CopyAMARETTOReport,page=2))%>%
+      dplyr::mutate(Genes = paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=",
+                                   Genes,
+                                   "\">",
+                                   Genes,
+                                   "</a>"))%>%
+      dplyr::select(c(Run,ModuleName,Genes,Type))
 
     DTGenes <- DT::datatable(genelists_module,
                              class = "display",
@@ -191,29 +274,48 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     }
   # add phenotype table for each community page
   if (!is.null(PhenotypeTablesList)){
-    phenotype_table_community<-phenotype_table_all%>%dplyr::filter(Community_key==ComNr)%>%select(Run_Names,everything())%>%dplyr::mutate(ModuleNr=ModuleHyperLink(ModuleNr,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport,page=2))%>%select(-AMARETTOres)
-    phenotype_table_community<-phenotype_table_community%>%dplyr::select(-Community_key,-Community,-Community_type)%>%arrange(q.value)
+    phenotype_table_community<-phenotype_table_all%>%
+      dplyr::filter(Community_key==ComNr)%>%
+      select(Run_Names,everything())%>%
+      dplyr::mutate(ModuleNr=ModuleHyperLink(ModuleNr,
+                                             Run_Names,
+                                             AMARETTOres,
+                                             HTMLsAMARETTOlist,
+                                             CopyAMARETTOReport,
+                                             page=2))%>%
+      select(-AMARETTOres)
+    
+    phenotype_table_community<-phenotype_table_community%>%
+      dplyr::select(-Community_key,-Community,-Community_type)%>%
+      arrange(q.value)
+    
     DTPhC<-DT::datatable(phenotype_table_community,
                      class = "display",
                      filter = 'top',
                      extensions = c('Buttons','KeyTable'),
                      rownames = FALSE,
-                     colnames=c("Data Set","Module","Phenotype","Statistics Test","P-value","FDR Q-value","Descriptive Statistics"),
+                     colnames=c("Data Set","Module","Phenotype","Statistics Test",
+                                "P-value","FDR Q-value","Descriptive Statistics"),
                      options = optionsList, escape = FALSE)
   }
   else{ DTPhC = "Phenotype Statistical Analysis is not provided" }
   
-  comm_name<-com_gene_df%>%filter(Community_key==ComNr)%>%select(Community,Community_key)%>%distinct()%>%pull(Community)
+  comm_name<-com_gene_df%>%
+    filter(Community_key==ComNr)%>%
+    select(Community,Community_key)%>%
+    distinct()%>%
+    pull(Community)
   if (grepl("Not in", comm_name)){
     ComTitle = comm_name
   }
   else{
     ComTitle = paste0("Community ",comm_name)
   }
-  
-  knitr::knit_meta(class=NULL, clean = TRUE)  # cleaning memory, avoiding memory to be overloaded
+  # cleaning memory, avoiding memory to be overloaded
+  knitr::knit_meta(class=NULL, clean = TRUE)  
   rmarkdown::render(
-      system.file("templates/community_page_template/TemplateCommunityPage.Rmd", package = "CommunityAMARETTO"),
+      system.file("templates/community_page_template/TemplateCommunityPage.Rmd",
+                  package = "CommunityAMARETTO"),
       output_dir = paste0(full_path, "/communities"),
       output_file = paste0("Community_",ComNr,".html"),
       params = list(
@@ -229,8 +331,12 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
         cAMARETTOnetworkC = cAMARETTOnetworkC
       ), quiet = TRUE)
   }
-  file_remove<-suppressWarnings(suppressMessages(file.remove(paste0(full_path,"/communities/Community_",c(1:length(unique(com_gene_df$Community_key))),"_files"))))
-  file_remove<-suppressWarnings(suppressMessages(file.remove(paste0(full_path,"index_files"))))
+  file_remove<-suppressWarnings(suppressMessages(file.remove(paste0(full_path,
+                                                                    "/communities/Community_",
+                                                                    c(1:length(unique(com_gene_df$Community_key))),
+                                                                    "_files"))))
+  file_remove<-suppressWarnings(suppressMessages(file.remove(paste0(full_path,
+                                                                    "index_files"))))
   #==============================================================================================================
   # index page : 
   DTRunInfo<-datatable(Runs_AMARETTOs_info,
@@ -242,7 +348,9 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
             options=optionsList,
             colnames = c("AMARETTO Report"))
   
-  ComModulesLink<-ComModulesLink %>% dplyr::rename(Edges="numTotalEdgesInCommunity","Fraction Edges"="fractEdgesInVsOut","Fraction Size"="CommsizeFrac")
+  ComModulesLink<-ComModulesLink %>% dplyr::rename(Edges="numTotalEdgesInCommunity",
+                                                   "Fraction Edges"="fractEdgesInVsOut",
+                                                   "Fraction Size"="CommsizeFrac")
   DTComModulesLink<-datatable(ComModulesLink, 
             class = "display",
             filter = 'top',
@@ -283,7 +391,9 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
     DTGSEAall_cp <- "Genesets were not analysed as they were not provided."
   }
   #=========================================
-  Comm_Drivers<-Comm_Drivers%>%select(-Community_key,-Community_type)%>%select(Community,everything())
+  Comm_Drivers<-Comm_Drivers%>%
+    select(-Community_key,-Community_type)%>%
+    select(Community,everything())
   DTComDrivers<- DT::datatable(Comm_Drivers,
                           class = "display",
                           filter = 'top',
@@ -295,20 +405,31 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOn
   
   # add phenotype table for index page
   if (!is.null(PhenotypeTablesList)){
-    phenotype_table_all<-phenotype_table_all%>%dplyr::mutate(ModuleNr=ModuleHyperLink(ModuleNr,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport))%>%select(-AMARETTOres)
-    phenotype_table_all<-phenotype_table_all%>%dplyr::mutate(Community = CommunityHyperLink(Community,Community_key,Community_type))%>%select(-Community_key,-Community_type)%>%select(Community,Run_Names,everything())%>%arrange(q.value,Community)
+    phenotype_table_all<-phenotype_table_all%>%
+      dplyr::mutate(ModuleNr=ModuleHyperLink(ModuleNr,Run_Names,AMARETTOres,
+                                             HTMLsAMARETTOlist,CopyAMARETTOReport))%>%
+      select(-AMARETTOres)
+    phenotype_table_all<-phenotype_table_all%>%
+      dplyr::mutate(Community = CommunityHyperLink(Community,Community_key,Community_type))%>%
+      select(-Community_key,-Community_type)%>%select(Community,Run_Names,everything())%>%
+      arrange(q.value,Community)
     DTPh<-DT::datatable(phenotype_table_all,
                      class = "display",
                      filter = 'top',
                      extensions = c('Buttons','KeyTable'),
                      rownames = FALSE,
                      options = optionsList,
-                     colnames=c("Community","Data Set","Module","Phenotype","Statistics Test","P-value","FDR Q-value","Descriptive Statistics"),
+                     colnames=c("Community","Data Set","Module","Phenotype","Statistics Test",
+                                "P-value","FDR Q-value","Descriptive Statistics"),
                      escape=FALSE)
   }
   else{ DTPh = "Phenotype Statistical Analysis is not provided" }
   
-  driversFreqTbl<-DriversSharedTbl(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)%>%left_join(com_gene_df%>%select(Community_key,Community,Community_type)%>%distinct(),by="Community_key")%>%dplyr::mutate(Community = CommunityHyperLink(Community,Community_key,Community_type))%>%select(-Community_key,-Community_type)%>%select(Community,everything())
+  driversFreqTbl<-DriversSharedTbl(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)%>%
+    left_join(com_gene_df%>%select(Community_key,Community,Community_type)%>%distinct(),by="Community_key")%>%
+    dplyr::mutate(Community = CommunityHyperLink(Community,Community_key,Community_type))%>%
+    select(-Community_key,-Community_type)%>%
+    select(Community,everything())
   DTdriverFreq<- DT::datatable(driversFreqTbl,
                                class = "display",
                                filter = 'top',
@@ -473,23 +594,43 @@ HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 4
 #' }
 ComRunModGenInfo<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC){
   
-  ComModulesLink <- utils::stack(cAMARETTOnetworkC$community_list) %>% dplyr::rename(Module="values", Community="ind")
+  ComModulesLink <- utils::stack(cAMARETTOnetworkC$community_list) %>%
+    dplyr::rename(Module="values", Community="ind")
   #all_module_names <- unique(c(cAMARETTOresults$hgt_modules$Geneset1,cAMARETTOresults$hgt_modules$Geneset2))
-  all_module_names<-unique(cAMARETTOresults$all_genes_modules_df%>%mutate(Module=paste0(Run_Names,"|",ModuleNr))%>%pull(Module))
+  all_module_names<-unique(cAMARETTOresults$all_genes_modules_df%>%
+                             mutate(Module=paste0(Run_Names,"|",ModuleNr))%>%
+                             pull(Module))
   modules_with_community<-ComModulesLink$Module
-  suppressWarnings(ComModulesLink <- dplyr::left_join(as.data.frame(all_module_names) %>% dplyr::rename(Module="all_module_names"),ComModulesLink, by="Module"))
-  ComModulesLink<-ComModulesLink%>%dplyr::mutate(ModuleNr=unlist(purrr::map(strsplit(Module,"\\|"),2)))%>% dplyr::mutate(Run_Names=unlist(purrr::map(strsplit(Module,"\\|"),1)))
+  suppressWarnings(ComModulesLink <- dplyr::left_join(as.data.frame(all_module_names) %>%
+                                                        dplyr::rename(Module="all_module_names"),
+                                                      ComModulesLink,
+                                                      by="Module"))
+  ComModulesLink<-ComModulesLink%>%
+    dplyr::mutate(ModuleNr=unlist(purrr::map(strsplit(Module,"\\|"),2)))%>%
+    dplyr::mutate(Run_Names=unlist(purrr::map(strsplit(Module,"\\|"),1)))
   # so far we have all the modules with their community information, NA for modules with no community.
   Nodes_Mnetwork <- igraph::as_data_frame(cAMARETTOnetworkM$module_network, what="vertices")
   # Nodes_Mnetwork = all modules selected to be in the network
   Module_no_Network <-setdiff(all_module_names,Nodes_Mnetwork$name)
   Module_no_Com<-setdiff(Nodes_Mnetwork$name,modules_with_community)
-  suppressMessages(ComModulesLink <-dplyr::left_join(cAMARETTOresults$all_genes_modules_df,ComModulesLink,by=c("Run_Names","ModuleNr")))
+  suppressMessages(ComModulesLink <-dplyr::left_join(cAMARETTOresults$all_genes_modules_df,
+                                                     ComModulesLink,
+                                                     by=c("Run_Names","ModuleNr")))
   
-  ComModulesLink <- ComModulesLink %>%dplyr::arrange(as.numeric(Community))%>%dplyr::mutate(Community=ifelse(Module %in% Module_no_Network,paste0("Not in Network ",Run_Names),ifelse(Module %in% Module_no_Com, paste0("Not in Community ",Run_Names),Community)))
+  ComModulesLink <- ComModulesLink %>%
+    dplyr::arrange(as.numeric(Community))%>%
+    dplyr::mutate(Community=ifelse(Module %in% Module_no_Network,
+                                   paste0("Not in Network ",Run_Names),
+                                   ifelse(Module %in% Module_no_Com,
+                                          paste0("Not in Community ",Run_Names),
+                                          Community)))
 
-  ComModulesLink <- suppressWarnings(ComModulesLink %>%dplyr::left_join(data.frame(Community=unique(ComModulesLink$Community),Community_key=1:length(unique(ComModulesLink$Community))),by="Community"))
-  ComModulesLink<-ComModulesLink%>%mutate(Community_type=sapply(Community, function(x){
+  ComModulesLink <- suppressWarnings(ComModulesLink %>%
+                                       dplyr::left_join(data.frame(Community=unique(ComModulesLink$Community),
+                                                                   Community_key=1:length(unique(ComModulesLink$Community))),
+                                                        by="Community"))
+  ComModulesLink<-ComModulesLink%>%
+    mutate(Community_type=sapply(Community, function(x){
     
     if (grepl("Not in Network", x)){
       return(1)
@@ -517,14 +658,24 @@ ComRunModGenInfo<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC)
 #' @export
 #'
 #' @examples try(CreatePhenotypeTable(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTables))
-CreatePhenotypeTable<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTablesList){
+CreatePhenotypeTable<-function(cAMARETTOresults,
+                               cAMARETTOnetworkM,
+                               cAMARETTOnetworkC,
+                               PhenotypeTablesList){
   phenotype_table_all<-NULL
-  CommunityRunModuleTable<-ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)%>%dplyr::select(Run_Names,ModuleNr,Community,Community_key,Community_type,AMARETTOres)%>%dplyr::distinct()
+  CommunityRunModuleTable<-ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)%>%
+    dplyr::select(Run_Names,ModuleNr,Community,Community_key,Community_type,AMARETTOres)%>%
+    dplyr::distinct()
   for (i in 1:length(PhenotypeTablesList)){
     if (is.null(PhenotypeTablesList[[i]])){
       next
     }
-    phenotype_table<-PhenotypeTablesList[[i]]%>%dplyr::mutate(ModuleNr=gsub("Module ","Module_",ModuleNr))%>%dplyr::mutate(Run_Names=names(PhenotypeTablesList)[i])%>%dplyr::left_join(CommunityRunModuleTable,by=c("Run_Names","ModuleNr"))%>%dplyr::select(Community,Community_key,Community_type,AMARETTOres,Run_Names,ModuleNr,Phenotypes,Statistical_Test,p.value,q.value,Descriptive_Statistics)
+    phenotype_table<-PhenotypeTablesList[[i]]%>%
+      dplyr::mutate(ModuleNr=gsub("Module ","Module_",ModuleNr))%>%
+      dplyr::mutate(Run_Names=names(PhenotypeTablesList)[i])%>%
+      dplyr::left_join(CommunityRunModuleTable,by=c("Run_Names","ModuleNr"))%>%
+      dplyr::select(Community,Community_key,Community_type,AMARETTOres,Run_Names,ModuleNr,
+                    Phenotypes,Statistical_Test,p.value,q.value,Descriptive_Statistics)
     phenotype_table_all<-rbind(phenotype_table_all,phenotype_table)
   }
   return(phenotype_table_all)
@@ -545,7 +696,8 @@ CreatePhenotypeTable<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnet
 #' @examples try(
 #' CreateHyperGeoTestAll(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, hyper_geo_reference = './h.all.v6.2.symbols.gmt', driverGSEA=TRUE,NrCores=4)
 #' )
-CreateHyperGeoTestAll<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC,hyper_geo_reference,driverGSEA=TRUE,NrCores=4){
+CreateHyperGeoTestAll<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC,
+                                hyper_geo_reference,driverGSEA=TRUE,NrCores=4){
   print("Performing Geneset Enrichment Analysis ...")
   com_gene_df<-suppressWarnings(ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC))
   communities_all<-unique(com_gene_df$Community_key)
@@ -559,39 +711,72 @@ CreateHyperGeoTestAll<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetw
     #for (ComNr in communities_all){
       #print(ComNr)
       ComNr<-communities_all[j]
-      target_genes<-com_gene_df%>%dplyr::filter(Community_key==ComNr)%>%dplyr::filter(Type=="Target")%>%dplyr::arrange(GeneNames)%>%dplyr::pull(GeneNames)
-      driver_genes<-com_gene_df%>%dplyr::filter(Community_key==ComNr)%>%dplyr::filter(Type=="Driver")%>%dplyr::arrange(GeneNames)%>%dplyr::pull(GeneNames)
-      driver_genes_weights<-com_gene_df%>%dplyr::filter(Community_key==ComNr)%>%dplyr::filter(Type=="Driver")%>%dplyr::arrange(GeneNames)%>%dplyr::pull(Weights)
+      target_genes<-com_gene_df%>%
+        dplyr::filter(Community_key==ComNr)%>%
+        dplyr::filter(Type=="Target")%>%
+        dplyr::arrange(GeneNames)%>%
+        dplyr::pull(GeneNames)
+      
+      driver_genes<-com_gene_df%>%
+        dplyr::filter(Community_key==ComNr)%>%
+        dplyr::filter(Type=="Driver")%>%
+        dplyr::arrange(GeneNames)%>%
+        dplyr::pull(GeneNames)
+      
+      driver_genes_weights<-com_gene_df%>%
+        dplyr::filter(Community_key==ComNr)%>%
+        dplyr::filter(Type=="Driver")%>%
+        dplyr::arrange(GeneNames)%>%
+        dplyr::pull(Weights)
+      
       if(driverGSEA){
         genelist<-unique(c(target_genes,driver_genes))
       }
       else{
         genelist<-unique(target_genes)
       }
-      outputHGT <- HGTGeneEnrichmentList(genelist, hyper_geo_reference[i], NrCores = NrCores)
+      outputHGT <- HGTGeneEnrichmentList(genelist,
+                                         hyper_geo_reference[i],
+                                         NrCores = NrCores)
       if (nrow(outputHGT)>0){
-
-        #all_hgt_output<-rbind(all_hgt_output, outputHGT%>%mutate(Community_key=ComNr))
         return(outputHGT%>%mutate(Community_key=ComNr))
       }
       else{
-        #all_hgt_output<-rbind(all_hgt_output, NULL) 
         return(NULL) 
       }
     }
     all_hgt_output<-rbind(all_hgt_output,hgt_output_gmt)
-    cat("The hyper geometric test with ", hyper_geo_reference[i], " gmt file is calculated.\n")
+    cat("The hyper geometric test with ",
+        hyper_geo_reference[i],
+        " gmt file is calculated.\n")
   }
   #Community_key
   utils::data(MsigdbMapping)
-  MsigdbMapping<-MsigdbMapping%>%dplyr::mutate(url=paste0('<a href="http://software.broadinstitute.org/gsea/msigdb/cards/',geneset,'">',gsub("_"," ",geneset),'</a>'))
-  all_hgt_output<-all_hgt_output%>%dplyr::left_join(MsigdbMapping,by=c("Geneset"="geneset"))%>%
+  MsigdbMapping<-MsigdbMapping%>%
+    dplyr::mutate(url=paste0('<a href="http://software.broadinstitute.org/gsea/msigdb/cards/',
+                             geneset,
+                             '">',
+                             gsub("_"," ",geneset),
+                             '</a>'))
+  
+  all_hgt_output<-all_hgt_output%>%
+    dplyr::left_join(MsigdbMapping,by=c("Geneset"="geneset"))%>%
     dplyr::mutate(description=ifelse(is.na(description),Geneset,description))%>%
-    dplyr::mutate(Geneset=ifelse(is.na(url),Geneset,url))%>%dplyr::rename("Description"="description")%>%dplyr::select(-url)
+    dplyr::mutate(Geneset=ifelse(is.na(url),Geneset,url))%>%
+    dplyr::rename("Description"="description")%>%
+    dplyr::select(-url)
   
-  all_hgt_output <- all_hgt_output %>% dplyr::mutate(overlap_perc = n_Overlapping / n_RefGeneset) %>% dplyr::select(Community_key,Geneset, Description,n_RefGeneset, n_Overlapping, Overlapping_genes, overlap_perc, p_value, padj) %>% dplyr::arrange(padj)
+  all_hgt_output <- all_hgt_output %>%
+    dplyr::mutate(overlap_perc = n_Overlapping / n_RefGeneset) %>%
+    dplyr::select(Community_key,Geneset, Description,n_RefGeneset, n_Overlapping,
+                  Overlapping_genes, overlap_perc, p_value, padj) %>%
+    dplyr::arrange(padj)
   
-  all_hgt_output<-all_hgt_output%>%left_join(com_gene_df%>%select(Community_key,Community,Community_type)%>%distinct(),by="Community_key")
+  all_hgt_output<-all_hgt_output%>%
+    left_join(com_gene_df%>%
+                select(Community_key,Community,Community_type)%>%
+                distinct(),
+              by="Community_key")
   print("Geneset Enrichment Analysis is done!")
   return(all_hgt_output)
 }
@@ -612,7 +797,8 @@ CreateHyperGeoTestAll<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetw
 #' try(
 #' InitialCheckInputs(cAMARETTOresults,output_address="./",HTMLsAMARETTOlist,CopyAMARETTOReport=FALSE,hyper_geo_reference)
 #' )
-InitialCheckInputs<-function(cAMARETTOresults,output_address,HTMLsAMARETTOlist,CopyAMARETTOReport,hyper_geo_reference,hyper_geo_reference_gp,hyper_geo_reference_cp){
+InitialCheckInputs<-function(cAMARETTOresults,output_address,HTMLsAMARETTOlist,CopyAMARETTOReport,
+                             hyper_geo_reference,hyper_geo_reference_gp,hyper_geo_reference_cp){
   if (!dir.exists(output_address)) {
     stop("Output directory is not existing.")
   } else {
@@ -684,15 +870,44 @@ InitialCheckInputs<-function(cAMARETTOresults,output_address,HTMLsAMARETTOlist,C
 #'try( 
 #'CommunityModuleTableCreate (cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, RunInfo)
 #')
-CommunityModuleTableCreate<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist,CopyAMARETTOReport){
-  com_gene_df<-suppressWarnings(ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC))%>%dplyr::select(Community_key,Community,Community_type,AMARETTOres,Run_Names,ModuleNr)%>%distinct()
-  ComModule<-com_gene_df %>% dplyr::mutate(ModuleLink=ModuleHyperLink(ModuleNr,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport))
-  ComModule<-ComModule%>%group_by(Community_key,Run_Names) %>% summarise(ModuleLinks=paste(ModuleLink,collapse = ", "))
+CommunityModuleTableCreate<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC,
+                                     HTMLsAMARETTOlist,CopyAMARETTOReport){
+  
+  com_gene_df<-suppressWarnings(ComRunModGenInfo(cAMARETTOresults,
+                                                 cAMARETTOnetworkM,
+                                                 cAMARETTOnetworkC))%>%
+    dplyr::select(Community_key,Community,Community_type,
+                  AMARETTOres,Run_Names,ModuleNr)%>%distinct()
+  
+  ComModule<-com_gene_df %>%
+    dplyr::mutate(ModuleLink=ModuleHyperLink(ModuleNr,Run_Names,AMARETTOres,
+                                             HTMLsAMARETTOlist,CopyAMARETTOReport))
+  
+  ComModule<-ComModule%>%
+    group_by(Community_key,Run_Names) %>%
+    summarise(ModuleLinks=paste(ModuleLink,collapse = ", "))
+  
   ComModule<-suppressMessages(reshape2::dcast(ComModule, Community_key~Run_Names, fill=0))
-  ComModule<-suppressMessages(ComModule%>%left_join(com_gene_df%>%select(Community_key,Community,Community_type)%>%distinct()))
-  ComModule<-ComModule%>%left_join(cAMARETTOnetworkC$commEdgeInfo%>%mutate(Community_key=Community)%>%select(Community_key,numTotalEdgesInCommunity,fractEdgesInVsOut,CommsizeFrac),by="Community_key")
-  ComModule<-ComModule%>%dplyr::mutate(Community = CommunityHyperLink(Community,Community_key,Community_type) )
-  ComModule<-ComModule%>%select(Community,sort(cAMARETTOresults$runnames),everything())%>%select(-Community_key,-Community_type)
+  
+  ComModule<-suppressMessages(ComModule%>%
+                                left_join(com_gene_df%>%
+                                            select(Community_key,Community,Community_type)%>%
+                                            distinct()))
+  
+  ComModule<-ComModule%>%
+    left_join(cAMARETTOnetworkC$commEdgeInfo%>%
+                mutate(Community_key=Community)%>%
+                select(Community_key,numTotalEdgesInCommunity,
+                       fractEdgesInVsOut,CommsizeFrac),
+              by="Community_key")
+  
+  ComModule<-ComModule%>%
+    dplyr::mutate(Community = CommunityHyperLink(Community,Community_key,Community_type))
+  
+  ComModule<-ComModule%>%
+    select(Community,sort(cAMARETTOresults$runnames),everything())%>%
+    select(-Community_key,-Community_type)
+  
   return(ComModule)
 }
 
@@ -707,7 +922,13 @@ CommunityModuleTableCreate<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARE
 #'
 #' @examples try(CommunityHyperLink(Community,Community_key,Community_type))
 CommunityHyperLink<-function(Community,Community_key,Community_type){
-  Comm_hyperLink<-paste0("<a href=\"./communities/",paste0("Community","_",Community_key),".html\">",paste0(ifelse((Community_type==0),"Community ",""),Community), "</a>")
+  Comm_hyperLink<-paste0("<a href=\"./communities/",
+                         paste0("Community","_",Community_key),
+                         ".html\">",paste0(ifelse((Community_type==0),
+                                                  "Community ",
+                                                  ""),
+                                           Community),
+                         "</a>")
   return(Comm_hyperLink)
 }
 
@@ -727,23 +948,45 @@ CommunityHyperLink<-function(Community,Community_key,Community_type){
 #' DriversSharedTbl(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)
 #' )
 DriversSharedTbl<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC){
-  com_gene_df<-suppressWarnings(ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC))
-  ComDrivers<-com_gene_df%>%filter(Type=="Driver")%>%mutate(GeneNames = paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=", GeneNames, "\">", GeneNames, "</a>"))
-  ComDrivers<-ComDrivers%>%group_by(Community_key,Run_Names)%>%summarise(GeneNames=paste(sort(unique(GeneNames)),collapse = ", "))
+  com_gene_df<-suppressWarnings(ComRunModGenInfo(cAMARETTOresults,
+                                                 cAMARETTOnetworkM, cAMARETTOnetworkC))
+  ComDrivers<-com_gene_df%>%
+    filter(Type=="Driver")%>%
+    mutate(GeneNames = paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=",
+                              GeneNames, "\">",
+                              GeneNames,
+                              "</a>"))
+  ComDrivers<-ComDrivers%>%
+    group_by(Community_key,Run_Names)%>%
+    summarise(GeneNames=paste(sort(unique(GeneNames)),collapse = ", "))
   ComDrivers<-suppressMessages(reshape2::dcast(ComDrivers, Community_key~Run_Names, fill=""))
-  ComDrivers<-ComDrivers%>%left_join(ComDrivers%>%tidyr::unite("all_genes",-one_of("Community_key"),sep = ", "),by="Community_key")
+  ComDrivers<-ComDrivers%>%
+    left_join(ComDrivers%>%
+                tidyr::unite("all_genes",-one_of("Community_key"),sep = ", "),by="Community_key")
   gene_freq_df<-NULL
   for (ComNr in unique(ComDrivers$Community_key)){
-    gene_table<-table(strsplit(gsub("","",ComDrivers%>%filter(Community_key==ComNr)%>%pull(all_genes)),","))
-    freq_tbl<-data.frame(GeneNames=names(gene_table),Freq=paste0("# Data Sets = ",as.numeric(gene_table)),Community_key=ComNr)
+    gene_table<-table(strsplit(gsub("","",ComDrivers%>%
+                                      filter(Community_key==ComNr)%>%
+                                      pull(all_genes)),","))
+    freq_tbl<-data.frame(GeneNames=names(gene_table),
+                         Freq=paste0("# Data Sets = ",
+                                     as.numeric(gene_table)),
+                         Community_key=ComNr)
     gene_freq_df<-rbind(gene_freq_df,freq_tbl)
   }
-  gene_freq_df<-gene_freq_df%>%group_by(Community_key,Freq)%>%summarise(GeneNames=paste(GeneNames,collapse = ", "))
-  gene_freq_df<-suppressMessages(reshape2::dcast(gene_freq_df, Community_key~Freq, fill=""))
+  gene_freq_df<-gene_freq_df%>%
+    group_by(Community_key,Freq)%>%
+    summarise(GeneNames=paste(GeneNames,collapse = ", "))
+  
+  gene_freq_df<-suppressMessages(reshape2::dcast(gene_freq_df,
+                                                 Community_key~Freq,
+                                                 fill=""))
   # order columns
   columnnames<-c("Community_key",sort(colnames(gene_freq_df)[-1]))
   gene_freq_df<-gene_freq_df[,columnnames] 
-  ComDrivers<-ComDrivers%>%left_join(gene_freq_df,by="Community_key")%>%select(-all_genes)
+  ComDrivers<-ComDrivers%>%
+    left_join(gene_freq_df,by="Community_key")%>%
+    dplyr::select(-all_genes)
   return(ComDrivers)
 }
 
@@ -875,7 +1118,11 @@ cAMARETTO_Cytoscape<-function(cAMARETTOsList,communityReportURL = "",cytoscape_n
                                dplyr::left_join(runURLs,by=c("from_Run"="run"))%>%
                                dplyr::rename(from_run_URL=run_URL)%>%
                                dplyr::mutate(from_URL=ifelse(from_Run %in% runnames,
-                                                             paste0('<a href="',from_run_URL,'/AMARETTOhtmls/modules/',from_Module,'.html">URL</a>'),
+                                                             paste0('<a href="',
+                                                                    from_run_URL,
+                                                                    '/AMARETTOhtmls/modules/',
+                                                                    from_Module,
+                                                                    '.html">URL</a>'),
                                                              '')))
   edges_df<-suppressWarnings(edges_df%>%
                                dplyr::mutate(to_Run=unlist(purrr::map(strsplit(to,"\\|"),1)))%>%
@@ -884,7 +1131,11 @@ cAMARETTO_Cytoscape<-function(cAMARETTOsList,communityReportURL = "",cytoscape_n
                                dplyr::left_join(runURLs,by=c("to_Run"="run"))%>%
                                dplyr::rename(to_run_URL=run_URL)%>%
                                dplyr::mutate(to_URL=ifelse(to_Run %in% runnames,
-                                                           paste0('<a href="',to_run_URL,'/AMARETTOhtmls/modules/',to_Module,'.html">URL</a>'),
+                                                           paste0('<a href="',
+                                                                  to_run_URL,
+                                                                  '/AMARETTOhtmls/modules/',
+                                                                  to_Module,
+                                                                  '.html">URL</a>'),
                                                            '')))
   edges_df<-edges_df%>%
     dplyr::select(-c("from_Run","from_Module","from_run_URL","to_Run","to_Module","to_run_URL"))%>%
@@ -965,9 +1216,19 @@ create_hgt_datatable<-function(output_hgt, com_table=FALSE, ComNr = 1){
   else{
     output_hgt<-output_hgt%>%filter(n_Overlapping>2)%>%
       dplyr::mutate(Community=CommunityHyperLink(Community,Community_key,Community_type))%>%
-      select(-Community_type,-Community_key)%>%select(Community,everything())%>% dplyr::arrange(padj,Community)
-    DTGSEA_colnames<-c("Community","Gene Set Name","Gene Set Description","# Genes in Gene Set","# Genes in Overlap","Genes in Overlap","% Genes in overlap","P-value","FDR Q-value")
-    #output_hgt<-output_hgt %>% dplyr::mutate(Geneset = paste0("<a href=\"http://software.broadinstitute.org/gsea/msigdb/cards/", Geneset, "\">", gsub("_", " ", Geneset),"</a>"))
+      select(-Community_type,-Community_key)%>%
+      select(Community,everything())%>%
+      dplyr::arrange(padj,Community)
+    DTGSEA_colnames<-c("Community","Gene Set Name",
+                       "Gene Set Description","# Genes in Gene Set",
+                       "# Genes in Overlap","Genes in Overlap",
+                       "% Genes in overlap","P-value","FDR Q-value")
+    #output_hgt<-output_hgt %>% 
+    # dplyr::mutate(Geneset = paste0("<a href=\"http://software.broadinstitute.org/gsea/msigdb/cards/",
+    #                                Geneset,
+    #                                "\">",
+    #                                gsub("_", " ", Geneset),
+    #                                "</a>"))
     DTGSEAall <- DT::datatable(output_hgt,
                                class = "display",
                                filter = 'top',
