@@ -29,7 +29,7 @@ cAMARETTO_ModuleNetwork<-function(cAMARETTOresults, pvalue = 0.05, inter = 5, co
   node_information <- node_information %>% dplyr::mutate(run=sub("\\|.*$","",modulenames))
   module_network <- graph_from_data_frame(d=output_hgt_allcombinations_filtered%>% dplyr::select(-RunName1,-RunName2), vertices=node_information, directed=FALSE)
   if (is.null(color_list)){
-    color_list <- randomcoloR::randomColor(length(c(cAMARETTOresults$runnames,cAMARETTOresults$gmtnames)),luminosity="bright")
+    color_list <- randomcoloR::randomColor(length(c(cAMARETTOresults$runnames,cAMARETTOresults$gmtnames)),luminosity="dark")
     names(color_list) <- c(cAMARETTOresults$runnames,cAMARETTOresults$gmtnames)
   } else {
     c(cAMARETTOresults$runnames,cAMARETTOresults$gmtnames) %in% names(color_list)
