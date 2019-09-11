@@ -24,6 +24,7 @@ cAMARETTO_heatmap
 Constructs a heatmap with the comparison between modules of two runs based on a hyper geometric test
 }
 \examples{
+try(
 cAMARETTO_heatmap(cAMARETTOresults, "LIHC", "GBM")
-
+)
 }

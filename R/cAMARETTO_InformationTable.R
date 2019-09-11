@@ -9,9 +9,9 @@
 #' @importFrom tibble add_row tibble
 #' 
 #' @examples 
-#' 
+#' try(
 #' cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC)
-#' 
+#' )
 #' @export
 cAMARETTO_InformationTable <- function(cAMARETTOnetworkM, cAMARETTOnetworkC) {
   Nodes_Cnetwork <- igraph::as_data_frame(cAMARETTOnetworkC$CommGraph, what="vertices")

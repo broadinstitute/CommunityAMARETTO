@@ -16,8 +16,9 @@
 #' 
 #' 
 #' @examples 
+#' try(
 #' cAMARETTO_heatmap(cAMARETTOresults, "LIHC", "GBM")
-#' 
+#' )
 #' @export
 cAMARETTO_heatmap<-function(cAMARETTOresults,run1,run2){
   results_filtered<-cAMARETTOresults$hgt_modules %>% dplyr::filter((grepl(run1,Geneset2)|grepl(run2,Geneset2))&(grepl(run1,Geneset1)|grepl(run2,Geneset1)))

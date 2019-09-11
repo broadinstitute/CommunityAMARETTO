@@ -25,6 +25,6 @@ Hyperlinks for Run Names
 Title RunHyperLink
 }
 \examples{
-RunHyperLink(Run_Names, AMARETTOres, HTMLsAMARETTOlist, CopyAMARETTOReport, page=1)
+try(RunHyperLink(Run_Names, AMARETTOres, HTMLsAMARETTOlist, CopyAMARETTOReport, page=1))
 
 }

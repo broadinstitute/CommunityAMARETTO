@@ -29,8 +29,8 @@ cAMARETTO_Results
 To initiate the community AMARETTO this results functions performs hyper geometric tests between all modules and gene sets.
 }
 \examples{
-
+try(
 Cibersortgmt <- "ciberSort.gmt"
 cAMARETTOresults <- cAMARETTO_Results(AMARETTOresults_all, gmt_filelist=list(ImmuneSignature = Cibersortgmt), NrCores = 4 , output_dir = "./")
-
+)
 }

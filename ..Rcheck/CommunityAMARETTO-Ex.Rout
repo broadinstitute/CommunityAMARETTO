@@ -1,0 +1,290 @@
+
+R version 3.6.0 (2019-04-26) -- "Planting of a Tree"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "CommunityAMARETTO"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> library('CommunityAMARETTO')
+Loading required package: foreach
+Loading required package: knitr
+Loading required package: purrr
+
+Attaching package: ‘purrr’
+
+The following objects are masked from ‘package:foreach’:
+
+    accumulate, when
+
+Loading required package: stringr
+Loading required package: tibble
+Loading required package: tidyr
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("ComRunModGenInfo")
+> ### * ComRunModGenInfo
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ComRunModGenInfo
+> ### Title: Title ComRunModGenInfo
+> ### Aliases: ComRunModGenInfo
+> 
+> ### ** Examples
+> 
+> ## Not run: 
+> ##D try(
+> ##D df<-ComRunModGenInfo(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC)
+> ##D )
+> ## End(Not run)
+> 
+> 
+> 
+> cleanEx()
+> nameEx("CommunityHyperLink")
+> ### * CommunityHyperLink
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: CommunityHyperLink
+> ### Title: Title CommunityHyperLink
+> ### Aliases: CommunityHyperLink
+> 
+> ### ** Examples
+> 
+> try(CommunityHyperLink(Community,Community_key,Community_type))
+Error in paste0("Community", "_", Community_key) : 
+  object 'Community_key' not found
+> 
+> 
+> 
+> cleanEx()
+> nameEx("CommunityModuleTableCreate")
+> ### * CommunityModuleTableCreate
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: CommunityModuleTableCreate
+> ### Title: Title CommunityModuleTableCreate
+> ### Aliases: CommunityModuleTableCreate
+> 
+> ### ** Examples
+> 
+> try( 
++ CommunityModuleTableCreate (cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, RunInfo)
++ )
+Error in utils::stack(cAMARETTOnetworkC$community_list) : 
+  object 'cAMARETTOnetworkC' not found
+> 
+> 
+> 
+> cleanEx()
+> nameEx("CreateHyperGeoTestAll")
+> ### * CreateHyperGeoTestAll
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: CreateHyperGeoTestAll
+> ### Title: Title CreateHyperGeoTestAll
+> ### Aliases: CreateHyperGeoTestAll
+> 
+> ### ** Examples
+> 
+> try(
++ CreateHyperGeoTestAll(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, hyper_geo_reference = './h.all.v6.2.symbols.gmt', driverGSEA=TRUE,NrCores=4)
++ )
+[1] "Performing Geneset Enrichment Analysis ..."
+Error in utils::stack(cAMARETTOnetworkC$community_list) : 
+  object 'cAMARETTOnetworkC' not found
+> 
+> 
+> 
+> cleanEx()
+> nameEx("CreatePhenotypeTable")
+> ### * CreatePhenotypeTable
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: CreatePhenotypeTable
+> ### Title: Title CreatePhenotypeTable
+> ### Aliases: CreatePhenotypeTable
+> 
+> ### ** Examples
+> 
+> try(CreatePhenotypeTable(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTables))
+Error in utils::stack(cAMARETTOnetworkC$community_list) : 
+  object 'cAMARETTOnetworkC' not found
+> 
+> 
+> 
+> cleanEx()
+> nameEx("DriversSharedTbl")
+> ### * DriversSharedTbl
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: DriversSharedTbl
+> ### Title: Title DriversSharedTbl
+> ### Aliases: DriversSharedTbl
+> 
+> ### ** Examples
+> 
+> try(
++ DriversSharedTbl(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)
++ )
+Error in utils::stack(cAMARETTOnetworkC$community_list) : 
+  object 'cAMARETTOnetworkC' not found
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ExtractGenesInfo")
+> ### * ExtractGenesInfo
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ExtractGenesInfo
+> ### Title: Title ExtractGenesInfo
+> ### Aliases: ExtractGenesInfo
+> 
+> ### ** Examples
+> 
+> try(ExtractGenesInfo(AMARETTOresults,"TCGA-LIHC"))
+Error in ExtractGenesInfo(AMARETTOresults, "TCGA-LIHC") : 
+  object 'AMARETTOresults' not found
+> 
+> 
+> 
+> cleanEx()
+> nameEx("Extract_Genes_Modules_All")
+> ### * Extract_Genes_Modules_All
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: Extract_Genes_Modules_All
+> ### Title: Title Extract_Genes_Modules_All
+> ### Aliases: Extract_Genes_Modules_All
+> 
+> ### ** Examples
+> 
+> try(Extract_Genes_Modules_All(AMARETTOresults_all,gmt_filelist))
+Error in Extract_Genes_Modules_All(AMARETTOresults_all, gmt_filelist) : 
+  object 'gmt_filelist' not found
+> 
+> 
+> 
+> cleanEx()
+> nameEx("InitialCheckInputs")
+> ### * InitialCheckInputs
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: InitialCheckInputs
+> ### Title: Title InitialCheckInputs
+> ### Aliases: InitialCheckInputs
+> 
+> ### ** Examples
+> 
+> try(
++ InitialCheckInputs(cAMARETTOresults,output_address="./",HTMLsAMARETTOlist,CopyAMARETTOReport=FALSE,hyper_geo_reference)
++ )
+Error in InitialCheckInputs(cAMARETTOresults, output_address = "./", HTMLsAMARETTOlist,  : 
+  could not find function "InitialCheckInputs"
+> 
+> 
+> 
+> cleanEx()
+> nameEx("ModuleHyperLink")
+> ### * ModuleHyperLink
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: ModuleHyperLink
+> ### Title: Title ModuleHyperLink
+> ### Aliases: ModuleHyperLink
+> 
+> ### ** Examples
+> 
+> try(ModuleHyperLink(Module,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport,page=1))
+Error in ModuleHyperLink(Module, Run_Names, AMARETTOres, HTMLsAMARETTOlist,  : 
+  object 'HTMLsAMARETTOlist' not found
+> 
+> 
+> 
+> cleanEx()
+> nameEx("RunHyperLink")
+> ### * RunHyperLink
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: RunHyperLink
+> ### Title: Title RunHyperLink
+> ### Aliases: RunHyperLink
+> 
+> ### ** Examples
+> 
+> try(RunHyperLink(Run_Names, AMARETTOres, HTMLsAMARETTOlist, CopyAMARETTOReport, page=1))
+Error in RunHyperLink(Run_Names, AMARETTOres, HTMLsAMARETTOlist, CopyAMARETTOReport,  : 
+  object 'HTMLsAMARETTOlist' not found
+> 
+> 
+> 
+> 
+> cleanEx()
+> nameEx("cAMARETTO_ColorOneModule")
+> ### * cAMARETTO_ColorOneModule
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: cAMARETTO_ColorOneModule
+> ### Title: cAMARETTO_ColorOneModule Creates a network with one (or none)
+> ###   colored modules
+> ### Aliases: cAMARETTO_ColorOneModule
+> 
+> ### ** Examples
+> 
+> try(
++ cAMARETTO_ColorOneModule(cAMARETTOnetworkM, cAMARETTOnetworkC, 2)
++ )
+Error in cAMARETTO_ColorOneModule(cAMARETTOnetworkM, cAMARETTOnetworkC,  : 
+  object 'cAMARETTOnetworkC' not found
+> 
+> 
+> 
+> cleanEx()
+> nameEx("cAMARETTO_Cytoscape")
+> ### * cAMARETTO_Cytoscape
+> 
+> flush(stderr()); flush(stdout())
+> 
+> ### Name: cAMARETTO_Cytoscape
+> ### Title: Title cAMARETTO_Cytoscape
+> ### Aliases: cAMARETTO_Cytoscape
+> 
+> ### ** Examples
+> 
+>  
+> try(
++ cytoscape_name<-"cAMARETTO_Liver2DS"
++ cAMARETTOsList<-readRDS(file="./outputs/cAMARETTO_Liver2DS.rds")
+Error: unexpected symbol in:
+"cytoscape_name<-"cAMARETTO_Liver2DS"
+cAMARETTOsList"
+Execution halted

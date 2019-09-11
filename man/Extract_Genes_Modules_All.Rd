@@ -18,5 +18,5 @@ a dataframe for all AMARETTO files and given gmt file with the following structu
 Title Extract_Genes_Modules_All
 }
 \examples{
-Extract_Genes_Modules_All(AMARETTOresults_all,gmt_filelist)
+try(Extract_Genes_Modules_All(AMARETTOresults_all,gmt_filelist))
 }

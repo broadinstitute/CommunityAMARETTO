@@ -20,5 +20,5 @@ a hyperlink and presentable name for the communities used for datatables
 Title CommunityHyperLink
 }
 \examples{
-CommunityHyperLink(Community,Community_key,Community_type)
+try(CommunityHyperLink(Community,Community_key,Community_type))
 }

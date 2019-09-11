@@ -10,7 +10,9 @@
 #' 
 #' @import igraph
 #' @examples
+#' try(
 #' cAMARETTO_ColorOneModule(cAMARETTOnetworkM, cAMARETTOnetworkC, 2)
+#' )
 #' @export
 cAMARETTO_ColorOneModule <- 
 function(cAMARETTOnetworkM, cAMARETTOnetworkC, ModuleNr) {

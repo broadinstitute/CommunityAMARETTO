@@ -20,5 +20,7 @@ Frequency of driver genes across different communities and datasets
 Title DriversSharedTbl
 }
 \examples{
- DriversSharedTbl(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)
+try(
+DriversSharedTbl(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)
+)
 }

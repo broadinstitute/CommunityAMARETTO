@@ -25,5 +25,7 @@ Community To Module Dataframe
 Title CommunityModuleTableCreate
 }
 \examples{
+try( 
 CommunityModuleTableCreate (cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, RunInfo)
+)
 }

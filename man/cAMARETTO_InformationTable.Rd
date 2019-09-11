@@ -18,7 +18,7 @@ an information table about the communities containing the included nodes and ove
 cAMARETTO_InformationTable
 }
 \examples{
-
+try(
 cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC)
-
+)
 }

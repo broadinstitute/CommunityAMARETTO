@@ -31,7 +31,7 @@ cAMARETTO_ModuleNetwork
 Creates a module network.
 }
 \examples{
-
+try(
 cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,0.10,5)
-
+)
 }

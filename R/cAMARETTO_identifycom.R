@@ -16,9 +16,9 @@
 #' @importFrom dplyr arrange group_by left_join mutate select summarise  rename  filter everything pull distinct n row_number 
 #' @import igraph
 #' @examples 
-#' 
+#' try(
 #' cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
-#' 
+#' )
 #' @export
 cAMARETTO_IdentifyCom <- function(cAMARETTOnetworkM, color_list=NULL, filterComm=TRUE, ratioCommSize=0.01, MinRuns=2, ratioRunSize=0.1, ratioEdgesInOut=0.5, plot_network = TRUE){
   

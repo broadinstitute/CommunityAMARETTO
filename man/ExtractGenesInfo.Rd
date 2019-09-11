@@ -18,5 +18,5 @@ returns a dataframe with columns of runname, module-number, genename, gene-types
 Title  ExtractGenesInfo
 }
 \examples{
-ExtractGenesInfo(AMARETTOresults,"TCGA-LIHC")
+try(ExtractGenesInfo(AMARETTOresults,"TCGA-LIHC"))
 }

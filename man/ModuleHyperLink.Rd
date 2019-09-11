@@ -27,5 +27,5 @@ Hyperlinks for Modules
 Title ModuleHyperLink
 }
 \examples{
-ModuleHyperLink(Module,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport,page=1)
+try(ModuleHyperLink(Module,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport,page=1))
 }

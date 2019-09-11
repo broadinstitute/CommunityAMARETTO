@@ -16,9 +16,9 @@
 #' @importFrom dplyr filter mutate select
 #' 
 #' @examples 
-#' 
+#' try(
 #' cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,0.10,5)
-#' 
+#' )
 #' @export
 cAMARETTO_ModuleNetwork<-function(cAMARETTOresults, pvalue = 0.05, inter = 5, color_list = NULL, edge_method = "pvalue", plot_network = TRUE){
   

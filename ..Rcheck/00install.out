@@ -1,15 +1,17 @@
 * installing *source* package ‘CommunityAMARETTO’ ...
 ** using staged installation
-Error : Invalid DESCRIPTION file
-
-Malformed Depends or Suggests or Imports or Enhances field.
-Offending entries:
-  R (>= 3.5) foreach
-Entries must be names of packages optionally followed by '<=' or '>=',
-white space, and a valid version number in parentheses.
-
-See section 'The DESCRIPTION file' in the 'Writing R Extensions'
-manual.
-
-ERROR: installing package DESCRIPTION failed for package ‘CommunityAMARETTO’
-* removing ‘/Users/mn516/Documents/GitHub/CommunityAMARETTO/..Rcheck/CommunityAMARETTO’
+** libs
+Warning: no source files found
+** R
+** data
+*** moving datasets to lazyload DB
+** inst
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** installing vignettes
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (CommunityAMARETTO)

@@ -13,10 +13,10 @@
 #' @importFrom dplyr arrange group_by left_join mutate select summarise  rename  filter everything pull distinct case_when
 #' @importFrom stats p.adjust phyper
 #' @examples 
-#' 
+#' try(
 #' Cibersortgmt <- "ciberSort.gmt"
 #' cAMARETTOresults <- cAMARETTO_Results(AMARETTOresults_all, gmt_filelist=list(ImmuneSignature = Cibersortgmt), NrCores = 4 , output_dir = "./")
-#' 
+#' )
 #' @export
 cAMARETTO_Results <- function(AMARETTOresults_all, NrCores=1, output_dir="./", gmt_filelist=NULL, drivers = FALSE){
   
@@ -181,7 +181,7 @@ HyperGTestGeneEnrichment<-function(gmtfile1, gmtfile2, runname1, runname2, NrCor
 #' @return returns a dataframe with columns of runname, module-number, genename, gene-types, and weights of the driver genes.
 #' @export
 #'
-#' @examples ExtractGenesInfo(AMARETTOresults,"TCGA-LIHC")
+#' @examples try(ExtractGenesInfo(AMARETTOresults,"TCGA-LIHC"))
 ExtractGenesInfo<-function(AMARETTOresults,run){
   ModuleMembership<-NULL
   for (ModuleNr in 1:AMARETTOresults$NrModules){
@@ -204,7 +204,7 @@ ExtractGenesInfo<-function(AMARETTOresults,run){
 #' @importFrom dplyr mutate rename select
 #' @return a dataframe for all AMARETTO files and given gmt file with the following structure :  runname, ModuleNr, genename, gene-types, and weights of the driver genes.
 #' @export
-#' @examples Extract_Genes_Modules_All(AMARETTOresults_all,gmt_filelist)
+#' @examples try(Extract_Genes_Modules_All(AMARETTOresults_all,gmt_filelist))
 Extract_Genes_Modules_All<-function(AMARETTOresults_all,gmt_filelist){
   all_genes_modules_df<-NULL
   for (run in names(AMARETTOresults_all)){

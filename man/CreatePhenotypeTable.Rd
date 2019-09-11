@@ -23,5 +23,5 @@ results
 Title CreatePhenotypeTable
 }
 \examples{
-CreatePhenotypeTable(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTables)
+try(CreatePhenotypeTable(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTables))
 }

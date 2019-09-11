@@ -28,5 +28,7 @@ Geneset Enrichment Analysis for the entire communities.
 Title CreateHyperGeoTestAll
 }
 \examples{
+try(
 CreateHyperGeoTestAll(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, hyper_geo_reference = './h.all.v6.2.symbols.gmt', driverGSEA=TRUE,NrCores=4)
+)
 }

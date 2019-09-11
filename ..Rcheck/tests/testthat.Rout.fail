@@ -1,0 +1,63 @@
+
+R version 3.6.0 (2019-04-26) -- "Planting of a Tree"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(testthat)
+> library(CommunityAMARETTO)
+Loading required package: foreach
+Loading required package: knitr
+Loading required package: purrr
+
+Attaching package: 'purrr'
+
+The following objects are masked from 'package:foreach':
+
+    accumulate, when
+
+The following object is masked from 'package:testthat':
+
+    is_null
+
+Loading required package: stringr
+Loading required package: tibble
+Loading required package: tidyr
+> 
+> test_check("CommunityAMARETTO")
+── 1. Error: (unknown) (@test_cAMARETTO.R#1)  ──────────────────────────────────
+Invalid comparison operator in dependency: >= foreach
+1: devtools::install_github("broadinstitute/CommunityAMARETTO", ref = "develop") at testthat/test_cAMARETTO.R:1
+2: install_remotes(remotes, auth_token = auth_token, host = host, dependencies = dependencies, 
+       upgrade = upgrade, force = force, quiet = quiet, build = build, build_opts = build_opts, 
+       repos = repos, type = type, ...)
+3: vapply(remotes, install_remote, ..., FUN.VALUE = character(1))
+4: FUN(X[[i]], ...)
+5: install(source, dependencies = dependencies, upgrade = upgrade, force = force, quiet = quiet, 
+       build = build, build_opts = build_opts, repos = repos, type = type, ...)
+6: install_deps(pkgdir, dependencies = dependencies, quiet = quiet, build = build, build_opts = build_opts, 
+       upgrade = upgrade, repos = repos, type = type)
+7: dev_package_deps(pkgdir, repos = repos, dependencies = dependencies, type = type)
+8: local_package_deps(pkgdir = pkgdir, dependencies = dependencies)
+9: lapply(pkg[tolower(dependencies)], parse_deps)
+10: FUN(X[[i]], ...)
+11: stop("Invalid comparison operator in dependency: ", paste(compare_nna[!compare_valid], 
+       collapse = ", "))
+
+══ testthat results  ═══════════════════════════════════════════════════════════
+OK: 0 SKIPPED: 0 WARNINGS: 0 FAILED: 1
+1. Error: (unknown) (@test_cAMARETTO.R#1) 
+
+Error: testthat unit tests failed
+Execution halted

@@ -32,7 +32,7 @@ a list with the module network, a community list, community edge information and
 cAMARETTO_IdentifyCom
 }
 \examples{
-
+try(
 cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
-
+)
 }

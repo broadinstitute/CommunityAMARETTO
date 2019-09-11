@@ -4,28 +4,22 @@ Title: Calculating and visualising communities over AMARETTO runs and genesets.
 Version: 0.0.0.9000
 Author: Celine Everaert, Mohsen Nabian, Olivier Gevaert and Nathalie Pochet
 Maintainer: Nathalie Pochet <npochet@broadinstitute.org>
-Depends: R (>= 3.5) foreach, knitr, purrr, stringr, tibble, tidyr
+Depends: R (>= 3.5), foreach, knitr, purrr, stringr, tibble, tidyr
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 LazyLoad: yes
+LazyData: true
 Encoding: UTF-8
 biocViews:
         StatisticalMethod,DifferentialMethylation,GeneRegulation,GeneExpression,MethylationArray,Transcription,Preprocessing,BatchEffect,DataImport,mRNAMicroarray,MicroRNAArray,Regression,Clustering,RNASeq,CopyNumberVariation,Sequencing,Microarray,Normalization,Network,Bayesian,ExonArray,OneChannel,TwoChannel,ProprietaryPlatforms,AlternativeSplicing,DifferentialExpression,DifferentialSplicing,GeneSetEnrichment,MultipleComparison,QualityControl,TimeCourse
 Suggests: 
     testthat,
-    MASS,
     knitr
 NeedsCompilation: no
 Packaged: 2016-06-08 11:54:24 UTC
-LazyData: true
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1.9000
-LinkingTo: 
-    Rcpp
 Imports:
     R.utils,
     Rcpp,
-    tidyverse,
     ComplexHeatmap,
     circlize,
     doParallel,
@@ -41,5 +35,10 @@ Imports:
     grDevices, 
     dplyr, 
     methods,
-    foreach
+    foreach,
+    tidyverse
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1.9000
+LinkingTo: 
+    Rcpp
 VignetteBuilder: knitr

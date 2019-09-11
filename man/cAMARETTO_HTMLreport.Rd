@@ -42,6 +42,9 @@ cAMARETTO_HTMLreport
 Creates a HTMLreport for the community AMARETTO results
 }
 \examples{
+\dontrun{
+try(
 cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist = HTMLsAMARETTOlist, hyper_geo_reference = gmtfile, output_address= "./")
-
+)
+}
 }

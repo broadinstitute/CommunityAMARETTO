@@ -2,12 +2,17 @@
 * using R version 3.6.0 (2019-04-26)
 * using platform: x86_64-apple-darwin15.6.0 (64-bit)
 * using session charset: UTF-8
+* using option ‘--no-manual’
 * checking for file ‘./DESCRIPTION’ ... OK
 * checking extension type ... Package
 * this is package ‘CommunityAMARETTO’ version ‘0.0.0.9000’
 * package encoding: UTF-8
 * checking package namespace information ... OK
-* checking package dependencies ... OK
+* checking package dependencies ... NOTE
+Depends: includes the non-default packages:
+  'foreach', 'knitr', 'purrr', 'stringr', 'tibble', 'tidyr'
+Adding so many packages to the search path is excessive and importing
+selectively is preferable.
 * checking if this is a source package ... OK
 * checking if there is a namespace ... OK
 * checking for executable files ... WARNING
@@ -31,10 +36,13 @@ Found the following executable files:
   .git/objects/0e/6a69d033526330a98e5a2474647e17c50290ce
   .git/objects/0f/2a7853e5db580a0ca71c97b93313825ae91aa4
   .git/objects/0f/d995210b4e6271a736d18af0194b4fde6870ff
+  .git/objects/0f/f14d8c81c1ec3fab95477aa27c195f5cd5d947
   .git/objects/10/016ff429ac6b1192d3e003ed5dd712221c0f74
+  .git/objects/10/4a5881381b3a98ed4eae58f2e4f409b4d32024
   .git/objects/10/7d5d52d5b03759db2a354f144c7f058bae2f0d
   .git/objects/10/b4c689771af27921ed7ed04882244845f7d148
   .git/objects/10/c83ca610e1cea09ed9a094147724a0f41f47d7
+  .git/objects/12/6eccee117c10a60a3a5d9d6d318b11a966c6c0
   .git/objects/12/7e7066ff46cda27535c8bbdc4ad47044532c0f
   .git/objects/14/2e158f083835d2911a6d8482e9f23419a4743a
   .git/objects/14/3a79fce6dc7f768d9eb6aa895c34efcf65978d
@@ -45,9 +53,11 @@ Found the following executable files:
   .git/objects/1a/4c4e6cec68c377af727e62282e0f1d3280404a
   .git/objects/1a/8f1de1a11cf946e3d78a4d7f5d31e1b97480e2
   .git/objects/1b/ae460cd80869cd3ff0602fc5058c9b16edd362
+  .git/objects/1b/c2da4a61e4bb55f73abea2bc2307c4f2c3c68a
   .git/objects/1c/539cdb414fe7e8ccda21f673b66878589b482e
   .git/objects/1c/92c139f00d722fcb90f0e0aae4a0c6a8b4806b
   .git/objects/1c/d8617f8e15525c3a2b22cf9c2a4d1111fa2950
+  .git/objects/1d/aeb372e5a5bf42625f24b428279cb4867f17a8
   .git/objects/1d/fb6463156d24462b6c31a2577517f21e824890
   .git/objects/1e/6c57a12021100841c62b15dd38948550df2c34
   .git/objects/1f/212248c29a172d68343a1e6de82234383f3288
@@ -85,6 +95,8 @@ Found the following executable files:
   .git/objects/2e/c2fdb92ae392f1478a496cb05266227cdb25d8
   .git/objects/2e/db637aa680fe10c051d77f40106349d43187fd
   .git/objects/2f/3cd427c028a7ab21f830a351e799043d7c47d9
+  .git/objects/2f/f0f0787c98b7f03f46f88a32f204396c2eb01d
+  .git/objects/30/41adc5c74fb2931e156f0e3a91adba4ce39fb3
   .git/objects/30/cc3a3cf447064773165b25b559bd25ee466e23
   .git/objects/31/5b3251429403b806fb604dba2ad486c0fd31ed
   .git/objects/33/0c247b1cd2d440c832278054fe930c862f52aa
@@ -143,6 +155,7 @@ Found the following executable files:
   .git/objects/52/e1fe9a85a432fe730d92771bbadd0cd615cfbe
   .git/objects/54/65824252211d603f5376a31c3b2295845e75d6
   .git/objects/55/3babd025c02268a64a6f9cc9e8c416628a37d8
+  .git/objects/55/bf237e8a5a195e3d5668b48291fc510ae51428
   .git/objects/56/0a4e2a545d1e13a06bc4a06bb98161c06173b4
   .git/objects/56/1665272a4c8a25ace8edb606c68a9baa6ad223
   .git/objects/56/7493803dbdb7404b26cc1584982ac291b5b3db
@@ -162,6 +175,7 @@ Found the following executable files:
   .git/objects/5e/915c2b815759be2a7a950517914fc88cdf0801
   .git/objects/5f/5ba8f245b3ffd2e79201a0c6db5bff6437364a
   .git/objects/60/09ae95b9f8ac8c52ac1e11dc8dcc2ceba35549
+  .git/objects/60/a18f145e05247c096766fc7f94bc17b1915120
   .git/objects/61/8b382994711f6a932103fed5c47088d347fdb0
   .git/objects/61/e91098ea8b837af55816129bf372966b31c7c0
   .git/objects/63/2cb298312c0ff7547c52319f137f2640ff35c1
@@ -195,14 +209,17 @@ Found the following executable files:
   .git/objects/72/f26da58c571cb1a43c68e5b797fb25e531f7cb
   .git/objects/73/3afe8a8377150836bd5e74704b1d0af126dbad
   .git/objects/75/ec5118e327a117fa35fd17b7f3338c2639b43b
+  .git/objects/76/c7f16b90188857d64f4d820a545719bf96a591
   .git/objects/77/c45149197cbbcaa1b5a389a184f23c68aa6d53
   .git/objects/78/6fd71200403e29cd5163770de5989f61e5c158
   .git/objects/78/be771d6452bb5cb708ee1a11355e039b99d8c9
   .git/objects/79/4bd41812c556ccd4a46e86196e97348d684a5f
   .git/objects/79/c2fa833421a8755365439ae1f816c86841cc49
+  .git/objects/7a/e040970ef7e4ad3e9a2f06494ac8b04847c5d6
   .git/objects/7b/7845224c5a427bacbbf2d97b45e357ef6e52c0
   .git/objects/7d/04399dd5bb9200442beab8c5b9869e255057c1
   .git/objects/7d/1f09df701992ca4517756bc98ca66e7dbebf0e
+  .git/objects/7e/04d504698bbe6757b3b590706f313aaa78b7fb
   .git/objects/7e/3d947389dcddec2193eb54adf4f871f2c13639
   .git/objects/7e/3f3dabfe42be0ee36145072026378304dfc997
   .git/objects/7f/ee99d505f406811b729a2d73829ede2698e023
@@ -226,6 +243,7 @@ Found the following executable files:
   .git/objects/87/e5137c2886927a095750ced6f98e4a7be356c3
   .git/objects/88/79cf3c4c4b156e99f29c4a0a555e149c9377c4
   .git/objects/89/22f45d41c08aa4a3bce424736f123af66f496d
+  .git/objects/89/345b2472daa16a3002190bf3981ac6bac2f5ac
   .git/objects/8a/c71e899168fa8cb100294d763171174aa75895
   .git/objects/8b/17d126c4d0d92a0b07d99cf48f6372c555886b
   .git/objects/8b/d3320938d2670505a52c451d88ccd4bad55e22
@@ -234,6 +252,7 @@ Found the following executable files:
   .git/objects/8c/703083a5d78fae2b551d26cd34d3288f88798d
   .git/objects/8c/eacae587e34be783f8b3bc7bedc0da216c2846
   .git/objects/8d/22f00a82ed29e11ecf308157f5bcf375a0a1af
+  .git/objects/8d/fb152fb1b432968a1efead592c1bf7ac814189
   .git/objects/8e/06be5a81660c6dd53f92bc820638347bd9d9ef
   .git/objects/8e/2224e267f2f570cea76b270af2ea45289d82c3
   .git/objects/8e/96fa91b561c30c4a1fc9b006cc8f816469d1c6
@@ -254,6 +273,7 @@ Found the following executable files:
   .git/objects/95/d558c504e0d211a267c3d2c40d4f2bf8db0d56
   .git/objects/97/19fa9e55c0d7665c1b5170f5deda08942f16ce
   .git/objects/98/6b7b1dbbda3527cd0bff6f3face2abfa4b458a
+  .git/objects/98/b5031e99a5daa600ee9163f584768d4c99cc8c
   .git/objects/99/439e479e3058cb4361ff96fb2d9590bb13002d
   .git/objects/99/a2dbfd3de7b4c151e7a6ec0ae80aed8c8e9b86
   .git/objects/9a/0b8712b88f5a77828911cfeb03655d98082226
@@ -264,6 +284,7 @@ Found the following executable files:
   .git/objects/9b/a97e824fa9e8c370b47830de172968ec9e96c3
   .git/objects/9c/595df80c107c0f5e1b85ed01877fb9c3ca7d92
   .git/objects/9c/ed363caf442235bc7f0a3c3c90264c39120f33
+  .git/objects/9d/8556a43453382d820736550d8bf347c476c16f
   .git/objects/9d/9cc98886cbd4594614ca610411e0cd44380e02
   .git/objects/9d/b25ef719ee1b9f26c466766f07c5313f403f94
   .git/objects/9e/7af8acbb306c15f15bfe18dfb782bda289b25d
@@ -276,6 +297,7 @@ Found the following executable files:
   .git/objects/a1/132630b3f486a8761eda8826651a4a302b7de9
   .git/objects/a1/5deb38f07325337d67af1b74e13797525b6b05
   .git/objects/a1/79415ad46717dad091066fbd13bfed3d439ce0
+  .git/objects/a1/daa6620be9681d8f56b271f62219f7cd9feebb
   .git/objects/a2/e03d8e42fcb3d7f6c5675ccb2392df66887960
   .git/objects/a3/1b51092b7c7434c8104716649cfd330eaa3e89
   .git/objects/a3/1c38f7a4036961c494d3010196b1ea2591dcab
@@ -427,6 +449,7 @@ Found the following executable files:
   .git/objects/f4/99f8aff5d8a0f8e30479dafdb718021bf71519
   .git/objects/f4/ac9c4ab5e100d9f80fb7a921755f79a96163ba
   .git/objects/f5/04116f02619573f8f01ff7f1fd7898de69679f
+  .git/objects/f5/4fe5a520b1ea78edbf6a1a29e578599700eed1
   .git/objects/f5/742aa27b41b1ce0498737156c130281492366a
   .git/objects/f5/ece0454d7a21fb47670ca1169ecc788fb7d052
   .git/objects/f6/113ed4a763a308a5814af3438b3a417284b323
@@ -443,12 +466,14 @@ Found the following executable files:
   .git/objects/fa/e7873f78b31b63e0c3053c8857ba113f4c9466
   .git/objects/fc/edc4ad1b8bd7c81eff2cbd352da72238439804
   .git/objects/fd/15250a8a0a73a8904a417afc89e4bcf220d3d2
+  .git/objects/fe/22edc3f70e9d5d10dee1d060b875f13a5d0c93
   .git/objects/fe/3381c00e36a6509df1907c2644e0121517f903
   .git/objects/fe/3712e888807e73f9e8c64241d802018ee76017
   .git/objects/fe/7f9a3e6be8ace98f12a70fe5ad1ad9a4941038
   .git/objects/ff/a02fdeba91af30d64373626ab02d6d1e65221e
   .git/objects/ff/e20817dccedb8244823223626e77709479ad2b
   .git/objects/ff/f17b9ec5e3fcec1bc0272bcbe4e56d71ea40a3
+  .git/objects/ff/fab4411ae00f1a4c706ad34f35440ecba5a2b8
 Source packages should not contain undeclared executable files.
 See section ‘Package structure’ in the ‘Writing R Extensions’ manual.
 * checking for hidden files and directories ... NOTE
@@ -473,8 +498,406 @@ These were most likely included in error. See section ‘Package
 structure’ in the ‘Writing R Extensions’ manual.
 * checking for portable file names ... OK
 * checking for sufficient/correct file permissions ... OK
-* checking whether package ‘CommunityAMARETTO’ can be installed ... ERROR
-Installation failed.
+* checking whether package ‘CommunityAMARETTO’ can be installed ... WARNING
+Found the following significant warnings:
+  Warning: no source files found
 See ‘/Users/mn516/Documents/GitHub/CommunityAMARETTO/..Rcheck/00install.out’ for details.
+* checking installed package size ... NOTE
+  installed size is 11.1Mb
+  sub-directories of 1Mb or more:
+    data  10.2Mb
+* checking package directory ... OK
+* checking DESCRIPTION meta-information ... NOTE
+Malformed Title field: should not end in a period.
+Invalid license file pointers: LICENSE
+NeedsCompilation field should likely be ‘yes’
+Packages listed in more than one of Depends, Imports, Suggests, Enhances:
+  ‘foreach’ ‘knitr’
+A package should be listed in only one of these fields.
+* checking top-level files ... OK
+* checking for left-over files ... OK
+* checking index information ... OK
+* checking package subdirectories ... WARNING
+Found the following directory with the name of a check directory:
+  ./..Rcheck
+Most likely, these were included erroneously.
+Subdirectory ‘src’ contains no source files.
+* checking R files for non-ASCII characters ... OK
+* checking R files for syntax errors ... OK
+* checking whether the package can be loaded ... OK
+* checking whether the package can be loaded with stated dependencies ... OK
+* checking whether the package can be unloaded cleanly ... OK
+* checking whether the namespace can be loaded with stated dependencies ... OK
+* checking whether the namespace can be unloaded cleanly ... OK
+* checking dependencies in R code ... NOTE
+Namespaces in Imports field not imported from:
+  ‘Rcpp’ ‘grDevices’ ‘impute’ ‘methods’
+  All declared Imports should be used.
+* checking S3 generic/method consistency ... OK
+* checking replacement functions ... OK
+* checking foreign function calls ... OK
+* checking R code for possible problems ... NOTE
+ComRunModGenInfo: no visible binding for global variable ‘Run_Names’
+ComRunModGenInfo: no visible binding for global variable ‘ModuleNr’
+ComRunModGenInfo: no visible binding for global variable ‘Module’
+ComRunModGenInfo: no visible binding for global variable ‘Community’
+CommunityModuleTableCreate: no visible binding for global variable
+  ‘Community_key’
+CommunityModuleTableCreate: no visible binding for global variable
+  ‘Community’
+CommunityModuleTableCreate: no visible binding for global variable
+  ‘Community_type’
+CommunityModuleTableCreate: no visible binding for global variable
+  ‘AMARETTOres’
+CommunityModuleTableCreate: no visible binding for global variable
+  ‘Run_Names’
+CommunityModuleTableCreate: no visible binding for global variable
+  ‘ModuleNr’
+CommunityModuleTableCreate: no visible binding for global variable
+  ‘ModuleLink’
+CommunityModuleTableCreate: no visible binding for global variable
+  ‘numTotalEdgesInCommunity’
+CommunityModuleTableCreate: no visible binding for global variable
+  ‘fractEdgesInVsOut’
+CommunityModuleTableCreate: no visible binding for global variable
+  ‘CommsizeFrac’
+CreateHyperGeoTestAll: no visible binding for global variable ‘j’
+CreateHyperGeoTestAll: no visible binding for global variable
+  ‘Community_key’
+CreateHyperGeoTestAll: no visible binding for global variable ‘Type’
+CreateHyperGeoTestAll: no visible binding for global variable
+  ‘GeneNames’
+CreateHyperGeoTestAll: no visible binding for global variable ‘Weights’
+CreateHyperGeoTestAll: no visible binding for global variable ‘geneset’
+CreateHyperGeoTestAll: no visible binding for global variable
+  ‘description’
+CreateHyperGeoTestAll: no visible binding for global variable ‘Geneset’
+CreateHyperGeoTestAll: no visible binding for global variable
+  ‘n_Overlapping’
+CreateHyperGeoTestAll: no visible binding for global variable
+  ‘n_RefGeneset’
+CreateHyperGeoTestAll: no visible binding for global variable
+  ‘Description’
+CreateHyperGeoTestAll: no visible binding for global variable
+  ‘Overlapping_genes’
+CreateHyperGeoTestAll: no visible binding for global variable
+  ‘overlap_perc’
+CreateHyperGeoTestAll: no visible binding for global variable ‘p_value’
+CreateHyperGeoTestAll: no visible binding for global variable ‘padj’
+CreateHyperGeoTestAll: no visible binding for global variable
+  ‘Community’
+CreateHyperGeoTestAll: no visible binding for global variable
+  ‘Community_type’
+CreatePhenotypeTable: no visible binding for global variable
+  ‘Run_Names’
+CreatePhenotypeTable: no visible binding for global variable ‘ModuleNr’
+CreatePhenotypeTable: no visible binding for global variable
+  ‘Community’
+CreatePhenotypeTable: no visible binding for global variable
+  ‘Community_key’
+CreatePhenotypeTable: no visible binding for global variable
+  ‘Community_type’
+CreatePhenotypeTable: no visible binding for global variable
+  ‘AMARETTOres’
+CreatePhenotypeTable: no visible binding for global variable
+  ‘Phenotypes’
+CreatePhenotypeTable: no visible binding for global variable
+  ‘Statistical_Test’
+CreatePhenotypeTable: no visible binding for global variable ‘p.value’
+CreatePhenotypeTable: no visible binding for global variable ‘q.value’
+CreatePhenotypeTable: no visible binding for global variable
+  ‘Descriptive_Statistics’
+DriversSharedTbl: no visible binding for global variable ‘Type’
+DriversSharedTbl: no visible binding for global variable ‘GeneNames’
+DriversSharedTbl: no visible binding for global variable
+  ‘Community_key’
+DriversSharedTbl: no visible binding for global variable ‘Run_Names’
+DriversSharedTbl: no visible global function definition for ‘one_of’
+DriversSharedTbl: no visible binding for global variable ‘all_genes’
+DriversSharedTbl: no visible binding for global variable ‘Freq’
+Extract_Genes_Modules_All: no visible binding for global variable
+  ‘ModuleNr’
+Extract_Genes_Modules_All: no visible binding for global variable ‘ind’
+Extract_Genes_Modules_All: no visible binding for global variable
+  ‘values’
+Extract_Genes_Modules_All: no visible binding for global variable
+  ‘Run_Names’
+Extract_Genes_Modules_All: no visible binding for global variable
+  ‘GeneNames’
+Extract_Genes_Modules_All: no visible binding for global variable
+  ‘Type’
+Extract_Genes_Modules_All: no visible binding for global variable
+  ‘Weights’
+Extract_Genes_Modules_All: no visible binding for global variable
+  ‘AMARETTOres’
+GmtFromModules: no visible binding for global variable ‘Type’
+GmtFromModules: no visible binding for global variable ‘GeneNames’
+GmtFromModules: no visible binding for global variable ‘ModuleNr’
+HGTGeneEnrichmentList: no visible binding for global variable ‘i’
+HyperGTestGeneEnrichment: no visible binding for global variable ‘i’
+HyperGTestGeneEnrichment: no visible binding for global variable ‘j’
+ModuleHyperLink: no visible binding for global variable ‘ModuleLink’
+ModuleHyperLink: no visible binding for global variable ‘mod_hyperlink’
+RunHyperLink: no visible binding for global variable ‘RunLink’
+RunHyperLink: no visible binding for global variable ‘run_hyperlink’
+cAMARETTO_ColorOneModule: no visible global function definition for
+  ‘plot’
+cAMARETTO_ColorOneModule: no visible global function definition for
+  ‘legend’
+cAMARETTO_Cytoscape: no visible binding for global variable ‘run’
+cAMARETTO_Cytoscape: no visible binding for global variable ‘name’
+cAMARETTO_Cytoscape: no visible binding for global variable
+  ‘Module_name’
+cAMARETTO_Cytoscape: no visible binding for global variable ‘run_URL’
+cAMARETTO_Cytoscape: no visible binding for global variable ‘from’
+cAMARETTO_Cytoscape: no visible binding for global variable
+  ‘from_Module’
+cAMARETTO_Cytoscape: no visible binding for global variable ‘from_Run’
+cAMARETTO_Cytoscape: no visible binding for global variable
+  ‘from_run_URL’
+cAMARETTO_Cytoscape: no visible binding for global variable ‘to’
+cAMARETTO_Cytoscape: no visible binding for global variable ‘to_Module’
+cAMARETTO_Cytoscape: no visible binding for global variable ‘to_Run’
+cAMARETTO_Cytoscape: no visible binding for global variable
+  ‘to_run_URL’
+cAMARETTO_Cytoscape: no visible binding for global variable ‘from_URL’
+cAMARETTO_Cytoscape: no visible binding for global variable ‘to_URL’
+cAMARETTO_HTMLreport: no visible binding for global variable
+  ‘Run_Names’
+cAMARETTO_HTMLreport: no visible binding for global variable
+  ‘AMARETTOres’
+cAMARETTO_HTMLreport: no visible binding for global variable ‘Weights’
+cAMARETTO_HTMLreport: no visible binding for global variable ‘Color’
+cAMARETTO_HTMLreport: no visible binding for global variable ‘Type’
+cAMARETTO_HTMLreport: no visible binding for global variable
+  ‘GeneNames’
+cAMARETTO_HTMLreport: no visible binding for global variable ‘GeneName’
+cAMARETTO_HTMLreport: no visible binding for global variable
+  ‘Community’
+cAMARETTO_HTMLreport: no visible binding for global variable
+  ‘TypeColored’
+cAMARETTO_HTMLreport: no visible binding for global variable
+  ‘Community_key’
+cAMARETTO_HTMLreport: no visible binding for global variable
+  ‘Community_type’
+cAMARETTO_HTMLreport: no visible binding for global variable ‘ModuleNr’
+cAMARETTO_HTMLreport: no visible binding for global variable
+  ‘ModuleName’
+cAMARETTO_HTMLreport: no visible binding for global variable ‘Run’
+cAMARETTO_HTMLreport: no visible binding for global variable ‘Genes’
+cAMARETTO_HTMLreport: no visible binding for global variable ‘q.value’
+cAMARETTO_HTMLreport: missing arguments not allowed in calls to ‘list’
+cAMARETTO_IdentifyCom: no visible binding for global variable
+  ‘nodeName’
+cAMARETTO_IdentifyCom: no visible binding for global variable ‘from’
+cAMARETTO_IdentifyCom: no visible binding for global variable ‘to’
+cAMARETTO_IdentifyCom: no visible binding for global variable
+  ‘Community’
+cAMARETTO_IdentifyCom: no visible binding for global variable
+  ‘numEdgesInComm’
+cAMARETTO_IdentifyCom: no visible binding for global variable
+  ‘totalNumEdges’
+cAMARETTO_IdentifyCom: no visible binding for global variable
+  ‘numEdgesNotInComm’
+cAMARETTO_IdentifyCom: no visible binding for global variable
+  ‘numTotalEdgesInCommunity’
+cAMARETTO_IdentifyCom: no visible binding for global variable
+  ‘numTotalEdgesNotInCommunity’
+cAMARETTO_IdentifyCom: no visible binding for global variable ‘run’
+cAMARETTO_IdentifyCom: no visible binding for global variable
+  ‘numDatasetsPerCommunity’
+cAMARETTO_IdentifyCom: no visible binding for global variable
+  ‘CommSize’
+cAMARETTO_IdentifyCom: no visible binding for global variable
+  ‘NewComNumber’
+cAMARETTO_IdentifyCom: no visible binding for global variable
+  ‘CommsizeFrac’
+cAMARETTO_IdentifyCom: no visible binding for global variable
+  ‘fractDatasetsSize’
+cAMARETTO_IdentifyCom: no visible binding for global variable
+  ‘fractEdgesInVsOut’
+cAMARETTO_IdentifyCom: no visible binding for global variable ‘.’
+cAMARETTO_IdentifyCom: no visible global function definition for ‘plot’
+cAMARETTO_IdentifyCom: no visible global function definition for
+  ‘legend’
+cAMARETTO_InformationTable: no visible binding for global variable
+  ‘from’
+cAMARETTO_InformationTable: no visible binding for global variable ‘to’
+cAMARETTO_ModuleNetwork: no visible binding for global variable ‘padj’
+cAMARETTO_ModuleNetwork: no visible binding for global variable
+  ‘n_Overlapping’
+cAMARETTO_ModuleNetwork: no visible binding for global variable
+  ‘modulenames’
+cAMARETTO_ModuleNetwork: no visible binding for global variable
+  ‘RunName1’
+cAMARETTO_ModuleNetwork: no visible binding for global variable
+  ‘RunName2’
+cAMARETTO_ModuleNetwork: no visible global function definition for
+  ‘plot’
+cAMARETTO_ModuleNetwork: no visible global function definition for
+  ‘legend’
+cAMARETTO_Results: no visible binding for global variable ‘RunName1’
+cAMARETTO_Results: no visible binding for global variable ‘Geneset1’
+cAMARETTO_Results: no visible binding for global variable ‘RunName2’
+cAMARETTO_Results: no visible binding for global variable ‘Geneset2’
+cAMARETTO_heatmap: no visible binding for global variable ‘Geneset2’
+cAMARETTO_heatmap: no visible binding for global variable ‘Geneset1’
+cAMARETTO_heatmap: no visible binding for global variable ‘p_value’
+create_hgt_datatable: no visible binding for global variable
+  ‘Community_key’
+create_hgt_datatable: no visible binding for global variable
+  ‘Community_type’
+create_hgt_datatable: no visible binding for global variable
+  ‘Community’
+create_hgt_datatable: no visible binding for global variable ‘padj’
+create_hgt_datatable: no visible binding for global variable
+  ‘n_Overlapping’
+readGMT: no visible binding for global variable ‘tail’
+readGMT: no visible binding for global variable ‘head’
+Undefined global functions or variables:
+  . AMARETTOres Color CommSize CommsizeFrac Community Community_key
+  Community_type Description Descriptive_Statistics Freq GeneName
+  GeneNames Genes Geneset Geneset1 Geneset2 Module ModuleLink
+  ModuleName ModuleNr Module_name NewComNumber Overlapping_genes
+  Phenotypes Run RunLink RunName1 RunName2 Run_Names Statistical_Test
+  Type TypeColored Weights all_genes description fractDatasetsSize
+  fractEdgesInVsOut from from_Module from_Run from_URL from_run_URL
+  geneset head i ind j legend mod_hyperlink modulenames n_Overlapping
+  n_RefGeneset name nodeName numDatasetsPerCommunity numEdgesInComm
+  numEdgesNotInComm numTotalEdgesInCommunity
+  numTotalEdgesNotInCommunity one_of overlap_perc p.value p_value padj
+  plot q.value run run_URL run_hyperlink tail to to_Module to_Run
+  to_URL to_run_URL totalNumEdges values
+Consider adding
+  importFrom("graphics", "legend", "plot")
+  importFrom("utils", "head", "tail")
+to your NAMESPACE file.
+* checking Rd files ... OK
+* checking Rd metadata ... OK
+* checking Rd cross-references ... OK
+* checking for missing documentation entries ... OK
+* checking for code/documentation mismatches ... OK
+* checking Rd \usage sections ... WARNING
+Undocumented arguments in documentation object 'cAMARETTO_HTMLreport'
+  ‘hyper_geo_reference_gp’ ‘hyper_geo_reference_cp’
+
+Functions with \usage entries need to have the appropriate \alias
+entries, and all their arguments documented.
+The \usage entries must correspond to syntactically valid R code.
+See chapter ‘Writing R documentation files’ in the ‘Writing R
+Extensions’ manual.
+* checking Rd contents ... WARNING
+Argument items with no description in Rd object 'ComRunModGenInfo':
+  ‘cAMARETTOresults’ ‘cAMARETTOnetworkM’ ‘cAMARETTOnetworkC’
+
+Argument items with no description in Rd object 'CommunityHyperLink':
+  ‘Community_key’ ‘Community_type’
+
+Argument items with no description in Rd object 'CommunityModuleTableCreate':
+  ‘cAMARETTOresults’ ‘cAMARETTOnetworkM’ ‘cAMARETTOnetworkC’
+  ‘HTMLsAMARETTOlist’ ‘CopyAMARETTOReport’
+
+Argument items with no description in Rd object 'CreateHyperGeoTestAll':
+  ‘cAMARETTOresults’ ‘cAMARETTOnetworkM’ ‘cAMARETTOnetworkC’
+  ‘hyper_geo_reference’ ‘driverGSEA’ ‘NrCores’
+
+Argument items with no description in Rd object 'CreatePhenotypeTable':
+  ‘cAMARETTOresults’ ‘cAMARETTOnetworkM’ ‘cAMARETTOnetworkC’
+  ‘PhenotypeTablesList’
+
+Argument items with no description in Rd object 'DriversSharedTbl':
+  ‘cAMARETTOresults’ ‘cAMARETTOnetworkM’ ‘cAMARETTOnetworkC’
+
+Argument items with no description in Rd object 'Extract_Genes_Modules_All':
+  ‘AMARETTOresults_all’ ‘gmt_filelist’
+
+Argument items with no description in Rd object 'InitialCheckInputs':
+  ‘cAMARETTOresults’ ‘output_address’ ‘HTMLsAMARETTOlist’
+  ‘CopyAMARETTOReport’ ‘hyper_geo_reference’ ‘hyper_geo_reference_gp’
+  ‘hyper_geo_reference_cp’
+
+Argument items with no description in Rd object 'ModuleHyperLink':
+  ‘Module’ ‘Run_Names’ ‘AMARETTOres’ ‘HTMLsAMARETTOlist’
+  ‘CopyAMARETTOReport’ ‘page’
+
+Argument items with no description in Rd object 'RunHyperLink':
+  ‘Run_Names’ ‘AMARETTOres’ ‘HTMLsAMARETTOlist’ ‘CopyAMARETTOReport’
+
+Argument items with no description in Rd object 'cAMARETTO_ModuleNetwork':
+  ‘cAMARETTOresults’
+
+Argument items with no description in Rd object 'create_hgt_datatable':
+  ‘output_hgt’ ‘com_table’ ‘ComNr’
+
+* checking for unstated dependencies in examples ... WARNING
+Warning: parse error in file 'lines':
+1: unexpected symbol
+230: cytoscape_name<-"cAMARETTO_Liver2DS"
+231: cAMARETTOsList
+     ^
+* checking contents of ‘data’ directory ... OK
+* checking data for non-ASCII characters ... NOTE
+  Note: found 152 marked UTF-8 strings
+* checking data for ASCII and uncompressed saves ... WARNING
+  
+  Note: significantly better compression could be obtained
+        by using R CMD build --resave-data
+                          old_size new_size compress
+  AMARETTOinit_all.rda       3.9Mb    3.3Mb       xz
+  AMARETTOresults_all.rda    183Kb     87Kb       xz
+  MsigdbMapping.rda          697Kb    468Kb       xz
+  ProcessedDataCCLE.rda      1.5Mb    793Kb       xz
+  ProcessedDataTCGA.rda      3.9Mb    3.5Mb       xz
+* checking line endings in C/C++/Fortran sources/headers ... OK
+* checking compiled code ... OK
+* checking files in ‘vignettes’ ... WARNING
+Files in the 'vignettes' directory but no files in 'inst/doc':
+  ‘community-amaretto.Rmd’
+* checking examples ... ERROR
+Running examples in ‘CommunityAMARETTO-Ex.R’ failed
+The error most likely occurred in:
+
+> ### Name: cAMARETTO_Cytoscape
+> ### Title: Title cAMARETTO_Cytoscape
+> ### Aliases: cAMARETTO_Cytoscape
+> 
+> ### ** Examples
+> 
+>  
+> try(
++ cytoscape_name<-"cAMARETTO_Liver2DS"
++ cAMARETTOsList<-readRDS(file="./outputs/cAMARETTO_Liver2DS.rds")
+Error: unexpected symbol in:
+"cytoscape_name<-"cAMARETTO_Liver2DS"
+cAMARETTOsList"
+Execution halted
+* checking for unstated dependencies in ‘tests’ ... OK
+* checking tests ... ERROR
+  Running ‘testthat.R’
+Running the tests in ‘tests/testthat.R’ failed.
+Last 13 lines of output:
+  6: install_deps(pkgdir, dependencies = dependencies, quiet = quiet, build = build, build_opts = build_opts, 
+         upgrade = upgrade, repos = repos, type = type)
+  7: dev_package_deps(pkgdir, repos = repos, dependencies = dependencies, type = type)
+  8: local_package_deps(pkgdir = pkgdir, dependencies = dependencies)
+  9: lapply(pkg[tolower(dependencies)], parse_deps)
+  10: FUN(X[[i]], ...)
+  11: stop("Invalid comparison operator in dependency: ", paste(compare_nna[!compare_valid], 
+         collapse = ", "))
+  
+  ══ testthat results  ═══════════════════════════════════════════════════════════
+  OK: 0 SKIPPED: 0 WARNINGS: 0 FAILED: 1
+  1. Error: (unknown) (@test_cAMARETTO.R#1) 
+  
+  Error: testthat unit tests failed
+  Execution halted
+* checking for unstated dependencies in vignettes ... OK
+* checking package vignettes in ‘inst/doc’ ... WARNING
+dir.exists(dir) is not TRUE
+Package vignette without corresponding single PDF/HTML:
+   ‘community-amaretto.Rmd’
+
+* checking running R code from vignettes ... NONE
+* checking re-building of vignette outputs ... OK
 * DONE
-Status: 1 ERROR, 1 WARNING, 1 NOTE
+Status: 2 ERRORs, 9 WARNINGs, 7 NOTEs
