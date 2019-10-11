@@ -20,12 +20,3 @@ result
 \description{
 Title cAMARETTO_Cytoscape
 }
-\examples{
- 
-try(
-cytoscape_name<-"cAMARETTO_Liver2DS"
-cAMARETTOsList<-readRDS(file="./outputs/cAMARETTO_Liver2DS.rds")
-communityReportURL<-"http://portals.broadinstitute.org/pochetlab/demo/cAMARETTO_Liver_2DS/" 
-cAMARETTO_Cytoscape(cAMARETTOsList,communityReportURL = "",cytoscape_name="my_cytoscape")
-)
-}

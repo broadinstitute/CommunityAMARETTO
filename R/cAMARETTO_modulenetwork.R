@@ -2,7 +2,7 @@
 #' 
 #' Creates a module network.
 #'
-#' @param cAMARETTOresults 
+#' @param cAMARETTOresults cAMARETTOresults object
 #' @param pvalue pvalue cut-off for each gene set
 #' @param inter minimal overlap between two gene sets
 #' @param color_list An optional list with colors
@@ -20,16 +20,30 @@
 #' cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,0.10,5)
 #' )
 #' @export
-cAMARETTO_ModuleNetwork<-function(cAMARETTOresults, pvalue = 0.05, inter = 5, color_list = NULL, edge_method = "pvalue", plot_network = TRUE){
+cAMARETTO_ModuleNetwork<-function(cAMARETTOresults,
+                                  pvalue = 0.05,
+                                  inter = 5,
+                                  color_list = NULL,
+                                  edge_method = "pvalue",
+                                  plot_network = TRUE){
+  
+  ############################################################
+  if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
+  ############################################################
   
   output_hgt_allcombinations_filtered <- cAMARETTOresults$hgt_modules %>% 
     dplyr::filter(padj<=pvalue & n_Overlapping>=inter)
-  node_information <- as.data.frame(unique(c(output_hgt_allcombinations_filtered$Geneset1, output_hgt_allcombinations_filtered$Geneset2)))
+  node_information <- as.data.frame(unique(c(output_hgt_allcombinations_filtered$Geneset1,
+                                             output_hgt_allcombinations_filtered$Geneset2)))
   colnames(node_information) <- c("modulenames")
-  node_information <- node_information %>% dplyr::mutate(run=sub("\\|.*$","",modulenames))
-  module_network <- graph_from_data_frame(d=output_hgt_allcombinations_filtered%>% dplyr::select(-RunName1,-RunName2), vertices=node_information, directed=FALSE)
+  node_information <- node_information %>%
+    dplyr::mutate(run=sub("\\|.*$","",modulenames))
+  module_network <- graph_from_data_frame(d=output_hgt_allcombinations_filtered%>%
+                                            dplyr::select(-RunName1,-RunName2),
+                                          vertices=node_information, directed=FALSE)
   if (is.null(color_list)){
-    color_list <- randomcoloR::randomColor(length(c(cAMARETTOresults$runnames,cAMARETTOresults$gmtnames)),luminosity="dark")
+    color_list <- randomcoloR::randomColor(length(c(cAMARETTOresults$runnames,cAMARETTOresults$gmtnames)),
+                                           luminosity="dark")
     names(color_list) <- c(cAMARETTOresults$runnames,cAMARETTOresults$gmtnames)
   } else {
     c(cAMARETTOresults$runnames,cAMARETTOresults$gmtnames) %in% names(color_list)

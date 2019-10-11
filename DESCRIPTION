@@ -2,8 +2,8 @@ Package: CommunityAMARETTO
 Type: Package
 Title: Calculating and visualising communities over AMARETTO runs and genesets.
 Version: 0.0.0.9000
-Author: Celine Everaert, Mohsen Nabian, Olivier Gevaert and Nathalie Pochet
-Maintainer: Nathalie Pochet <npochet@broadinstitute.org>
+Author: Mohsen Nabian, Celine Everaert, Olivier Gevaert and Nathalie Pochet
+Maintainer: Mohsen Nabian <mnabian@bwh.harvard.edu>
 Depends: R (>= 3.5), foreach, knitr, purrr, stringr, tibble, tidyr
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE

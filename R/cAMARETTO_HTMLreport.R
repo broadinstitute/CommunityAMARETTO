@@ -46,6 +46,12 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults,
                                  driverGSEA=TRUE,
                                  NrCores=2){
   
+  ##################################### Bioconductor Considerations :
+  Run_Names <- AMARETTOres <- Weights <- Color<- Type<- GeneNames<-NULL
+  GeneName <- Community <- TypeColored <- Community_key<- Community_type<- ModuleNr<-NULL
+  ModuleName <- Run <- Genes <- q.value<-NULL
+  #####################################
+  
   RunInfoList<-InitialCheckInputs(cAMARETTOresults,
                                   output_address,
                                   HTMLsAMARETTOlist,
@@ -575,9 +581,9 @@ HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 4
 
 #' Title ComRunModGenInfo
 #'
-#' @param cAMARETTOresults 
-#' @param cAMARETTOnetworkM 
-#' @param cAMARETTOnetworkC 
+#' @param cAMARETTOresults cAMARETTOresults object 
+#' @param cAMARETTOnetworkM cAMARETTOnetworkM object
+#' @param cAMARETTOnetworkC  cAMARETTOnetworkC object
 #'
 #' @import igraph
 #' @importFrom dplyr arrange rename left_join mutate
@@ -593,6 +599,10 @@ HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 4
 #' )
 #' }
 ComRunModGenInfo<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC){
+  
+  ##################################### Bioconductor Considerations :
+  Run_Names <- ModuleNr <- Module <- Community<-NULL
+  #####################################
   
   ComModulesLink <- utils::stack(cAMARETTOnetworkC$community_list) %>%
     dplyr::rename(Module="values", Community="ind")
@@ -648,10 +658,10 @@ ComRunModGenInfo<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC)
 
 #' Title CreatePhenotypeTable
 #'
-#' @param cAMARETTOresults 
-#' @param cAMARETTOnetworkM 
-#' @param PhenotypeTablesList 
-#' @param cAMARETTOnetworkC 
+#' @param cAMARETTOresults list of cAMARETTOresults results
+#' @param cAMARETTOnetworkM cAMARETTOnetworkM object
+#' @param PhenotypeTablesList a list of phenotypeassociation tables computed in AMARETTO aalysis
+#' @param cAMARETTOnetworkC cAMARETTOnetworkC object
 #'
 #' @importFrom dplyr select distinct mutate mutate left_join select
 #' @return results
@@ -683,12 +693,12 @@ CreatePhenotypeTable<-function(cAMARETTOresults,
 
 #' Title CreateHyperGeoTestAll
 #'
-#' @param cAMARETTOresults 
-#' @param cAMARETTOnetworkM 
-#' @param cAMARETTOnetworkC 
-#' @param hyper_geo_reference 
-#' @param driverGSEA 
-#' @param NrCores 
+#' @param cAMARETTOresults cAMARETTOresults object
+#' @param cAMARETTOnetworkM cAMARETTOnetworkM object
+#' @param cAMARETTOnetworkC cAMARETTOnetworkC  object
+#' @param hyper_geo_reference a vector address for the gmt files.
+#' @param driverGSEA TRUE for inclusion of driver genes in hypergeomertic test
+#' @param NrCores Nr of core for parallel processing
 #'
 #' @return Geneset Enrichment Analysis for the entire communities. 
 #' @export
@@ -783,13 +793,13 @@ CreateHyperGeoTestAll<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetw
 
 #' Title InitialCheckInputs
 #'
-#' @param cAMARETTOresults 
-#' @param output_address 
-#' @param HTMLsAMARETTOlist 
-#' @param CopyAMARETTOReport 
-#' @param hyper_geo_reference 
-#' @param hyper_geo_reference_gp 
-#' @param hyper_geo_reference_cp 
+#' @param cAMARETTOresults cAMARETTOresults object
+#' @param output_address output_address 
+#' @param HTMLsAMARETTOlist A list with AMARETTO reports to link with the Community AMARETTO report. If NULL, no links are added.
+#' @param CopyAMARETTOReport Boolean to indicate if the AMARETTO reports needs to be copied in the AMARETTO report directory. In this way links are contained when moving the HTML directory.
+#' @param hyper_geo_reference comupted tables or addresses to gmt files for functional enrichment
+#' @param hyper_geo_reference_gp comupted tables or addresses to gmt files for genetic perturbation
+#' @param hyper_geo_reference_cp comupted tables or addresses to gmt files for chemical perturbation
 #'
 #' @return RunInfo dataframe
 #'
@@ -857,11 +867,11 @@ InitialCheckInputs<-function(cAMARETTOresults,output_address,HTMLsAMARETTOlist,C
   
 #' Title CommunityModuleTableCreate
 #'
-#' @param cAMARETTOresults 
-#' @param cAMARETTOnetworkM 
-#' @param HTMLsAMARETTOlist 
-#' @param CopyAMARETTOReport 
-#' @param cAMARETTOnetworkC 
+#' @param cAMARETTOresults cAMARETTOresults object
+#' @param cAMARETTOnetworkM cAMARETTOnetworkM object
+#' @param HTMLsAMARETTOlist List contating the address to index page for each data
+#' @param CopyAMARETTOReport Boolean to indicate if the AMARETTO reports needs to be copied in the AMARETTO report directory. In this way links are contained when moving the HTML directory.
+#' @param cAMARETTOnetworkC cAMARETTOnetworkC object
 #'
 #' @return Community To Module Dataframe
 #' @export
@@ -872,6 +882,11 @@ InitialCheckInputs<-function(cAMARETTOresults,output_address,HTMLsAMARETTOlist,C
 #')
 CommunityModuleTableCreate<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC,
                                      HTMLsAMARETTOlist,CopyAMARETTOReport){
+  
+  ##################################### Bioconductor Considerations :
+  Community_key <- Community <- Community_type <- AMARETTOres<- Run_Names<- ModuleNr<-NULL
+  ModuleLink <- numTotalEdgesInCommunity <-fractEdgesInVsOut <- CommsizeFrac<-NULL
+  #####################################
   
   com_gene_df<-suppressWarnings(ComRunModGenInfo(cAMARETTOresults,
                                                  cAMARETTOnetworkM,
@@ -914,8 +929,8 @@ CommunityModuleTableCreate<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARE
 #' Title CommunityHyperLink
 #'
 #' @param Community CommunityHyperLink
-#' @param Community_key 
-#' @param Community_type 
+#' @param Community_key Community_key 
+#' @param Community_type Community_type
 #'
 #' @return a hyperlink and presentable name for the communities used for datatables
 #' @export
@@ -936,9 +951,9 @@ CommunityHyperLink<-function(Community,Community_key,Community_type){
 
 #' Title DriversSharedTbl
 #'
-#' @param cAMARETTOresults 
-#' @param cAMARETTOnetworkM 
-#' @param cAMARETTOnetworkC 
+#' @param cAMARETTOresults  cAMARETTOresults object
+#' @param cAMARETTOnetworkM cAMARETTOnetworkM object
+#' @param cAMARETTOnetworkC cAMARETTOnetworkC object
 #'
 #' @return  Frequency of driver genes across different communities and datasets
 #' @export
@@ -993,12 +1008,12 @@ DriversSharedTbl<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetwork
 
 #' Title ModuleHyperLink
 #'
-#' @param Module 
-#' @param Run_Names 
+#' @param Module Module Nr ex. 4
+#' @param Run_Names Run_Names ex. "TCGA_LIHC"
 #' @param AMARETTOres 
 #' @param HTMLsAMARETTOlist 
-#' @param CopyAMARETTOReport 
-#' @param page 
+#' @param CopyAMARETTOReport Boolean to indicate if the AMARETTO reports needs to be copied in the AMARETTO report directory. In this way links are contained when moving the HTML directory.
+#' @param page 1 for index pages and 2 for community pages
 #'
 #' @return Hyperlinks for Modules
 #' @export
@@ -1038,10 +1053,10 @@ ModuleHyperLink<-function(Module,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMA
 
 #' Title RunHyperLink
 #'
-#' @param Run_Names 
-#' @param AMARETTOres 
-#' @param HTMLsAMARETTOlist 
-#' @param CopyAMARETTOReport 
+#' @param Run_Names a vector of Run names
+#' @param AMARETTOres list of AMARETTOres object
+#' @param HTMLsAMARETTOlist A list with AMARETTO reports to link with the Community AMARETTO report. If NULL, no links are added.
+#' @param CopyAMARETTOReport Boolean to indicate if the AMARETTO reports needs to be copied in the AMARETTO report directory. In this way links are contained when moving the HTML directory.
 #' @param page 1 for index page and 2 for community page
 #'
 #' @return Hyperlinks for Run Names
@@ -1084,14 +1099,16 @@ RunHyperLink<-function(Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTORepor
 #' @importFrom  purrr map
 #' @import tidyverse
 #' @export
-#'
-#' @examples  
-#' try(
-#' cytoscape_name = c("cAMARETTO_Liver2DS")
-#' cAMARETTOsList<-readRDS (file="./outputs/cAMARETTO_Liver2DS.rds")
-#' communityReportURL<-"http://portals.broadinstitute.org/pochetlab/demo/cAMARETTO_Liver_2DS/" 
-#' cAMARETTO_Cytoscape(cAMARETTOsList,communityReportURL = "",cytoscape_name="my_cytoscape")
-#' )
+
+
+########
+
+# try(
+#  #cAMARETTOsList<-readRDS (file="./outputs/cAMARETTO_Liver2DS.rds")
+#  #communityReportURL<-c("http://portals.broadinstitute.org/pochetlab/demo/cAMARETTO_Liver_2DS/")
+#  cAMARETTO_Cytoscape(cAMARETTOsList,communityReportURL = "",cytoscape_name="cAMARETTO_Liver2DS")
+# )
+
 cAMARETTO_Cytoscape<-function(cAMARETTOsList,communityReportURL = "",cytoscape_name="my_cytoscape"){
 
   graph<-cAMARETTOsList$cAMARETTOnetworkC$CommGraph
@@ -1150,9 +1167,9 @@ cAMARETTO_Cytoscape<-function(cAMARETTOsList,communityReportURL = "",cytoscape_n
 
 #' Title create_hgt_datatable
 #'
-#' @param output_hgt 
-#' @param com_table 
-#' @param ComNr 
+#' @param output_hgt hyper geoetric test table
+#' @param com_table TRUE if it is for community page, FALSE if index page.
+#' @param ComNr community number
 #'
 #' @return DataTable
 #'

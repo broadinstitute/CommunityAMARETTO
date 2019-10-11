@@ -10,14 +10,16 @@
 #' @importFrom  rlist list.append
 #' @importFrom  stringr str_count
 #' @importFrom  utils zip unzip
-#' @examples
-#' try(
-#' AMARETTOdirectories <- list(LIHC="AMARETTOresults_20181102_142532.zip",BLCA="AMARETTOresults_20181102_142602.zip",GBM="AMARETTOresults_20181102_142636.zip")
-#' AMARETTO_all <- cAMARETTO_Read(AMARETTOdirectories)
-#' AMARETTOinit_all <- AMARETTO_all$AMARETTOinit_all
-#' AMARETTOresults_all <- AMARETTO_all$AMARETTOresults_all
-#' )
+
+
 #' @export
+
+#try(
+# AMARETTOdirectories <- list(LIHC="AMARETTOresults_20181102_142532.zip",BLCA="AMARETTOresults_20181102_142602.zip",GBM="AMARETTOresults_20181102_142636.zip")
+# AMARETTO_all <- cAMARETTO_Read(AMARETTOdirectories)
+# AMARETTOinit_all <- AMARETTO_all$AMARETTOinit_all
+# AMARETTOresults_all <- AMARETTO_all$AMARETTOresults_all
+# )
 
 cAMARETTO_Read<-function(AMARETTOdirectories,unzipParentDirectory=getwd()){
   
@@ -48,11 +50,14 @@ cAMARETTO_Read<-function(AMARETTOdirectories,unzipParentDirectory=getwd()){
     tmp = load(paste0(AMARETTOdirectory,"/amarettoInit.RData"))
     assign(paste0("AMARETTOinit_",names(AMARETTOdirectories)[i]),get(tmp))
     rm(tmp)
-    AMARETTOinit_all<-rlist::list.append(AMARETTOinit_all,eval(parse(text=paste0("AMARETTOinit_",names(AMARETTOdirectories)[i])),envir = environment()))
+    AMARETTOinit_all<-rlist::list.append(AMARETTOinit_all,
+                                         eval(parse(text=paste0("AMARETTOinit_",names(AMARETTOdirectories)[i])),
+                                              envir = environment()))
     tmp = load(paste0(AMARETTOdirectory,"/amarettoResults.RData"))
     assign(paste0("AMARETTOresults_",names(AMARETTOdirectories)[i]),get(tmp))
     rm(tmp)
-    AMARETTOresults_all<-list.append(AMARETTOresults_all,eval(parse(text=paste0("AMARETTOresults_",names(AMARETTOdirectories)[i])),envir = environment()))
+    AMARETTOresults_all<-list.append(AMARETTOresults_all,eval(parse(text=paste0("AMARETTOresults_",names(AMARETTOdirectories)[i])),
+                                                              envir = environment()))
     i = i + 1
   }
   names(AMARETTOinit_all)<-names(AMARETTOdirectories)
@@ -102,7 +107,8 @@ cAMARETTO_HTML_Read<-function(HTMLsAMARETTOZips,unzipParentDirectory=getwd()){
 #' @return a zipfile containing cAmaretto results
 #' 
 #' @export
-cAMARETTO_ExportResults<-function(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC, output_address="./"){
+cAMARETTO_ExportResults<-function(cAMARETTOresults,cAMARETTOnetworkM,
+                                  cAMARETTOnetworkC, output_address="./"){
 
   if (!dir.exists(output_address)){
     stop("Output directory is not existing.")
