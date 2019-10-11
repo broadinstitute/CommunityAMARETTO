@@ -1,185 +1,0 @@
-
-R version 3.6.0 (2019-04-26) -- "Planting of a Tree"
-Copyright (C) 2019 The R Foundation for Statistical Computing
-Platform: x86_64-apple-darwin15.6.0 (64-bit)
-
-R is free software and comes with ABSOLUTELY NO WARRANTY.
-You are welcome to redistribute it under certain conditions.
-Type 'license()' or 'licence()' for distribution details.
-
-R is a collaborative project with many contributors.
-Type 'contributors()' for more information and
-'citation()' on how to cite R or R packages in publications.
-
-Type 'demo()' for some demos, 'help()' for on-line help, or
-'help.start()' for an HTML browser interface to help.
-Type 'q()' to quit R.
-
-> library(testthat)
-> library(CommunityAMARETTO)
-Loading required package: foreach
-Loading required package: knitr
-Loading required package: purrr
-
-Attaching package: 'purrr'
-
-The following objects are masked from 'package:foreach':
-
-    accumulate, when
-
-The following object is masked from 'package:testthat':
-
-    is_null
-
-Loading required package: stringr
-Loading required package: tibble
-Loading required package: tidyr
-> 
-> test_check("CommunityAMARETTO")
-DT        (0.8     -> 0.9   ) [CRAN]
-callr     (3.3.1   -> 3.3.2 ) [CRAN]
-circlize  (0.4.6   -> 0.4.8 ) [CRAN]
-curl      (4.0     -> 4.1   ) [CRAN]
-digest    (0.6.20  -> 0.6.21) [CRAN]
-ellipsis  (0.2.0.1 -> 0.3.0 ) [CRAN]
-ggplot2   (3.2.0   -> 3.2.1 ) [CRAN]
-hms       (0.5.0   -> 0.5.1 ) [CRAN]
-httpuv    (1.5.1   -> 1.5.2 ) [CRAN]
-knitr     (1.24    -> 1.25  ) [CRAN]
-lifecycle (NA      -> 0.1.0 ) [CRAN]
-pkgconfig (2.0.2   -> 2.0.3 ) [CRAN]
-rmarkdown (1.14    -> 1.15  ) [CRAN]
-sys       (3.2     -> 3.3   ) [CRAN]
-tidyr     (0.8.3   -> 1.0.0 ) [CRAN]
-tinytex   (0.15    -> 0.16  ) [CRAN]
-whisker   (0.3-2   -> 0.4   ) [CRAN]
-xfun      (0.8     -> 0.9   ) [CRAN]
-xml2      (1.2.1   -> 1.2.2 ) [CRAN]
-
-  There are binary versions available but the source versions are later:
-          binary source needs_compilation
-callr      3.3.1  3.3.2             FALSE
-pkgconfig  2.0.2  2.0.3             FALSE
-
-trying URL 'https://cloud.r-project.org/bin/macosx/el-capitan/contrib/3.6/DT_0.9.tgz'
-Content type 'application/x-gzip' length 923620 bytes (901 KB)
-==================================================
-downloaded 901 KB
-
-trying URL 'https://cloud.r-project.org/bin/macosx/el-capitan/contrib/3.6/curl_4.1.tgz'
-Content type 'application/x-gzip' length 733112 bytes (715 KB)
-==================================================
-downloaded 715 KB
-
-trying URL 'https://cloud.r-project.org/bin/macosx/el-capitan/contrib/3.6/digest_0.6.21.tgz'
-Content type 'application/x-gzip' length 238428 bytes (232 KB)
-==================================================
-downloaded 232 KB
-
-trying URL 'https://cloud.r-project.org/bin/macosx/el-capitan/contrib/3.6/ellipsis_0.3.0.tgz'
-Content type 'application/x-gzip' length 33047 bytes (32 KB)
-==================================================
-downloaded 32 KB
-
-trying URL 'https://cloud.r-project.org/bin/macosx/el-capitan/contrib/3.6/knitr_1.25.tgz'
-Content type 'application/x-gzip' length 1367480 bytes (1.3 MB)
-==================================================
-downloaded 1.3 MB
-
-trying URL 'https://cloud.r-project.org/bin/macosx/el-capitan/contrib/3.6/tinytex_0.16.tgz'
-Content type 'application/x-gzip' length 96626 bytes (94 KB)
-==================================================
-downloaded 94 KB
-
-
-The downloaded binary packages are in
-	/var/folders/c5/fcby30n93ksggzzhrwh1x6xc0000gn/T//RtmpwGs5No/downloaded_packages
-trying URL 'https://cloud.r-project.org/src/contrib/callr_3.3.2.tar.gz'
-Content type 'application/x-gzip' length 94404 bytes (92 KB)
-==================================================
-downloaded 92 KB
-
-trying URL 'https://cloud.r-project.org/src/contrib/pkgconfig_2.0.3.tar.gz'
-Content type 'application/x-gzip' length 6080 bytes
-==================================================
-downloaded 6080 bytes
-
-* installing *source* package ‘callr’ ...
-** package ‘callr’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
-** building package indices
-** installing vignettes
-** testing if installed package can be loaded from temporary location
-** testing if installed package can be loaded from final location
-** testing if installed package keeps a record of temporary installation path
-* DONE (callr)
-* installing *source* package ‘pkgconfig’ ...
-** package ‘pkgconfig’ successfully unpacked and MD5 sums checked
-** using staged installation
-** R
-** inst
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
-** building package indices
-** testing if installed package can be loaded from temporary location
-** testing if installed package can be loaded from final location
-** testing if installed package keeps a record of temporary installation path
-* DONE (pkgconfig)
-
-The downloaded source packages are in
-	'/private/var/folders/c5/fcby30n93ksggzzhrwh1x6xc0000gn/T/RtmpwGs5No/downloaded_packages'
-     checking for file ‘/private/var/folders/c5/fcby30n93ksggzzhrwh1x6xc0000gn/T/RtmpwGs5No/remotesf03695e6e19/broadinstitute-CommunityAMARETTO-d0561ed/DESCRIPTION’ ...  ✔  checking for file ‘/private/var/folders/c5/fcby30n93ksggzzhrwh1x6xc0000gn/T/RtmpwGs5No/remotesf03695e6e19/broadinstitute-CommunityAMARETTO-d0561ed/DESCRIPTION’
-  ─  preparing ‘CommunityAMARETTO’: (454ms)
-  ✔  checking DESCRIPTION meta-information
-  ─  cleaning src
-  ─  checking for LF line-endings in source and make files and shell scripts
-  ─  checking for empty or unneeded directories
-     Removed empty directory ‘CommunityAMARETTO/src’
-  ─  looking to see if a ‘data/datalist’ file should be added
-  ─  building ‘CommunityAMARETTO_0.0.0.9000.tar.gz’
-     
-* installing *source* package ‘CommunityAMARETTO’ ...
-** using staged installation
-** R
-** data
-*** moving datasets to lazyload DB
-** inst
-** byte-compile and prepare package for lazy loading
-** help
-*** installing help indices
-** building package indices
-** installing vignettes
-** testing if installed package can be loaded from temporary location
-** testing if installed package can be loaded from final location
-** testing if installed package keeps a record of temporary installation path
-* DONE (CommunityAMARETTO)
-── 1. Error: (unknown) (@test_cAMARETTO.R#9)  ──────────────────────────────────
-unused argument (AMARETTOinit_all = AMARETTOinit_all)
-1: .handleSimpleError(function (e) 
-   {
-       handled <<- TRUE
-       test_error <<- e
-       options(expressions = expressions_opt_new)
-       on.exit(options(expressions = expressions_opt), add = TRUE)
-       e$expectation_calls <- frame_calls(11, 2)
-       test_error <<- e
-       register_expectation(e)
-       e$handled <- TRUE
-       test_error <<- e
-   }, "unused argument (AMARETTOinit_all = AMARETTOinit_all)", base::quote(cAMARETTO_Results(AMARETTOinit_all = AMARETTOinit_all, 
-       AMARETTOresults_all = AMARETTOresults_all, gmt_filelist = NULL, NrCores = 4, 
-       drivers = TRUE))) at testthat/test_cAMARETTO.R:9
-2: eval(code, test_env)
-
-══ testthat results  ═══════════════════════════════════════════════════════════
-OK: 0 SKIPPED: 0 WARNINGS: 4 FAILED: 1
-1. Error: (unknown) (@test_cAMARETTO.R#9) 
-
-Error: testthat unit tests failed
-Execution halted

@@ -1,3 +1,0 @@
-Phenotypes	Statistics
-SurvivalTime	COXPROPHAZARDTIMETOEVENT
-SurvivalCensoring	COXPROPHAZARDRIGHTCENSORING
