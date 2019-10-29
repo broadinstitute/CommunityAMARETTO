@@ -17,9 +17,16 @@ HGTGeneEnrichmentList(genelist, gmtfile, NrCores, ref.numb.genes = 45956)
 
 \item{ref.numb.genes}{The total number of genes teste, standard equal to 45956 (MSIGDB standard).}
 }
+\value{
+a list a dataframe for Hypergeometric test
+}
 \description{
 HGTGeneEnrichmentList
 
 Calculates the p-values for unranked gene set enrichment based on two gmt files as input and the hyper geometric test.
+}
+\examples{
+try(HGTGeneEnrichmentList(genelist, gmtfile, NrCores, ref.numb.genes = 45956))
+
 }
 \keyword{internal}

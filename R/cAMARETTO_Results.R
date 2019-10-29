@@ -66,7 +66,7 @@ cAMARETTO_Results <- function(AMARETTOresults_all,
   all_run_combinations <- as.data.frame(gtools::combinations(n=length(all_gmt_files_list),
                                                              r=2,
                                                              v=names(all_gmt_files_list),
-                                                             repeats.allowed=F))
+                                                             repeats.allowed=FALSE))
   
   output_hgt_allcombinations <- apply(all_run_combinations, 1, function(x) {
     gmt_run1 <- all_gmt_files_list[x["V1"]]
@@ -116,7 +116,7 @@ cAMARETTO_Results <- function(AMARETTOresults_all,
 #' @param Drivers Add drivers to the gmt-file
 #'
 #' @return Creates a gmt file for a AMARETTO run
-#' @importFrom utils write.table
+#' @importFrom utils write.table stack
 #' @importFrom dplyr select arrange
 #' @export
 GmtFromModules <- function(AMARETTOresults,gmt_file,run,Drivers=FALSE){

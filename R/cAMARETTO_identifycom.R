@@ -11,6 +11,7 @@
 #'
 #' @return a list with the module network, a community list, community edge information and color list.
 #' 
+#' @importFrom graphics legend plot
 #' @importFrom randomcoloR randomColor
 #' @importFrom tibble rownames_to_column as_data_frame
 #' @importFrom dplyr arrange group_by left_join mutate select summarise  rename  filter everything pull distinct n row_number 
@@ -124,7 +125,7 @@ cAMARETTO_IdentifyCom <- function(cAMARETTOnetworkM,
     layout_1<-cAMARETTOnetworkM$layoutMN
     layout_1<- igraph::norm_coords(layout_1, ymin=-1, ymax=1, xmin=-1, xmax=1)
     plot(CommGraph,
-         rescale=F,
+         rescale=FALSE,
          layout = layout_1*1.2,
          #layout=layout_in_circle,
          vertex.color = as.character(Nodes_Mnetwork$color),

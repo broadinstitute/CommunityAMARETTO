@@ -1,10 +1,10 @@
 Package: CommunityAMARETTO
 Type: Package
 Title: Calculating and visualising communities over AMARETTO runs and genesets.
-Version: 0.0.0.9000
+Version: 0.99.24
 Author: Mohsen Nabian, Celine Everaert, Olivier Gevaert and Nathalie Pochet
 Maintainer: Mohsen Nabian <mnabian@bwh.harvard.edu>
-Depends: R (>= 3.5), foreach, knitr, purrr, stringr, tibble, tidyr
+Depends: R (>= 3.6), foreach, knitr, purrr, stringr, tibble, tidyr
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 LazyLoad: yes
@@ -19,7 +19,6 @@ NeedsCompilation: no
 Packaged: 2016-06-08 11:54:24 UTC
 Imports:
     R.utils,
-    Rcpp,
     ComplexHeatmap,
     circlize,
     doParallel,
@@ -31,12 +30,14 @@ Imports:
     rmarkdown,
     rlist,
     RCy3,
-    impute,
-    grDevices, 
     dplyr, 
-    methods,
     foreach,
-    tidyverse
+    tidyverse,
+    graphics,
+    grid,
+    parallel,
+    stats,
+    utils
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1.9000
 LinkingTo: 

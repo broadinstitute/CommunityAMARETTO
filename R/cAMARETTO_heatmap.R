@@ -30,7 +30,7 @@ cAMARETTO_heatmap<-function(cAMARETTOresults,run1,run2){
   Heatmap(pvalue_matrix,
           name = "Pvalues Compare Modules",
           column_title = "Regulator Genes\nExpression",
-          show_column_names=TRUE,
+          show_column_names = TRUE,
           column_names_gp = gpar(fontsize = 8),
           row_names_gp = gpar(fontsize = 8),
           column_title_gp = grid::gpar(fontsize = 12, fontface = "bold"),

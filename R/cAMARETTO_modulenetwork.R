@@ -10,7 +10,7 @@
 #' @param plot_network If TRUE, plots the Community Network at the end.
 #'
 #' @return a list with the module network, layout for the network, used p-value, used overlap en colors
-#' 
+#' @importFrom utils globalVariables
 #' @importFrom randomcoloR randomColor
 #' @import igraph
 #' @importFrom dplyr filter mutate select
@@ -28,7 +28,7 @@ cAMARETTO_ModuleNetwork<-function(cAMARETTOresults,
                                   plot_network = TRUE){
   
   ############################################################
-  if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
+  #if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
   ############################################################
   
   output_hgt_allcombinations_filtered <- cAMARETTOresults$hgt_modules %>% 

@@ -17,14 +17,15 @@
 #' 
 #' @import igraph
 #' @import DT
-#' @importFrom rmarkdown render
+#' @import rmarkdown
+#' @import utils
 #' @importFrom stringr str_order
-#' @importFrom dplyr arrange group_by left_join mutate select summarise  rename  filter everything pull distinct
+#' @importFrom dplyr arrange group_by left_join mutate select summarise  rename  filter everything pull distinct mutate one_of pull summarise
 #' @importFrom tibble tibble rownames_to_column
-#' @importFrom knitr knit_meta
+#' @importFrom knitr knit_meta 
 #' @importFrom reshape2 dcast
-#' @importFrom utils stack
-#' @importFrom tidyr separate
+#' @importFrom utils stack data
+#' @importFrom tidyr separate unite
 #' @importFrom R.utils insert
 #' @examples 
 #' \dontrun{
@@ -37,13 +38,13 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults,
                                  cAMARETTOnetworkM,
                                  cAMARETTOnetworkC,
                                  PhenotypeTablesList = NULL,
-                                 output_address="./",
-                                 HTMLsAMARETTOlist=NULL,
+                                 output_address ="./",
+                                 HTMLsAMARETTOlist = NULL,
                                  CopyAMARETTOReport = TRUE,
                                  hyper_geo_reference = NULL,
                                  hyper_geo_reference_gp = NULL,
                                  hyper_geo_reference_cp = NULL,
-                                 driverGSEA=TRUE,
+                                 driverGSEA = TRUE,
                                  NrCores=2){
   
   ##################################### Bioconductor Considerations :
@@ -407,7 +408,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults,
                           rownames = FALSE,
                           options = optionsList,
                           colnames = c("Community", "Data Set", "Driver Genes"),
-                          escape=FALSE)
+                          escape = FALSE)
   
   # add phenotype table for index page
   if (!is.null(PhenotypeTablesList)){
@@ -427,7 +428,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults,
                      options = optionsList,
                      colnames=c("Community","Data Set","Module","Phenotype","Statistics Test",
                                 "P-value","FDR Q-value","Descriptive Statistics"),
-                     escape=FALSE)
+                     escape = FALSE)
   }
   else{ DTPh = "Phenotype Statistical Analysis is not provided" }
   
@@ -441,7 +442,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults,
                                filter = 'top',
                                extensions = c('Buttons','KeyTable'),
                                rownames = FALSE,
-                               options = optionsList, escape=FALSE)
+                               options = optionsList, escape = FALSE)
   
   rmarkdown::render(
     system.file("templates/TemplateIndexPage.Rmd", package = "CommunityAMARETTO"),
@@ -543,8 +544,17 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults,
 #' @importFrom foreach foreach %dopar% %do%
 #' @importFrom stats p.adjust phyper
 #' @keywords internal
+#' @return a list a dataframe for Hypergeometric test
 #' @export
+#'
+#' @examples 
+#' try(HGTGeneEnrichmentList(genelist, gmtfile, NrCores, ref.numb.genes = 45956))
+#' 
+
 HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 45956) {
+    
+    `%dopar%` <- foreach::`%dopar%`
+    `%do%` <- foreach::`%do%`
     gmtset <- readGMT(gmtfile)  # the hallmarks_and_co2...
     ########################### Parallelizing :
     cluster <- parallel::makeCluster(c(rep("localhost", NrCores)), type = "SOCK")
@@ -587,17 +597,17 @@ HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 4
 #'
 #' @import igraph
 #' @importFrom dplyr arrange rename left_join mutate
-#' @importFrom utils stack 
+#' @importFrom utils stack data
 #' @importFrom purrr map
 #' @return a dataframe contaning all communities, runname, and modules relationships. 
 #' @export
 #'
 #' @examples 
-#' \dontrun{
+#' 
 #' try(
 #' df<-ComRunModGenInfo(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC)
 #' )
-#' }
+#' 
 ComRunModGenInfo<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC){
   
   ##################################### Bioconductor Considerations :
@@ -699,7 +709,7 @@ CreatePhenotypeTable<-function(cAMARETTOresults,
 #' @param hyper_geo_reference a vector address for the gmt files.
 #' @param driverGSEA TRUE for inclusion of driver genes in hypergeomertic test
 #' @param NrCores Nr of core for parallel processing
-#'
+#' @importFrom foreach foreach %dopar% %do%
 #' @return Geneset Enrichment Analysis for the entire communities. 
 #' @export
 #'
@@ -1170,7 +1180,7 @@ cAMARETTO_Cytoscape<-function(cAMARETTOsList,communityReportURL = "",cytoscape_n
 #' @param output_hgt hyper geoetric test table
 #' @param com_table TRUE if it is for community page, FALSE if index page.
 #' @param ComNr community number
-#'
+#' @import DT
 #' @return DataTable
 #'
 #' @examples try(create_hgt_datatable(output_hgt, com_table=FALSE, ComNr = 1))

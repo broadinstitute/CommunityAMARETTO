@@ -20,9 +20,9 @@ a dataframe contaning all communities, runname, and modules relationships.
 Title ComRunModGenInfo
 }
 \examples{
-\dontrun{
+
 try(
 df<-ComRunModGenInfo(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC)
 )
-}
+
 }
