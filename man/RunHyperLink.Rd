@@ -4,8 +4,13 @@
 \alias{RunHyperLink}
 \title{Title RunHyperLink}
 \usage{
-RunHyperLink(Run_Names, AMARETTOres, HTMLsAMARETTOlist, CopyAMARETTOReport,
-  page = 1)
+RunHyperLink(
+  Run_Names,
+  AMARETTOres,
+  HTMLsAMARETTOlist,
+  CopyAMARETTOReport,
+  page = 1
+)
 }
 \arguments{
 \item{Run_Names}{a vector of Run names}

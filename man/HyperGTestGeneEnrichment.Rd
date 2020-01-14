@@ -4,8 +4,14 @@
 \alias{HyperGTestGeneEnrichment}
 \title{GmtFromModules}
 \usage{
-HyperGTestGeneEnrichment(gmtfile1, gmtfile2, runname1, runname2, NrCores,
-  ref.numb.genes = 45956)
+HyperGTestGeneEnrichment(
+  gmtfile1,
+  gmtfile2,
+  runname1,
+  runname2,
+  NrCores,
+  ref.numb.genes = 45956
+)
 }
 \arguments{
 \item{gmtfile1}{A gmtfilename that you want to compare}

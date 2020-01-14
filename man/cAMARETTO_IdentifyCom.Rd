@@ -4,9 +4,16 @@
 \alias{cAMARETTO_IdentifyCom}
 \title{cAMARETTO_IdentifyCom}
 \usage{
-cAMARETTO_IdentifyCom(cAMARETTOnetworkM, color_list = NULL,
-  filterComm = TRUE, ratioCommSize = 0.01, MinRuns = 2,
-  ratioRunSize = 0.1, ratioEdgesInOut = 0.5, plot_network = TRUE)
+cAMARETTO_IdentifyCom(
+  cAMARETTOnetworkM,
+  color_list = NULL,
+  filterComm = TRUE,
+  ratioCommSize = 0.01,
+  MinRuns = 2,
+  ratioRunSize = 0.1,
+  ratioEdgesInOut = 0.5,
+  plot_network = TRUE
+)
 }
 \arguments{
 \item{cAMARETTOnetworkM}{The output of the Module Network function.}

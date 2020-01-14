@@ -29,7 +29,6 @@ Imports:
     reshape2,
     rmarkdown,
     rlist,
-    RCy3,
     dplyr, 
     foreach,
     tidyverse,
@@ -39,7 +38,7 @@ Imports:
     stats,
     utils
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1.9000
+RoxygenNote: 7.0.2
 LinkingTo: 
     Rcpp
 VignetteBuilder: knitr

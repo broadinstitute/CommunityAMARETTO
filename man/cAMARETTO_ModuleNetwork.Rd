@@ -6,8 +6,14 @@
 
 Creates a module network.}
 \usage{
-cAMARETTO_ModuleNetwork(cAMARETTOresults, pvalue = 0.05, inter = 5,
-  color_list = NULL, edge_method = "pvalue", plot_network = TRUE)
+cAMARETTO_ModuleNetwork(
+  cAMARETTOresults,
+  pvalue = 0.05,
+  inter = 5,
+  color_list = NULL,
+  edge_method = "pvalue",
+  plot_network = TRUE
+)
 }
 \arguments{
 \item{cAMARETTOresults}{cAMARETTOresults object}

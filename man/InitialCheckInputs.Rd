@@ -4,9 +4,15 @@
 \alias{InitialCheckInputs}
 \title{Title InitialCheckInputs}
 \usage{
-InitialCheckInputs(cAMARETTOresults, output_address, HTMLsAMARETTOlist,
-  CopyAMARETTOReport, hyper_geo_reference, hyper_geo_reference_gp,
-  hyper_geo_reference_cp)
+InitialCheckInputs(
+  cAMARETTOresults,
+  output_address,
+  HTMLsAMARETTOlist,
+  CopyAMARETTOReport,
+  hyper_geo_reference,
+  hyper_geo_reference_gp,
+  hyper_geo_reference_cp
+)
 }
 \arguments{
 \item{cAMARETTOresults}{cAMARETTOresults object}

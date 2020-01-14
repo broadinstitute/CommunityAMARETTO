@@ -4,8 +4,12 @@
 \alias{cAMARETTO_ExportResults}
 \title{cAMARETTO_ExportResults}
 \usage{
-cAMARETTO_ExportResults(cAMARETTOresults, cAMARETTOnetworkM,
-  cAMARETTOnetworkC, output_address = "./")
+cAMARETTO_ExportResults(
+  cAMARETTOresults,
+  cAMARETTOnetworkM,
+  cAMARETTOnetworkC,
+  output_address = "./"
+)
 }
 \arguments{
 \item{cAMARETTOresults}{The output of the Results function.}

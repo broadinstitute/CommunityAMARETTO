@@ -4,8 +4,13 @@
 \alias{CommunityModuleTableCreate}
 \title{Title CommunityModuleTableCreate}
 \usage{
-CommunityModuleTableCreate(cAMARETTOresults, cAMARETTOnetworkM,
-  cAMARETTOnetworkC, HTMLsAMARETTOlist, CopyAMARETTOReport)
+CommunityModuleTableCreate(
+  cAMARETTOresults,
+  cAMARETTOnetworkM,
+  cAMARETTOnetworkC,
+  HTMLsAMARETTOlist,
+  CopyAMARETTOReport
+)
 }
 \arguments{
 \item{cAMARETTOresults}{cAMARETTOresults object}

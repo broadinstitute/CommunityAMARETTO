@@ -4,8 +4,14 @@
 \alias{ModuleHyperLink}
 \title{Title ModuleHyperLink}
 \usage{
-ModuleHyperLink(Module, Run_Names, AMARETTOres, HTMLsAMARETTOlist,
-  CopyAMARETTOReport, page = 1)
+ModuleHyperLink(
+  Module,
+  Run_Names,
+  AMARETTOres,
+  HTMLsAMARETTOlist,
+  CopyAMARETTOReport,
+  page = 1
+)
 }
 \arguments{
 \item{Module}{Module Nr ex. 4}

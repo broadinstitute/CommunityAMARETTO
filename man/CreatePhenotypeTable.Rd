@@ -4,8 +4,12 @@
 \alias{CreatePhenotypeTable}
 \title{Title CreatePhenotypeTable}
 \usage{
-CreatePhenotypeTable(cAMARETTOresults, cAMARETTOnetworkM,
-  cAMARETTOnetworkC, PhenotypeTablesList)
+CreatePhenotypeTable(
+  cAMARETTOresults,
+  cAMARETTOnetworkM,
+  cAMARETTOnetworkC,
+  PhenotypeTablesList
+)
 }
 \arguments{
 \item{cAMARETTOresults}{list of cAMARETTOresults results}

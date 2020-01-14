@@ -4,9 +4,14 @@
 \alias{CreateHyperGeoTestAll}
 \title{Title CreateHyperGeoTestAll}
 \usage{
-CreateHyperGeoTestAll(cAMARETTOresults, cAMARETTOnetworkM,
-  cAMARETTOnetworkC, hyper_geo_reference, driverGSEA = TRUE,
-  NrCores = 4)
+CreateHyperGeoTestAll(
+  cAMARETTOresults,
+  cAMARETTOnetworkM,
+  cAMARETTOnetworkC,
+  hyper_geo_reference,
+  driverGSEA = TRUE,
+  NrCores = 4
+)
 }
 \arguments{
 \item{cAMARETTOresults}{cAMARETTOresults object}
