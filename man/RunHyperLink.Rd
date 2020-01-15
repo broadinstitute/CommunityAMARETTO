@@ -2,7 +2,7 @@
 % Please edit documentation in R/cAMARETTO_HTMLreport.R
 \name{RunHyperLink}
 \alias{RunHyperLink}
-\title{Title RunHyperLink}
+\title{RunHyperLink}
 \usage{
 RunHyperLink(
   Run_Names,
@@ -27,7 +27,7 @@ RunHyperLink(
 Hyperlinks for Run Names
 }
 \description{
-Title RunHyperLink
+RunHyperLink
 }
 \examples{
 try(RunHyperLink(Run_Names, AMARETTOres, HTMLsAMARETTOlist, CopyAMARETTOReport, page=1))

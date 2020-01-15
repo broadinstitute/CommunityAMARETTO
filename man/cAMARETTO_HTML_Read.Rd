@@ -18,5 +18,9 @@ a named vector with directories of unzipped HTML reprorts.
 Title cAMARETTO_HTML_Read
 }
 \examples{
+\dontrun{
+\try(
 cAMARETTO_HTML_Read(list(TCGA_LIHC="TCGA_LIHC_report.zip",TCGA_GBM="TCGA_GBM_report.zip"))
+)
+}
 }

@@ -142,7 +142,9 @@ GmtFromModules <- function(AMARETTOresults,gmt_file,run,Drivers=FALSE){
 #'
 #' @param filename A gmtfilename
 #' @examples
+#' try(
 #' readGMT("file.gmt")
+#' )
 #' @return Reads a gmt file
 #' @export
 readGMT<-function(filename){

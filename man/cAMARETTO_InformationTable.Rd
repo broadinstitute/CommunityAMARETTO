@@ -18,7 +18,9 @@ an information table about the communities containing the included nodes and ove
 cAMARETTO_InformationTable
 }
 \examples{
+\dontrun{
 try(
 cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC)
 )
+}
 }

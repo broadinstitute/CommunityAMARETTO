@@ -2,17 +2,7 @@
 % Please edit documentation in R/cAMARETTO_HTMLreport.R
 \name{create_hgt_datatable}
 \alias{create_hgt_datatable}
-\title{#' Title cAMARETTO_Cytoscape
-#'
-#' @param cAMARETTOsList A list containing Community AMARETTO results with the following format : list(cAMARETTOresults = cAMARETTOresults,cAMARETTOnetworkM = cAMARETTOnetworkM, cAMARETTOnetworkC = cAMARETTOnetworkC)
-#' @param communityReportURL Optional URL linked to the Community-AMARETTO HTML report index page.
-#' @param cytoscape_name A character, for naming the network which will be shown in cytoscape.
-#'
-#' @return result
-#' @import RCy3
-#' @import igraph
-#' @importFrom  purrr map
-#' @import tidyverse}
+\title{create_hgt_datatable}
 \usage{
 create_hgt_datatable(output_hgt, com_table = FALSE, ComNr = 1)
 }
@@ -27,86 +17,8 @@ create_hgt_datatable(output_hgt, com_table = FALSE, ComNr = 1)
 DataTable
 }
 \description{
-#' Title cAMARETTO_Cytoscape
-#'
-#' @param cAMARETTOsList A list containing Community AMARETTO results with the following format : list(cAMARETTOresults = cAMARETTOresults,cAMARETTOnetworkM = cAMARETTOnetworkM, cAMARETTOnetworkC = cAMARETTOnetworkC)
-#' @param communityReportURL Optional URL linked to the Community-AMARETTO HTML report index page.
-#' @param cytoscape_name A character, for naming the network which will be shown in cytoscape.
-#'
-#' @return result
-#' @import RCy3
-#' @import igraph
-#' @importFrom  purrr map
-#' @import tidyverse
-}
-\details{
-########
+create_hgt_datatable
 }
 \examples{
 try(create_hgt_datatable(output_hgt, com_table=FALSE, ComNr = 1))
-}
-\section{try(}{
-}
-\section{#cAMARETTOsList<-readRDS (file="./outputs/cAMARETTO_Liver2DS.rds")}{
-}
-\section{#communityReportURL<-c("http://portals.broadinstitute.org/pochetlab/demo/cAMARETTO_Liver_2DS/")}{
-}
-\section{cAMARETTO_Cytoscape(cAMARETTOsList,communityReportURL = "",cytoscape_name="cAMARETTO_Liver2DS")}{
-}
-\section{)}{
-
-cAMARETTO_Cytoscape<-function(cAMARETTOsList,communityReportURL = "",cytoscape_name="my_cytoscape"){
-
-graph<-cAMARETTOsList$cAMARETTOnetworkC$CommGraph
-runnames<-cAMARETTOsList$cAMARETTOresults$runnames
-runURLs<-data.frame(run=runnames)
-runURLs<-runURLs\%>\%dplyr::mutate(run_URL=paste0(communityReportURL,run))
-
-nodes_df<-igraph::as_data_frame(graph, what="vertices")
-nodes_df<-suppressWarnings(nodes_df\%>\%
-dplyr::left_join(runURLs,by="run"))
-nodes_df<-nodes_df\%>\%dplyr::mutate(Module_name=unlist(map(strsplit(name,"\\|"),2)))\%>\%
-dplyr::mutate(Module_name=gsub("Module_","module",Module_name))
-nodes_df<-nodes_df\%>\%
-dplyr::mutate(URL=ifelse(run \%in\% runnames,
-paste0('<a href="',run_URL,'/AMARETTOhtmls/modules/',Module_name,'.html">URL</a>'),
-''))
-nodes_df<-nodes_df\%>\%dplyr::select(-c("Module_name","run_URL","NewComNumber"))
-
-edges_df<-igraph::as_data_frame(graph, what="edges")
-edges_df<-suppressWarnings(edges_df\%>\%
-dplyr::mutate(from_Run=unlist(purrr::map(strsplit(from,"\\|"),1)))\%>\%
-dplyr::mutate(from_Module=unlist(map(strsplit(from,"\\|"),2)))\%>\%
-dplyr::mutate(from_Module=gsub("Module_","module",from_Module))\%>\%
-dplyr::left_join(runURLs,by=c("from_Run"="run"))\%>\%
-dplyr::rename(from_run_URL=run_URL)\%>\%
-dplyr::mutate(from_URL=ifelse(from_Run \%in\% runnames,
-paste0('<a href="',
-from_run_URL,
-'/AMARETTOhtmls/modules/',
-from_Module,
-'.html">URL</a>'),
-'')))
-edges_df<-suppressWarnings(edges_df\%>\%
-dplyr::mutate(to_Run=unlist(purrr::map(strsplit(to,"\\|"),1)))\%>\%
-dplyr::mutate(to_Module=unlist(map(strsplit(to,"\\|"),2)))\%>\%
-dplyr::mutate(to_Module=gsub("Module_","module",to_Module))\%>\%
-dplyr::left_join(runURLs,by=c("to_Run"="run"))\%>\%
-dplyr::rename(to_run_URL=run_URL)\%>\%
-dplyr::mutate(to_URL=ifelse(to_Run \%in\% runnames,
-paste0('<a href="',
-to_run_URL,
-'/AMARETTOhtmls/modules/',
-to_Module,
-'.html">URL</a>'),
-'')))
-edges_df<-edges_df\%>\%
-dplyr::select(-c("from_Run","from_Module","from_run_URL","to_Run","to_Module","to_run_URL"))\%>\%
-dplyr::rename(source_URL=from_URL,target_URL=to_URL)
-
-graph_new<-igraph::graph_from_data_frame(edges_df, directed=FALSE, vertices=nodes_df)
-try(RCy3::createNetworkFromIgraph(graph_new,cytoscape_name),silent=TRUE)
-return(graph_new)
-}
-Title create_hgt_datatable
 }

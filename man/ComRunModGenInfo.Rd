@@ -2,7 +2,7 @@
 % Please edit documentation in R/cAMARETTO_HTMLreport.R
 \name{ComRunModGenInfo}
 \alias{ComRunModGenInfo}
-\title{Title ComRunModGenInfo}
+\title{ComRunModGenInfo}
 \usage{
 ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)
 }
@@ -17,7 +17,7 @@ ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)
 a dataframe contaning all communities, runname, and modules relationships.
 }
 \description{
-Title ComRunModGenInfo
+ComRunModGenInfo
 }
 \examples{
 

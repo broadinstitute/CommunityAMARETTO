@@ -2,7 +2,7 @@
 % Please edit documentation in R/cAMARETTO_HTMLreport.R
 \name{InitialCheckInputs}
 \alias{InitialCheckInputs}
-\title{Title InitialCheckInputs}
+\title{InitialCheckInputs}
 \usage{
 InitialCheckInputs(
   cAMARETTOresults,
@@ -33,7 +33,7 @@ InitialCheckInputs(
 RunInfo dataframe
 }
 \description{
-Title InitialCheckInputs
+InitialCheckInputs
 }
 \examples{
 try(

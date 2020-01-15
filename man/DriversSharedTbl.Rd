@@ -2,7 +2,7 @@
 % Please edit documentation in R/cAMARETTO_HTMLreport.R
 \name{DriversSharedTbl}
 \alias{DriversSharedTbl}
-\title{Title DriversSharedTbl}
+\title{DriversSharedTbl}
 \usage{
 DriversSharedTbl(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)
 }
@@ -17,7 +17,7 @@ DriversSharedTbl(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)
 Frequency of driver genes across different communities and datasets
 }
 \description{
-Title DriversSharedTbl
+DriversSharedTbl
 }
 \examples{
 try(

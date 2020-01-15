@@ -2,7 +2,7 @@
 % Please edit documentation in R/cAMARETTO_HTMLreport.R
 \name{CommunityHyperLink}
 \alias{CommunityHyperLink}
-\title{Title CommunityHyperLink}
+\title{CommunityHyperLink}
 \usage{
 CommunityHyperLink(Community, Community_key, Community_type)
 }
@@ -17,7 +17,7 @@ CommunityHyperLink(Community, Community_key, Community_type)
 a hyperlink and presentable name for the communities used for datatables
 }
 \description{
-Title CommunityHyperLink
+CommunityHyperLink
 }
 \examples{
 try(CommunityHyperLink(Community,Community_key,Community_type))

@@ -1,7 +1,5 @@
 #' @title cAMARETTO_HTMLreport
-#'
 #' Creates a HTMLreport for the community AMARETTO results
-#'
 #' @param cAMARETTOresults The output of the Results function.
 #' @param cAMARETTOnetworkM The output of the Module Network function.
 #' @param cAMARETTOnetworkC The output of the Identify Communities function.
@@ -12,9 +10,7 @@
 #' @param NrCores Number of Cores to use during generation of the HTML report.
 #' @param driverGSEA if TRUE, driver genes beside the target genes will also be included for hypergeometric test. 
 #' @param PhenotypeTablesList List of Phenotype Association Tables for different AMARETTO runs.
-#'
 #' @return A set of HTMLs, giving caracteristics of the communities
-#' 
 #' @import igraph
 #' @import DT
 #' @import rmarkdown
@@ -589,7 +585,7 @@ HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 4
     return(resultHGT)
 }
 
-#' Title ComRunModGenInfo
+#' @title ComRunModGenInfo
 #'
 #' @param cAMARETTOresults cAMARETTOresults object 
 #' @param cAMARETTOnetworkM cAMARETTOnetworkM object
@@ -666,7 +662,7 @@ ComRunModGenInfo<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC)
   return(ComModulesLink)
 }
 
-#' Title CreatePhenotypeTable
+#' @title CreatePhenotypeTable
 #'
 #' @param cAMARETTOresults list of cAMARETTOresults results
 #' @param cAMARETTOnetworkM cAMARETTOnetworkM object
@@ -701,7 +697,7 @@ CreatePhenotypeTable<-function(cAMARETTOresults,
   return(phenotype_table_all)
 }
 
-#' Title CreateHyperGeoTestAll
+#' @title CreateHyperGeoTestAll
 #'
 #' @param cAMARETTOresults cAMARETTOresults object
 #' @param cAMARETTOnetworkM cAMARETTOnetworkM object
@@ -709,6 +705,7 @@ CreatePhenotypeTable<-function(cAMARETTOresults,
 #' @param hyper_geo_reference a vector address for the gmt files.
 #' @param driverGSEA TRUE for inclusion of driver genes in hypergeomertic test
 #' @param NrCores Nr of core for parallel processing
+#'
 #' @importFrom foreach foreach %dopar% %do%
 #' @return Geneset Enrichment Analysis for the entire communities. 
 #' @export
@@ -801,7 +798,7 @@ CreateHyperGeoTestAll<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetw
   return(all_hgt_output)
 }
 
-#' Title InitialCheckInputs
+#' @title InitialCheckInputs
 #'
 #' @param cAMARETTOresults cAMARETTOresults object
 #' @param output_address output_address 
@@ -875,7 +872,7 @@ InitialCheckInputs<-function(cAMARETTOresults,output_address,HTMLsAMARETTOlist,C
   return(list(full_path=full_path,HTMLsAMARETTOlist=HTMLsAMARETTOlist))
 }
   
-#' Title CommunityModuleTableCreate
+#' @title CommunityModuleTableCreate
 #'
 #' @param cAMARETTOresults cAMARETTOresults object
 #' @param cAMARETTOnetworkM cAMARETTOnetworkM object
@@ -936,7 +933,7 @@ CommunityModuleTableCreate<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARE
   return(ComModule)
 }
 
-#' Title CommunityHyperLink
+#' @title CommunityHyperLink
 #'
 #' @param Community CommunityHyperLink
 #' @param Community_key Community_key 
@@ -959,7 +956,7 @@ CommunityHyperLink<-function(Community,Community_key,Community_type){
 
 
 
-#' Title DriversSharedTbl
+#' @title DriversSharedTbl
 #'
 #' @param cAMARETTOresults  cAMARETTOresults object
 #' @param cAMARETTOnetworkM cAMARETTOnetworkM object
@@ -1016,7 +1013,7 @@ DriversSharedTbl<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetwork
 }
 
 
-#' Title ModuleHyperLink
+#' @title ModuleHyperLink
 #'
 #' @param Module Module Nr ex. 4
 #' @param Run_Names Run_Names ex. "TCGA_LIHC"
@@ -1061,7 +1058,7 @@ ModuleHyperLink<-function(Module,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMA
 }
 
 
-#' Title RunHyperLink
+#' @title RunHyperLink
 #'
 #' @param Run_Names a vector of Run names
 #' @param AMARETTOres list of AMARETTOres object
@@ -1097,85 +1094,8 @@ RunHyperLink<-function(Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTORepor
   return(Run_hyperLink)
 }
 
-#' #' Title cAMARETTO_Cytoscape
-#' #'
-#' #' @param cAMARETTOsList A list containing Community AMARETTO results with the following format : list(cAMARETTOresults = cAMARETTOresults,cAMARETTOnetworkM = cAMARETTOnetworkM, cAMARETTOnetworkC = cAMARETTOnetworkC)
-#' #' @param communityReportURL Optional URL linked to the Community-AMARETTO HTML report index page. 
-#' #' @param cytoscape_name A character, for naming the network which will be shown in cytoscape. 
-#' #'
-#' #' @return result
-#' #' @import RCy3
-#' #' @import igraph
-#' #' @importFrom  purrr map
-#' #' @import tidyverse
-#' 
-#' 
-#' 
-#' ########
-#' 
-#' # try(
-#' #  #cAMARETTOsList<-readRDS (file="./outputs/cAMARETTO_Liver2DS.rds")
-#' #  #communityReportURL<-c("http://portals.broadinstitute.org/pochetlab/demo/cAMARETTO_Liver_2DS/")
-#' #  cAMARETTO_Cytoscape(cAMARETTOsList,communityReportURL = "",cytoscape_name="cAMARETTO_Liver2DS")
-#' # )
-#' 
-#' cAMARETTO_Cytoscape<-function(cAMARETTOsList,communityReportURL = "",cytoscape_name="my_cytoscape"){
-#' 
-#'   graph<-cAMARETTOsList$cAMARETTOnetworkC$CommGraph
-#'   runnames<-cAMARETTOsList$cAMARETTOresults$runnames
-#'   runURLs<-data.frame(run=runnames)
-#'   runURLs<-runURLs%>%dplyr::mutate(run_URL=paste0(communityReportURL,run))
-#'   
-#'   nodes_df<-igraph::as_data_frame(graph, what="vertices")
-#'   nodes_df<-suppressWarnings(nodes_df%>%
-#'                                dplyr::left_join(runURLs,by="run"))
-#'   nodes_df<-nodes_df%>%dplyr::mutate(Module_name=unlist(map(strsplit(name,"\\|"),2)))%>%
-#'     dplyr::mutate(Module_name=gsub("Module_","module",Module_name))
-#'   nodes_df<-nodes_df%>%
-#'     dplyr::mutate(URL=ifelse(run %in% runnames,
-#'                              paste0('<a href="',run_URL,'/AMARETTOhtmls/modules/',Module_name,'.html">URL</a>'),
-#'                              ''))
-#'   nodes_df<-nodes_df%>%dplyr::select(-c("Module_name","run_URL","NewComNumber"))
-#'   
-#'   edges_df<-igraph::as_data_frame(graph, what="edges")
-#'   edges_df<-suppressWarnings(edges_df%>%
-#'                                dplyr::mutate(from_Run=unlist(purrr::map(strsplit(from,"\\|"),1)))%>%
-#'                                dplyr::mutate(from_Module=unlist(map(strsplit(from,"\\|"),2)))%>%
-#'                                dplyr::mutate(from_Module=gsub("Module_","module",from_Module))%>%
-#'                                dplyr::left_join(runURLs,by=c("from_Run"="run"))%>%
-#'                                dplyr::rename(from_run_URL=run_URL)%>%
-#'                                dplyr::mutate(from_URL=ifelse(from_Run %in% runnames,
-#'                                                              paste0('<a href="',
-#'                                                                     from_run_URL,
-#'                                                                     '/AMARETTOhtmls/modules/',
-#'                                                                     from_Module,
-#'                                                                     '.html">URL</a>'),
-#'                                                              '')))
-#'   edges_df<-suppressWarnings(edges_df%>%
-#'                                dplyr::mutate(to_Run=unlist(purrr::map(strsplit(to,"\\|"),1)))%>%
-#'                                dplyr::mutate(to_Module=unlist(map(strsplit(to,"\\|"),2)))%>%
-#'                                dplyr::mutate(to_Module=gsub("Module_","module",to_Module))%>%
-#'                                dplyr::left_join(runURLs,by=c("to_Run"="run"))%>%
-#'                                dplyr::rename(to_run_URL=run_URL)%>%
-#'                                dplyr::mutate(to_URL=ifelse(to_Run %in% runnames,
-#'                                                            paste0('<a href="',
-#'                                                                   to_run_URL,
-#'                                                                   '/AMARETTOhtmls/modules/',
-#'                                                                   to_Module,
-#'                                                                   '.html">URL</a>'),
-#'                                                            '')))
-#'   edges_df<-edges_df%>%
-#'     dplyr::select(-c("from_Run","from_Module","from_run_URL","to_Run","to_Module","to_run_URL"))%>%
-#'     dplyr::rename(source_URL=from_URL,target_URL=to_URL)
-#' 
-#'   graph_new<-igraph::graph_from_data_frame(edges_df, directed=FALSE, vertices=nodes_df)
-#'   try(RCy3::createNetworkFromIgraph(graph_new,cytoscape_name),silent=TRUE)
-#'   return(graph_new)
-#' }
 
-
-
-#' Title create_hgt_datatable
+#' @title create_hgt_datatable
 #'
 #' @param output_hgt hyper geoetric test table
 #' @param com_table TRUE if it is for community page, FALSE if index page.
@@ -1272,3 +1192,67 @@ create_hgt_datatable<-function(output_hgt, com_table=FALSE, ComNr = 1){
     return(DTGSEAall)
   }
 }
+
+
+#' ########
+#' 
+#' # try(
+#' #  #cAMARETTOsList<-readRDS (file="./outputs/cAMARETTO_Liver2DS.rds")
+#' #  #communityReportURL<-c("http://portals.broadinstitute.org/pochetlab/demo/cAMARETTO_Liver_2DS/")
+#' #  cAMARETTO_Cytoscape(cAMARETTOsList,communityReportURL = "",cytoscape_name="cAMARETTO_Liver2DS")
+#' # )
+#' 
+#' cAMARETTO_Cytoscape<-function(cAMARETTOsList,communityReportURL = "",cytoscape_name="my_cytoscape"){
+#' 
+#'   graph<-cAMARETTOsList$cAMARETTOnetworkC$CommGraph
+#'   runnames<-cAMARETTOsList$cAMARETTOresults$runnames
+#'   runURLs<-data.frame(run=runnames)
+#'   runURLs<-runURLs%>%dplyr::mutate(run_URL=paste0(communityReportURL,run))
+#'   
+#'   nodes_df<-igraph::as_data_frame(graph, what="vertices")
+#'   nodes_df<-suppressWarnings(nodes_df%>%
+#'                                dplyr::left_join(runURLs,by="run"))
+#'   nodes_df<-nodes_df%>%dplyr::mutate(Module_name=unlist(map(strsplit(name,"\\|"),2)))%>%
+#'     dplyr::mutate(Module_name=gsub("Module_","module",Module_name))
+#'   nodes_df<-nodes_df%>%
+#'     dplyr::mutate(URL=ifelse(run %in% runnames,
+#'                              paste0('<a href="',run_URL,'/AMARETTOhtmls/modules/',Module_name,'.html">URL</a>'),
+#'                              ''))
+#'   nodes_df<-nodes_df%>%dplyr::select(-c("Module_name","run_URL","NewComNumber"))
+#'   
+#'   edges_df<-igraph::as_data_frame(graph, what="edges")
+#'   edges_df<-suppressWarnings(edges_df%>%
+#'                                dplyr::mutate(from_Run=unlist(purrr::map(strsplit(from,"\\|"),1)))%>%
+#'                                dplyr::mutate(from_Module=unlist(map(strsplit(from,"\\|"),2)))%>%
+#'                                dplyr::mutate(from_Module=gsub("Module_","module",from_Module))%>%
+#'                                dplyr::left_join(runURLs,by=c("from_Run"="run"))%>%
+#'                                dplyr::rename(from_run_URL=run_URL)%>%
+#'                                dplyr::mutate(from_URL=ifelse(from_Run %in% runnames,
+#'                                                              paste0('<a href="',
+#'                                                                     from_run_URL,
+#'                                                                     '/AMARETTOhtmls/modules/',
+#'                                                                     from_Module,
+#'                                                                     '.html">URL</a>'),
+#'                                                              '')))
+#'   edges_df<-suppressWarnings(edges_df%>%
+#'                                dplyr::mutate(to_Run=unlist(purrr::map(strsplit(to,"\\|"),1)))%>%
+#'                                dplyr::mutate(to_Module=unlist(map(strsplit(to,"\\|"),2)))%>%
+#'                                dplyr::mutate(to_Module=gsub("Module_","module",to_Module))%>%
+#'                                dplyr::left_join(runURLs,by=c("to_Run"="run"))%>%
+#'                                dplyr::rename(to_run_URL=run_URL)%>%
+#'                                dplyr::mutate(to_URL=ifelse(to_Run %in% runnames,
+#'                                                            paste0('<a href="',
+#'                                                                   to_run_URL,
+#'                                                                   '/AMARETTOhtmls/modules/',
+#'                                                                   to_Module,
+#'                                                                   '.html">URL</a>'),
+#'                                                            '')))
+#'   edges_df<-edges_df%>%
+#'     dplyr::select(-c("from_Run","from_Module","from_run_URL","to_Run","to_Module","to_run_URL"))%>%
+#'     dplyr::rename(source_URL=from_URL,target_URL=to_URL)
+#' 
+#'   graph_new<-igraph::graph_from_data_frame(edges_df, directed=FALSE, vertices=nodes_df)
+#'   try(RCy3::createNetworkFromIgraph(graph_new,cytoscape_name),silent=TRUE)
+#'   return(graph_new)
+#' }
+

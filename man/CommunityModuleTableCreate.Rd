@@ -2,7 +2,7 @@
 % Please edit documentation in R/cAMARETTO_HTMLreport.R
 \name{CommunityModuleTableCreate}
 \alias{CommunityModuleTableCreate}
-\title{Title CommunityModuleTableCreate}
+\title{CommunityModuleTableCreate}
 \usage{
 CommunityModuleTableCreate(
   cAMARETTOresults,
@@ -27,7 +27,7 @@ CommunityModuleTableCreate(
 Community To Module Dataframe
 }
 \description{
-Title CommunityModuleTableCreate
+CommunityModuleTableCreate
 }
 \examples{
 try( 

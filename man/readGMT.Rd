@@ -16,5 +16,7 @@ Reads a gmt file
 readGMT
 }
 \examples{
+try(
 readGMT("file.gmt")
+)
 }

@@ -10,17 +10,15 @@
 #' @importFrom  rlist list.append
 #' @importFrom  stringr str_count
 #' @importFrom  utils zip unzip
-
-
+#' @examples
+#' \dontrun{ 
+#' try(
+#' AMARETTOdirectories <- list(LIHC="AMARETTOresults_20181102_142532.zip",BLCA="AMARETTOresults_20181102_142602.zip",GBM="AMARETTOresults_20181102_142636.zip")
+#' AMARETTO_all <- cAMARETTO_Read(AMARETTOdirectories)
+#' AMARETTOinit_all <- AMARETTO_all$AMARETTOinit_all
+#' AMARETTOresults_all <- AMARETTO_all$AMARETTOresults_all
+#'}
 #' @export
-
-#try(
-# AMARETTOdirectories <- list(LIHC="AMARETTOresults_20181102_142532.zip",BLCA="AMARETTOresults_20181102_142602.zip",GBM="AMARETTOresults_20181102_142636.zip")
-# AMARETTO_all <- cAMARETTO_Read(AMARETTOdirectories)
-# AMARETTOinit_all <- AMARETTO_all$AMARETTOinit_all
-# AMARETTOresults_all <- AMARETTO_all$AMARETTOresults_all
-# )
-
 cAMARETTO_Read<-function(AMARETTOdirectories,unzipParentDirectory=getwd()){
   
   directories_to_unzip <- AMARETTOdirectories[grepl("zip$",AMARETTOdirectories)]
@@ -74,8 +72,13 @@ cAMARETTO_Read<-function(AMARETTOdirectories,unzipParentDirectory=getwd()){
 #' @return a named vector with directories of unzipped HTML reprorts.
 #' @importFrom  utils zip unzip
 #' @export
-#'
-#' @examples cAMARETTO_HTML_Read(list(TCGA_LIHC="TCGA_LIHC_report.zip",TCGA_GBM="TCGA_GBM_report.zip"))
+#' 
+#' @examples 
+#' \dontrun{
+#' \try(
+#' cAMARETTO_HTML_Read(list(TCGA_LIHC="TCGA_LIHC_report.zip",TCGA_GBM="TCGA_GBM_report.zip"))
+#' )
+#' }
 cAMARETTO_HTML_Read<-function(HTMLsAMARETTOZips,unzipParentDirectory=getwd()){
   HTMLsAMARETTOlist<-rep(NA,length(HTMLsAMARETTOZips))
   if (! is.null(HTMLsAMARETTOZips) ){

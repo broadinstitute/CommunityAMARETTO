@@ -2,7 +2,7 @@
 % Please edit documentation in R/cAMARETTO_HTMLreport.R
 \name{CreateHyperGeoTestAll}
 \alias{CreateHyperGeoTestAll}
-\title{Title CreateHyperGeoTestAll}
+\title{CreateHyperGeoTestAll}
 \usage{
 CreateHyperGeoTestAll(
   cAMARETTOresults,
@@ -30,7 +30,7 @@ CreateHyperGeoTestAll(
 Geneset Enrichment Analysis for the entire communities.
 }
 \description{
-Title CreateHyperGeoTestAll
+CreateHyperGeoTestAll
 }
 \examples{
 try(

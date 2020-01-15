@@ -3,7 +3,6 @@
 \name{cAMARETTO_HTMLreport}
 \alias{cAMARETTO_HTMLreport}
 \title{cAMARETTO_HTMLreport
-
 Creates a HTMLreport for the community AMARETTO results}
 \usage{
 cAMARETTO_HTMLreport(
@@ -47,7 +46,6 @@ A set of HTMLs, giving caracteristics of the communities
 }
 \description{
 cAMARETTO_HTMLreport
-
 Creates a HTMLreport for the community AMARETTO results
 }
 \examples{

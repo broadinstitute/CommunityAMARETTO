@@ -2,7 +2,7 @@
 % Please edit documentation in R/cAMARETTO_HTMLreport.R
 \name{ModuleHyperLink}
 \alias{ModuleHyperLink}
-\title{Title ModuleHyperLink}
+\title{ModuleHyperLink}
 \usage{
 ModuleHyperLink(
   Module,
@@ -30,7 +30,7 @@ ModuleHyperLink(
 Hyperlinks for Modules
 }
 \description{
-Title ModuleHyperLink
+ModuleHyperLink
 }
 \examples{
 try(ModuleHyperLink(Module,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport,page=1))
