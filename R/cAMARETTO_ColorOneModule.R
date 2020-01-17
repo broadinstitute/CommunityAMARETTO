@@ -8,9 +8,9 @@
 #'
 #' @return None
 #' 
-#' @import igraph
+#' @importFrom igraph as_data_frame degree E graph_from_data_frame layout_with_fr V graph.data.frame norm_coords edge.betweenness.community
 #' @importFrom graphics legend plot
-#' @importFrom tibble as_data_frame
+#' @importFrom tibble add_row tibble column_to_rownames rownames_to_column
 #' @examples
 #' try(
 #' cAMARETTO_ColorOneModule(cAMARETTOnetworkM, cAMARETTOnetworkC, 2)

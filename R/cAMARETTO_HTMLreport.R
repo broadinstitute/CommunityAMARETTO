@@ -1,5 +1,6 @@
 #' @title cAMARETTO_HTMLreport
 #' Creates a HTMLreport for the community AMARETTO results
+#'
 #' @param cAMARETTOresults The output of the Results function.
 #' @param cAMARETTOnetworkM The output of the Module Network function.
 #' @param cAMARETTOnetworkC The output of the Identify Communities function.
@@ -9,15 +10,18 @@
 #' @param hyper_geo_reference A reference gmt file to perform the Hyper Geometric Test.
 #' @param NrCores Number of Cores to use during generation of the HTML report.
 #' @param driverGSEA if TRUE, driver genes beside the target genes will also be included for hypergeometric test. 
+#' @param hyper_geo_reference_gp Hypergeometric test table for genetic perturbation
+#' @param hyper_geo_reference_cp Hypergeometric test table for chemical perturbation
 #' @param PhenotypeTablesList List of Phenotype Association Tables for different AMARETTO runs.
+#'
 #' @return A set of HTMLs, giving caracteristics of the communities
-#' @import igraph
+#' @importFrom igraph as_data_frame degree E graph_from_data_frame layout_with_fr V graph.data.frame norm_coords edge.betweenness.community
 #' @import DT
 #' @import rmarkdown
 #' @import utils
 #' @importFrom stringr str_order
 #' @importFrom dplyr arrange group_by left_join mutate select summarise  rename  filter everything pull distinct mutate one_of pull summarise
-#' @importFrom tibble tibble rownames_to_column
+#' @importFrom tibble add_row tibble column_to_rownames rownames_to_column
 #' @importFrom knitr knit_meta 
 #' @importFrom reshape2 dcast
 #' @importFrom utils stack data
@@ -26,7 +30,12 @@
 #' @examples 
 #' \dontrun{
 #' try(
-#' cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist = HTMLsAMARETTOlist, hyper_geo_reference = gmtfile, output_address= "./")
+#' cAMARETTO_HTMLreport(cAMARETTOresults,
+#'   cAMARETTOnetworkM,
+#'   cAMARETTOnetworkC,
+#'   HTMLsAMARETTOlist = HTMLsAMARETTOlist,
+#'   hyper_geo_reference = gmtfile,
+#'   output_address= "./")
 #' )
 #' }
 #' @export
@@ -549,6 +558,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults,
 
 HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 45956) {
     
+    i<-j<-NULL
     `%dopar%` <- foreach::`%dopar%`
     `%do%` <- foreach::`%do%`
     gmtset <- readGMT(gmtfile)  # the hallmarks_and_co2...
@@ -591,7 +601,7 @@ HGTGeneEnrichmentList <- function(genelist, gmtfile, NrCores, ref.numb.genes = 4
 #' @param cAMARETTOnetworkM cAMARETTOnetworkM object
 #' @param cAMARETTOnetworkC  cAMARETTOnetworkC object
 #'
-#' @import igraph
+#' @importFrom igraph as_data_frame degree E graph_from_data_frame layout_with_fr V graph.data.frame norm_coords edge.betweenness.community
 #' @importFrom dplyr arrange rename left_join mutate
 #' @importFrom utils stack data
 #' @importFrom purrr map
@@ -678,6 +688,10 @@ CreatePhenotypeTable<-function(cAMARETTOresults,
                                cAMARETTOnetworkM,
                                cAMARETTOnetworkC,
                                PhenotypeTablesList){
+  Run_Names<-ModuleNr<-Community<-Community_key<-Community_type<-NULL
+  AMARETTOres<-Phenotypes<-Statistical_Test<-NULL
+  p.value<-q.value<-Descriptive_Statistics<-NULL
+
   phenotype_table_all<-NULL
   CommunityRunModuleTable<-ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)%>%
     dplyr::select(Run_Names,ModuleNr,Community,Community_key,Community_type,AMARETTOres)%>%
@@ -711,10 +725,20 @@ CreatePhenotypeTable<-function(cAMARETTOresults,
 #' @export
 #'
 #' @examples try(
-#' CreateHyperGeoTestAll(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, hyper_geo_reference = './h.all.v6.2.symbols.gmt', driverGSEA=TRUE,NrCores=4)
+#' CreateHyperGeoTestAll(cAMARETTOresults,
+#'  cAMARETTOnetworkM,
+#'  cAMARETTOnetworkC,
+#'  hyper_geo_reference = './h.all.v6.2.symbols.gmt',
+#'  driverGSEA=TRUE,
+#'  NrCores=4)
 #' )
 CreateHyperGeoTestAll<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC,
                                 hyper_geo_reference,driverGSEA=TRUE,NrCores=4){
+  j<-Community_key<-Type<-GeneNames<-Weights<-NULL
+  geneset<-description<-Geneset<-n_Overlapping<-NULL
+  n_RefGeneset<-Description<-Overlapping_genes<-overlap_perc<-NULL
+  p_value<-padj<-Community<-Community_type<-NULL
+  ###
   print("Performing Geneset Enrichment Analysis ...")
   com_gene_df<-suppressWarnings(ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC))
   communities_all<-unique(com_gene_df$Community_key)
@@ -812,7 +836,11 @@ CreateHyperGeoTestAll<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetw
 #'
 #' @examples 
 #' try(
-#' InitialCheckInputs(cAMARETTOresults,output_address="./",HTMLsAMARETTOlist,CopyAMARETTOReport=FALSE,hyper_geo_reference)
+#' InitialCheckInputs(cAMARETTOresults,
+#'  output_address="./",
+#'  HTMLsAMARETTOlist,
+#'  CopyAMARETTOReport=FALSE,
+#'  hyper_geo_reference)
 #' )
 InitialCheckInputs<-function(cAMARETTOresults,output_address,HTMLsAMARETTOlist,CopyAMARETTOReport,
                              hyper_geo_reference,hyper_geo_reference_gp,hyper_geo_reference_cp){
@@ -972,6 +1000,10 @@ CommunityHyperLink<-function(Community,Community_key,Community_type){
 DriversSharedTbl<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC){
   com_gene_df<-suppressWarnings(ComRunModGenInfo(cAMARETTOresults,
                                                  cAMARETTOnetworkM, cAMARETTOnetworkC))
+  
+  Type<-GeneNames<-Community_key<-Run_Names<-NULL
+  all_genes<-Freq<-NULL
+  
   ComDrivers<-com_gene_df%>%
     filter(Type=="Driver")%>%
     mutate(GeneNames = paste0("<a href=\"https://www.genecards.org/cgi-bin/carddisp.pl?gene=",
@@ -1014,11 +1046,11 @@ DriversSharedTbl<-function(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetwork
 
 
 #' @title ModuleHyperLink
-#'
+#' Returns hyperlink to the html report of a given module and dataset.
 #' @param Module Module Nr ex. 4
 #' @param Run_Names Run_Names ex. "TCGA_LIHC"
-#' @param AMARETTOres 
-#' @param HTMLsAMARETTOlist 
+#' @param AMARETTOres AMARETTO result object
+#' @param HTMLsAMARETTOlist list containing the hyperlink address to html report of each dataset. 
 #' @param CopyAMARETTOReport Boolean to indicate if the AMARETTO reports needs to be copied in the AMARETTO report directory. In this way links are contained when moving the HTML directory.
 #' @param page 1 for index pages and 2 for community pages
 #'
@@ -1031,6 +1063,8 @@ ModuleHyperLink<-function(Module,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMA
   # htmldir = "someLocalAdress/LIHC_Report_75/AMARETTOhtmls"
   # if CopyAMARETTOReport ==TRUE :
   #   htmldir = "./TCGA_LIHC/AMARETTOhtmls"
+  ModuleLink<-mod_hyperlink<-NULL
+  
   if(is.null(HTMLsAMARETTOlist)==FALSE){
     RunInfo<-(data.frame(Run_Names=names(HTMLsAMARETTOlist),
                          ModuleLink=HTMLsAMARETTOlist,
@@ -1072,6 +1106,7 @@ ModuleHyperLink<-function(Module,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMA
 #' @examples try(RunHyperLink(Run_Names, AMARETTOres, HTMLsAMARETTOlist, CopyAMARETTOReport, page=1))
 #' 
 RunHyperLink<-function(Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport,page=1){
+  RunLink<-run_hyperlink<-NULL
   if(is.null(HTMLsAMARETTOlist)==FALSE){
     RunInfo<-(data.frame("Run_Names"=names(HTMLsAMARETTOlist),
                          RunLink=HTMLsAMARETTOlist,
@@ -1106,6 +1141,7 @@ RunHyperLink<-function(Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTORepor
 #' @examples try(create_hgt_datatable(output_hgt, com_table=FALSE, ComNr = 1))
 create_hgt_datatable<-function(output_hgt, com_table=FALSE, ComNr = 1){
   
+  Community_key<-Community_type<-Community<-padj<-n_Overlapping<-NULL
   #============================================================================================================== 
   options('DT.warn.size'=FALSE)
   buttons_list = list(list(extend ='csv'),

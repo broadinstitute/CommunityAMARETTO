@@ -13,9 +13,9 @@
 #' 
 #' @importFrom graphics legend plot
 #' @importFrom randomcoloR randomColor
-#' @importFrom tibble rownames_to_column as_data_frame
+#' @importFrom tibble add_row tibble column_to_rownames rownames_to_column
 #' @importFrom dplyr arrange group_by left_join mutate select summarise  rename  filter everything pull distinct n row_number 
-#' @import igraph
+#' @importFrom igraph as_data_frame degree E graph_from_data_frame layout_with_fr V graph.data.frame norm_coords edge.betweenness.community
 #' @examples 
 #' try(
 #' cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
@@ -29,7 +29,11 @@ cAMARETTO_IdentifyCom <- function(cAMARETTOnetworkM,
                                   ratioRunSize=0.1,
                                   ratioEdgesInOut=0.5,
                                   plot_network = TRUE){
-  
+  from<-to<-Community<-numEdgesInComm<-NULL
+  totalNumEdges<-numEdgesNotInComm<-numTotalEdgesInCommunity<-NULL
+  numTotalEdgesNotInCommunity<-numDatasetsPerCommunity<-CommSize<-NULL
+  NewComNumber<-CommsizeFrac<-fractDatasetsSize<-fractEdgesInVsOut<-NULL
+  .<-nodeName<-NULL
   comm <- igraph::edge.betweenness.community(cAMARETTOnetworkM$module_network,
                                              directed=FALSE,
                                              merges=TRUE,

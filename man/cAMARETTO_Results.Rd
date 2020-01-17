@@ -35,6 +35,9 @@ To initiate the community AMARETTO this results functions performs hyper geometr
 }
 \examples{
 try(
-cAMARETTOresults <- cAMARETTO_Results(AMARETTOresults_all, gmt_filelist=list(ImmuneSignature = Cibersortgmt), NrCores = 4 , output_dir = "./")
+cAMARETTOresults <- cAMARETTO_Results(AMARETTOresults_all,
+  gmt_filelist=list(ImmuneSignature = Cibersortgmt),
+  NrCores = 4 ,
+  output_dir = "./")
 )
 }

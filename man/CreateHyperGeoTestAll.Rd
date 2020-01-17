@@ -34,6 +34,11 @@ CreateHyperGeoTestAll
 }
 \examples{
 try(
-CreateHyperGeoTestAll(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, hyper_geo_reference = './h.all.v6.2.symbols.gmt', driverGSEA=TRUE,NrCores=4)
+CreateHyperGeoTestAll(cAMARETTOresults,
+ cAMARETTOnetworkM,
+ cAMARETTOnetworkC,
+ hyper_geo_reference = './h.all.v6.2.symbols.gmt',
+ driverGSEA=TRUE,
+ NrCores=4)
 )
 }

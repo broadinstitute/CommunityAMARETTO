@@ -12,7 +12,7 @@
 #' @return a list with the module network, layout for the network, used p-value, used overlap en colors
 #' @importFrom utils globalVariables
 #' @importFrom randomcoloR randomColor
-#' @import igraph
+#' @importFrom igraph as_data_frame degree E graph_from_data_frame layout_with_fr V graph.data.frame norm_coords edge.betweenness.community
 #' @importFrom dplyr filter mutate select
 #' 
 #' @examples 
@@ -30,7 +30,8 @@ cAMARETTO_ModuleNetwork<-function(cAMARETTOresults,
   ############################################################
   #if(getRversion() >= "2.15.1")  utils::globalVariables(c("."))
   ############################################################
-  
+  padj<-n_Overlapping<-modulenames<-NULL
+  RunName1<-RunName2<-NULL
   output_hgt_allcombinations_filtered <- cAMARETTOresults$hgt_modules %>% 
     dplyr::filter(padj<=pvalue & n_Overlapping>=inter)
   node_information <- as.data.frame(unique(c(output_hgt_allcombinations_filtered$Geneset1,

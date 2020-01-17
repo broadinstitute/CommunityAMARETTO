@@ -13,7 +13,9 @@
 #' @examples
 #' \dontrun{ 
 #' try(
-#' AMARETTOdirectories <- list(LIHC="AMARETTOresults_20181102_142532.zip",BLCA="AMARETTOresults_20181102_142602.zip",GBM="AMARETTOresults_20181102_142636.zip")
+#' AMARETTOdirectories <- list(LIHC="AMARETTOresults_20181102_142532.zip",
+#'   BLCA="AMARETTOresults_20181102_142602.zip",
+#'   GBM="AMARETTOresults_20181102_142636.zip")
 #' AMARETTO_all <- cAMARETTO_Read(AMARETTOdirectories)
 #' AMARETTOinit_all <- AMARETTO_all$AMARETTOinit_all
 #' AMARETTOresults_all <- AMARETTO_all$AMARETTOresults_all

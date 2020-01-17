@@ -5,8 +5,8 @@
 #'
 #' @return an information table about the communities containing the included nodes and overlapping genes per community.
 #' 
-#' @import igraph
-#' @importFrom tibble add_row tibble
+#' @importFrom igraph as_data_frame degree E graph_from_data_frame layout_with_fr V graph.data.frame norm_coords edge.betweenness.community
+#' @importFrom tibble add_row tibble column_to_rownames rownames_to_column
 #' 
 #' @examples 
 #' \dontrun{
@@ -16,6 +16,7 @@
 #' }
 #' @export
 cAMARETTO_InformationTable <- function(cAMARETTOnetworkM, cAMARETTOnetworkC) {
+  to<-from<-NULL
   Nodes_Cnetwork <- igraph::as_data_frame(cAMARETTOnetworkC$CommGraph, what="vertices")
   Edges_Cnetwork <- igraph::as_data_frame(cAMARETTOnetworkC$CommGraph, what="edges")
   Comm_Info <- tibble::tibble(community_numb = as.numeric(),

@@ -1,10 +1,10 @@
 Package: CommunityAMARETTO
 Type: Package
-Title: Calculating and visualising communities over AMARETTO runs and genesets.
+Title: Calculating and visualising communities over AMARETTO runs and genesets
 Version: 0.99.24
 Author: Mohsen Nabian, Celine Everaert, Olivier Gevaert and Nathalie Pochet
 Maintainer: Mohsen Nabian <mnabian@bwh.harvard.edu>
-Depends: R (>= 3.6), foreach, knitr, purrr, stringr, tibble, tidyr
+Depends: R (>= 3.6)
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 LazyLoad: yes
@@ -13,8 +13,7 @@ Encoding: UTF-8
 biocViews:
         StatisticalMethod,DifferentialMethylation,GeneRegulation,GeneExpression,MethylationArray,Transcription,Preprocessing,BatchEffect,DataImport,mRNAMicroarray,MicroRNAArray,Regression,Clustering,RNASeq,CopyNumberVariation,Sequencing,Microarray,Normalization,Network,Bayesian,ExonArray,OneChannel,TwoChannel,ProprietaryPlatforms,AlternativeSplicing,DifferentialExpression,DifferentialSplicing,GeneSetEnrichment,MultipleComparison,QualityControl,TimeCourse
 Suggests: 
-    testthat,
-    knitr
+    testthat
 NeedsCompilation: no
 Packaged: 2016-06-08 11:54:24 UTC
 Imports:
@@ -31,15 +30,16 @@ Imports:
     rlist,
     dplyr, 
     foreach,
-    tidyverse,
     graphics,
     grid,
     parallel,
     stats,
     utils,
-    tidyverse
+    knitr,
+    purrr,
+    stringr,
+    tibble, 
+    tidyr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.0.2
-LinkingTo: 
-    Rcpp
 VignetteBuilder: knitr

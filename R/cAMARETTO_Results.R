@@ -14,7 +14,10 @@
 #' @importFrom stats p.adjust phyper
 #' @examples 
 #' try(
-#' cAMARETTOresults <- cAMARETTO_Results(AMARETTOresults_all, gmt_filelist=list(ImmuneSignature = Cibersortgmt), NrCores = 4 , output_dir = "./")
+#' cAMARETTOresults <- cAMARETTO_Results(AMARETTOresults_all,
+#'   gmt_filelist=list(ImmuneSignature = Cibersortgmt),
+#'   NrCores = 4 ,
+#'   output_dir = "./")
 #' )
 #' @export
 cAMARETTO_Results <- function(AMARETTOresults_all,
@@ -24,7 +27,7 @@ cAMARETTO_Results <- function(AMARETTOresults_all,
                               drivers = FALSE){
   
   #test if names are matching
-  
+  RunName1<-Geneset1<-RunName2<-Geneset2<-NULL
   runnames <- names(AMARETTOresults_all)
   if (!length(unique(runnames)) == length(runnames)){
     stop("The run names are not unique. Give unique names.")
@@ -120,6 +123,9 @@ cAMARETTO_Results <- function(AMARETTOresults_all,
 #' @importFrom dplyr select arrange
 #' @export
 GmtFromModules <- function(AMARETTOresults,gmt_file,run,Drivers=FALSE){
+  
+  Type<-GeneNames<-ModuleNr<-NULL
+  
   ModuleMembership<-ExtractGenesInfo(AMARETTOresults,run)
   if (Drivers == FALSE){
     ModuleMembership<-dplyr::filter(ModuleMembership,Type=="Target")
@@ -174,7 +180,7 @@ readGMT<-function(filename){
 HyperGTestGeneEnrichment<-function(gmtfile1, gmtfile2,
                                    runname1, runname2,
                                    NrCores, ref.numb.genes=45956){
-  
+  i<-j<-NULL
   gmtfile1<-readGMT(gmtfile1) # our gmt_file_output_from Amaretto
   gmtfile2<-readGMT(gmtfile2)  # the hallmarks_and_co2...
   
@@ -254,7 +260,9 @@ ExtractGenesInfo<-function(AMARETTOresults,run){
 #' @export
 #' @examples try(Extract_Genes_Modules_All(AMARETTOresults_all,gmt_filelist))
 Extract_Genes_Modules_All<-function(AMARETTOresults_all,gmt_filelist){
-  all_genes_modules_df<-NULL
+  ModuleNr<-values<-Run_Names<-GeneNames<-NULL
+  Type<-Weights<-AMARETTOres<-NULL
+  all_genes_modules_df<-ind<-NULL
   for (run in names(AMARETTOresults_all)){
     all_genes_modules_df<-rbind(all_genes_modules_df,
                                 ExtractGenesInfo(AMARETTOresults_all[[run]],run))

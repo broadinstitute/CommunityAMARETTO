@@ -37,6 +37,10 @@ cAMARETTO_HTMLreport(
 
 \item{hyper_geo_reference}{A reference gmt file to perform the Hyper Geometric Test.}
 
+\item{hyper_geo_reference_gp}{Hypergeometric test table for genetic perturbation}
+
+\item{hyper_geo_reference_cp}{Hypergeometric test table for chemical perturbation}
+
 \item{driverGSEA}{if TRUE, driver genes beside the target genes will also be included for hypergeometric test.}
 
 \item{NrCores}{Number of Cores to use during generation of the HTML report.}
@@ -51,7 +55,12 @@ Creates a HTMLreport for the community AMARETTO results
 \examples{
 \dontrun{
 try(
-cAMARETTO_HTMLreport(cAMARETTOresults,cAMARETTOnetworkM, cAMARETTOnetworkC,HTMLsAMARETTOlist = HTMLsAMARETTOlist, hyper_geo_reference = gmtfile, output_address= "./")
+cAMARETTO_HTMLreport(cAMARETTOresults,
+  cAMARETTOnetworkM,
+  cAMARETTOnetworkC,
+  HTMLsAMARETTOlist = HTMLsAMARETTOlist,
+  hyper_geo_reference = gmtfile,
+  output_address= "./")
 )
 }
 }

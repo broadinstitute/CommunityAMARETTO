@@ -37,6 +37,10 @@ InitialCheckInputs
 }
 \examples{
 try(
-InitialCheckInputs(cAMARETTOresults,output_address="./",HTMLsAMARETTOlist,CopyAMARETTOReport=FALSE,hyper_geo_reference)
+InitialCheckInputs(cAMARETTOresults,
+ output_address="./",
+ HTMLsAMARETTOlist,
+ CopyAMARETTOReport=FALSE,
+ hyper_geo_reference)
 )
 }
