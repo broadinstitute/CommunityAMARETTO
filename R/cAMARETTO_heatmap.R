@@ -1,6 +1,7 @@
 #' @title cAMARETTO_heatmap
 #'
-#' Constructs a heatmap with the comparison between modules of two runs based on a hyper geometric test
+#' Constructs a heatmap with the comparison between
+#'  modules of two runs based on a hyper geometric test
 #' 
 #' @param cAMARETTOresults cAMARETTO_Run output
 #' @param run1 name of run 1
@@ -13,8 +14,6 @@
 #' @importFrom tibble add_row tibble column_to_rownames rownames_to_column
 #' @importFrom grid gpar
 #' @importFrom dplyr select filter
-#' 
-#' 
 #' @examples 
 #' try(
 #' cAMARETTO_heatmap(cAMARETTOresults, "LIHC", "GBM")
@@ -24,9 +23,13 @@ cAMARETTO_heatmap<-function(cAMARETTOresults,run1,run2){
   Geneset2<-Geneset1<-p_value<-NULL
   
   results_filtered<-cAMARETTOresults$hgt_modules %>%
-    dplyr::filter((grepl(run1,Geneset2)|grepl(run2,Geneset2))&(grepl(run1,Geneset1)|grepl(run2,Geneset1)))
+    dplyr::filter((grepl(run1,Geneset2)|grepl(run2,Geneset2))&
+                    (grepl(run1,Geneset1)|grepl(run2,Geneset1)))
   pvalue_matrix<-tidyr::spread(results_filtered %>%
-                                 dplyr::select(Geneset2,Geneset1,p_value),key=Geneset1,value=p_value)
+                                 dplyr::select(Geneset2,
+                                               Geneset1,
+                                               p_value),key=Geneset1,
+                               value=p_value)
   pvalue_matrix<-tibble::column_to_rownames(pvalue_matrix,"Geneset2")
   pvalue_matrix<--log10(pvalue_matrix)
   Heatmap(pvalue_matrix,
@@ -36,6 +39,7 @@ cAMARETTO_heatmap<-function(cAMARETTOresults,run1,run2){
           column_names_gp = gpar(fontsize = 8),
           row_names_gp = gpar(fontsize = 8),
           column_title_gp = grid::gpar(fontsize = 12, fontface = "bold"),
-          col=colorRamp2(c(0, max(pvalue_matrix,na.rm = TRUE)), c("white", "darkred"))
+          col=colorRamp2(c(0, max(pvalue_matrix,na.rm = TRUE)), c("white",
+                                                                  "darkred"))
           )
 }

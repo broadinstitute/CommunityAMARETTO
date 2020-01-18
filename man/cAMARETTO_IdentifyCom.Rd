@@ -20,26 +20,32 @@ cAMARETTO_IdentifyCom(
 
 \item{color_list}{An optional list with colors.}
 
-\item{filterComm}{Boolean to indicate if the identified communities needs to be filtered or not.}
+\item{filterComm}{Boolean to indicate if the identified
+communities needs to be filtered or not.}
 
-\item{ratioCommSize}{Filter nodes in the community versus nodes out of the community.}
+\item{ratioCommSize}{Filter nodes in the community versus nodes
+out of the community.}
 
 \item{MinRuns}{Filter on minimum number of runs in the community.}
 
-\item{ratioRunSize}{Filter on percentage of runs in the community versus total number of runs.}
+\item{ratioRunSize}{Filter on percentage of runs in the community
+versus total number of runs.}
 
-\item{ratioEdgesInOut}{Filer on edges in the community versus edges going out.}
+\item{ratioEdgesInOut}{Filer on edges in the community versus edges
+going out.}
 
 \item{plot_network}{If TRUE, plots the Community Network at the end.}
 }
 \value{
-a list with the module network, a community list, community edge information and color list.
+a list with the module network,
+a community list, community edge information and color list.
 }
 \description{
 cAMARETTO_IdentifyCom
 }
 \examples{
 try(
-cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
+cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,
+filterComm = FALSE)
 )
 }

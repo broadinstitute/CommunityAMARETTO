@@ -21,3 +21,9 @@ Creates a gmt file for a AMARETTO run
 \description{
 GmtFromModules
 }
+\examples{
+try(
+GmtFromModules(AMARETTOresults,gmt_file,
+run,Drivers=FALSE)
+)
+}

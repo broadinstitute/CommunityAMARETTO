@@ -26,3 +26,9 @@ a zipfile containing cAmaretto results
 \description{
 cAMARETTO_ExportResults
 }
+\examples{
+try(
+cAMARETTO_ExportResults(cAMARETTOresults,cAMARETTOnetworkM,
+cAMARETTOnetworkC, output_address="./")
+)
+}

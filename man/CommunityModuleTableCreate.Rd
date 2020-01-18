@@ -19,9 +19,12 @@ CommunityModuleTableCreate(
 
 \item{cAMARETTOnetworkC}{cAMARETTOnetworkC object}
 
-\item{HTMLsAMARETTOlist}{List contating the address to index page for each data}
+\item{HTMLsAMARETTOlist}{List contating the address to index page for
+each data}
 
-\item{CopyAMARETTOReport}{Boolean to indicate if the AMARETTO reports needs to be copied in the AMARETTO report directory. In this way links are contained when moving the HTML directory.}
+\item{CopyAMARETTOReport}{Boolean to indicate if the AMARETTO reports
+needs to be copied in the AMARETTO report directory.
+In this way links are contained when moving the HTML directory.}
 }
 \value{
 Community To Module Dataframe
@@ -31,6 +34,9 @@ CommunityModuleTableCreate
 }
 \examples{
 try( 
-CommunityModuleTableCreate (cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, RunInfo)
+CommunityModuleTableCreate (cAMARETTOresults,
+cAMARETTOnetworkM,
+cAMARETTOnetworkC,
+RunInfo)
 )
 }

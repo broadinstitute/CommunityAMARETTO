@@ -18,7 +18,8 @@ CreatePhenotypeTable(
 
 \item{cAMARETTOnetworkC}{cAMARETTOnetworkC object}
 
-\item{PhenotypeTablesList}{a list of phenotypeassociation tables computed in AMARETTO aalysis}
+\item{PhenotypeTablesList}{a list of phenotypeassociation tables
+computed in AMARETTO aalysis}
 }
 \value{
 results
@@ -27,5 +28,8 @@ results
 CreatePhenotypeTable
 }
 \examples{
-try(CreatePhenotypeTable(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC, PhenotypeTables))
+try(CreatePhenotypeTable(cAMARETTOresults,
+   cAMARETTOnetworkM,
+   cAMARETTOnetworkC,
+   PhenotypeTables))
 }

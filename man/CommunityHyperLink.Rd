@@ -14,7 +14,8 @@ CommunityHyperLink(Community, Community_key, Community_type)
 \item{Community_type}{Community_type}
 }
 \value{
-a hyperlink and presentable name for the communities used for datatables
+a hyperlink and presentable name for
+the communities used for datatables
 }
 \description{
 CommunityHyperLink

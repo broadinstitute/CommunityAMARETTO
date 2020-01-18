@@ -1,16 +1,24 @@
 #' @title cAMARETTO_Results
 #' 
-#' To initiate the community AMARETTO this results functions performs hyper geometric tests between all modules and gene sets.
+#' To initiate the community AMARETTO this results functions performs
+#'  hyper geometric tests between all modules and gene sets.
 #'
-#' @param AMARETTOresults_all A list of multiple AMARETTO_Run outputs. The names are run names.
-#' @param NrCores Nr of Cores that can be used to calculated the results.
-#' @param output_dir A directory that stores gmt files for the runs
-#' @param gmt_filelist A list with gmt files that are added into the communities. The names of the list are used in the networks. NULL if no list is added.
-#' @param drivers Boolean that defines if only targets or drivers and targets are used to calculate the HGT.
+#' @param AMARETTOresults_all A list of multiple
+#'  AMARETTO_Run outputs. The names are run names.
+#' @param NrCores Nr of Cores that can be used to
+#'  calculated the results.
+#' @param output_dir A directory that stores gmt files
+#'  for the runs
+#' @param gmt_filelist A list with gmt files that are added into
+#'  the communities. The names of the list are used in the networks.
+#'   NULL if no list is added.
+#' @param drivers Boolean that defines if only targets or drivers
+#'  and targets are used to calculate the HGT.
 #'
 #' @return a list with cAMARETTOresults data objects from multiple runs
 #' @importFrom gtools combinations
-#' @importFrom dplyr arrange group_by left_join mutate select summarise  rename  filter everything pull distinct case_when
+#' @importFrom dplyr arrange group_by left_join mutate select summarise 
+#' rename  filter everything pull distinct case_when
 #' @importFrom stats p.adjust phyper
 #' @examples 
 #' try(
@@ -34,14 +42,16 @@ cAMARETTO_Results <- function(AMARETTOresults_all,
   }
 
   
-  dir.create(file.path(output_dir, "gmt_files"), recursive = FALSE, showWarnings = FALSE)
+  dir.create(file.path(output_dir, "gmt_files"), recursive = FALSE,
+             showWarnings = FALSE)
   
   # for each file a gmt for the modules
   create_gmt_filelist<-c()
 
   for (run in runnames){
     gmt_file <- file.path(output_dir,"gmt_files",paste0(run, "_modules.gmt"))
-    GmtFromModules(AMARETTOresults_all[[run]], gmt_file, run, Drivers = drivers)
+    GmtFromModules(AMARETTOresults_all[[run]], gmt_file, run,
+                   Drivers = drivers)
     create_gmt_filelist <- c(create_gmt_filelist,gmt_file)
   }
   names(create_gmt_filelist)<-runnames
@@ -57,28 +67,32 @@ cAMARETTO_Results <- function(AMARETTOresults_all,
   names(given_gmt_filelist)<-names(gmt_filelist)
   all_gmt_files_list <- c(create_gmt_filelist,given_gmt_filelist)
 
-  if (! length(unique(names(all_gmt_files_list))) == length(names(all_gmt_files_list))){
+  if (
+    ! length(unique(names(all_gmt_files_list))) == 
+    length(names(all_gmt_files_list))){
     stop("There is overlap between the gmt file names and run names")
   }
   
   if (length(all_gmt_files_list) < 2){
-    stop("There are none or only one group given, community AMARETTO needs at least two groups.")
+    stop("There are none or only one group given,
+         community AMARETTO needs at least two groups.")
   }
   
   # compare gmts pairwise between runs
-  all_run_combinations <- as.data.frame(gtools::combinations(n=length(all_gmt_files_list),
-                                                             r=2,
-                                                             v=names(all_gmt_files_list),
-                                                             repeats.allowed=FALSE))
+  all_run_combinations <- as.data.frame(gtools::combinations(
+    n=length(all_gmt_files_list),
+    r=2,
+    v=names(all_gmt_files_list),
+    repeats.allowed=FALSE))
   
   output_hgt_allcombinations <- apply(all_run_combinations, 1, function(x) {
     gmt_run1 <- all_gmt_files_list[x["V1"]]
     gmt_run2 <- all_gmt_files_list[x["V2"]]
     output_hgt_combination <- HyperGTestGeneEnrichment(gmt_run1,
-                                                       gmt_run2,
-                                                       runname1=as.character(x["V1"]),
-                                                       runname2=as.character(x["V2"]),
-                                                       NrCores=NrCores)
+              gmt_run2,
+              runname1=as.character(x["V1"]),
+              runname2=as.character(x["V2"]),
+              NrCores=NrCores)
     return(output_hgt_combination)
   })
   
@@ -89,9 +103,12 @@ cAMARETTO_Results <- function(AMARETTOresults_all,
   })
   
   output_hgt_allcombinations <- do.call(rbind, output_hgt_allcombinations)
-  output_hgt_allcombinations$padj <- stats::p.adjust(output_hgt_allcombinations$p_value, method="BH")
+  output_hgt_allcombinations$padj <- stats::p.adjust(
+    output_hgt_allcombinations$p_value,
+    method="BH")
   output_hgt_allcombinations <- output_hgt_allcombinations %>% 
-    dplyr::mutate(p_value=dplyr::case_when(Geneset1 == Geneset2~NA_real_, TRUE~p_value))
+    dplyr::mutate(p_value=dplyr::case_when(
+      Geneset1 == Geneset2~NA_real_, TRUE~p_value))
   output_hgt_allcombinations <- output_hgt_allcombinations %>%
     dplyr::mutate(Geneset1=ifelse(RunName1%in%names(given_gmt_filelist),
                                   paste0(RunName1,"|",gsub(" ","_",Geneset1))
@@ -100,8 +117,10 @@ cAMARETTO_Results <- function(AMARETTOresults_all,
                                   paste0(RunName2,"|",gsub(" ","_",Geneset2)),
                                   Geneset2))
   
-  # Extract relationship between genes and modules for all AMARETTo files and the given gmt files.
-  all_genes_modules_df<-Extract_Genes_Modules_All(AMARETTOresults_all,gmt_filelist)
+  # Extract relationship between genes and modules for all
+  #AMARETTo files and the given gmt files.
+  all_genes_modules_df<-Extract_Genes_Modules_All(AMARETTOresults_all,
+                                                  gmt_filelist)
   
   return(list(runnames=runnames,
               gmtnames=names(given_gmt_filelist),
@@ -121,6 +140,11 @@ cAMARETTO_Results <- function(AMARETTOresults_all,
 #' @return Creates a gmt file for a AMARETTO run
 #' @importFrom utils write.table stack
 #' @importFrom dplyr select arrange
+#' @examples 
+#' try(
+#' GmtFromModules(AMARETTOresults,gmt_file,
+#' run,Drivers=FALSE)
+#' )
 #' @export
 GmtFromModules <- function(AMARETTOresults,gmt_file,run,Drivers=FALSE){
   
@@ -133,10 +157,12 @@ GmtFromModules <- function(AMARETTOresults,gmt_file,run,Drivers=FALSE){
   ModuleMembership<-ModuleMembership%>%
     dplyr::select(GeneNames,ModuleNr)%>%
     dplyr::arrange(GeneNames)
-  ModuleMembers_list<-split(ModuleMembership$GeneNames,ModuleMembership$ModuleNr)
+  ModuleMembers_list<-split(ModuleMembership$GeneNames,
+                            ModuleMembership$ModuleNr)
   names(ModuleMembers_list)<-paste0(run,"|Module_",names(ModuleMembers_list))
   utils::write.table(sapply(names(ModuleMembers_list),
-                            function(x) paste(x,paste(ModuleMembers_list[[x]],collapse="\t"),sep="\t"))
+                            function(x) paste(x,paste(ModuleMembers_list[[x]],
+                      collapse="\t"),sep="\t"))
                      ,gmt_file,
                      quote = FALSE,
                      row.names = TRUE,
@@ -174,8 +200,13 @@ readGMT<-function(filename){
 #' @importFrom foreach foreach %dopar% %do%
 #' @importFrom stats p.adjust phyper
 #' 
-#' @return Creates resultfile with p-values and padj when comparing two gmt files with a hyper geometric test.
-#' 
+#' @return Creates resultfile with p-values and padj when
+#'  comparing two gmt files with a hyper geometric test.
+#' @examples 
+#' try(
+#' HyperGTestGeneEnrichment(gmtfile1, gmtfile2,
+#' runname1, runname2,NrCores, ref.numb.genes=45956)
+#' )
 #' @export
 HyperGTestGeneEnrichment<-function(gmtfile1, gmtfile2,
                                    runname1, runname2,
@@ -185,7 +216,8 @@ HyperGTestGeneEnrichment<-function(gmtfile1, gmtfile2,
   gmtfile2<-readGMT(gmtfile2)  # the hallmarks_and_co2...
   
   ###########################  Parallelizing :
-  cluster <- parallel::makeCluster(c(rep("localhost", NrCores)), type = "SOCK")
+  cluster <- parallel::makeCluster(c(rep("localhost", NrCores)),
+                                   type = "SOCK")
   doParallel::registerDoParallel(cluster,cores=NrCores)
   
   resultloop<-foreach::foreach(j=1:length(gmtfile2), .combine='rbind') %do% {
@@ -220,16 +252,23 @@ HyperGTestGeneEnrichment<-function(gmtfile1, gmtfile2,
 #' Title  ExtractGenesInfo 
 #'
 #' @param AMARETTOresults AMARETTOreults object from an AMARETTO run.
-#' @param run the run-name string , for example :"TCGA_LIHC", associated with the AMARETTOreults run. 
+#' @param run the run-name string , for example :"TCGA_LIHC",
+#'  associated with the AMARETTOreults run. 
 #'
-#' @return returns a dataframe with columns of runname, module-number, genename, gene-types, and weights of the driver genes.
+#' @return returns a dataframe with columns of runname,
+#'  module-number, genename, gene-types, and weights of the driver genes.
 #' @export
 #'
-#' @examples try(ExtractGenesInfo(AMARETTOresults,"TCGA-LIHC"))
+#' @examples 
+#' try(
+#' ExtractGenesInfo(AMARETTOresults,"TCGA-LIHC")
+#' )
 ExtractGenesInfo<-function(AMARETTOresults,run){
   ModuleMembership<-NULL
   for (ModuleNr in 1:AMARETTOresults$NrModules){
-    Targets<- names(AMARETTOresults$ModuleMembership[which(AMARETTOresults$ModuleMembership==ModuleNr),1])
+    Targets<- names(
+      AMARETTOresults$ModuleMembership[which(
+        AMARETTOresults$ModuleMembership==ModuleNr),1])
     Target_df<-data.frame(Run_Names=run,
                           ModuleNr=ModuleNr,
                           GeneNames=Targets,
@@ -251,12 +290,15 @@ ExtractGenesInfo<-function(AMARETTOresults,run){
 
 #' Title Extract_Genes_Modules_All
 #'
-#' @param AMARETTOresults_all list of AMARETTOresults objects for different AMARETTO runs
+#' @param AMARETTOresults_all list of 
+#' AMARETTOresults objects for different AMARETTO runs
 #' @param gmt_filelist addresses to gmt files.
 #'
 #' @importFrom utils stack
 #' @importFrom dplyr mutate rename select
-#' @return a dataframe for all AMARETTO files and given gmt file with the following structure :  runname, ModuleNr, genename, gene-types, and weights of the driver genes.
+#' @return a dataframe for all AMARETTO files and
+#'  given gmt file with the following structure :  runname, ModuleNr, 
+#'  genename, gene-types, and weights of the driver genes.
 #' @export
 #' @examples try(Extract_Genes_Modules_All(AMARETTOresults_all,gmt_filelist))
 Extract_Genes_Modules_All<-function(AMARETTOresults_all,gmt_filelist){
@@ -265,7 +307,7 @@ Extract_Genes_Modules_All<-function(AMARETTOresults_all,gmt_filelist){
   all_genes_modules_df<-ind<-NULL
   for (run in names(AMARETTOresults_all)){
     all_genes_modules_df<-rbind(all_genes_modules_df,
-                                ExtractGenesInfo(AMARETTOresults_all[[run]],run))
+             ExtractGenesInfo(AMARETTOresults_all[[run]],run))
   }
   all_genes_modules_df<-all_genes_modules_df%>%
     dplyr::mutate(ModuleNr=paste0("Module_",ModuleNr))%>%

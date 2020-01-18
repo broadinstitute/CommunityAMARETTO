@@ -7,12 +7,15 @@
 Extract_Genes_Modules_All(AMARETTOresults_all, gmt_filelist)
 }
 \arguments{
-\item{AMARETTOresults_all}{list of AMARETTOresults objects for different AMARETTO runs}
+\item{AMARETTOresults_all}{list of
+AMARETTOresults objects for different AMARETTO runs}
 
 \item{gmt_filelist}{addresses to gmt files.}
 }
 \value{
-a dataframe for all AMARETTO files and given gmt file with the following structure :  runname, ModuleNr, genename, gene-types, and weights of the driver genes.
+a dataframe for all AMARETTO files and
+given gmt file with the following structure :  runname, ModuleNr,
+genename, gene-types, and weights of the driver genes.
 }
 \description{
 Title Extract_Genes_Modules_All

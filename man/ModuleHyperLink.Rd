@@ -21,9 +21,12 @@ ModuleHyperLink(
 
 \item{AMARETTOres}{AMARETTO result object}
 
-\item{HTMLsAMARETTOlist}{list containing the hyperlink address to html report of each dataset.}
+\item{HTMLsAMARETTOlist}{list containing the hyperlink address
+to html report of each dataset.}
 
-\item{CopyAMARETTOReport}{Boolean to indicate if the AMARETTO reports needs to be copied in the AMARETTO report directory. In this way links are contained when moving the HTML directory.}
+\item{CopyAMARETTOReport}{Boolean to indicate if the AMARETTO reports
+needs to be copied in the AMARETTO report directory.
+In this way links are contained when moving the HTML directory.}
 
 \item{page}{1 for index pages and 2 for community pages}
 }
@@ -35,5 +38,7 @@ ModuleHyperLink
 Returns hyperlink to the html report of a given module and dataset.
 }
 \examples{
-try(ModuleHyperLink(Module,Run_Names,AMARETTOres,HTMLsAMARETTOlist,CopyAMARETTOReport,page=1))
+try(ModuleHyperLink(Module,Run_Names,
+   AMARETTOres,HTMLsAMARETTOlist,
+   CopyAMARETTOReport,page=1))
 }

@@ -27,8 +27,15 @@ HyperGTestGeneEnrichment(
 \item{ref.numb.genes}{The reference number of genes.}
 }
 \value{
-Creates resultfile with p-values and padj when comparing two gmt files with a hyper geometric test.
+Creates resultfile with p-values and padj when
+comparing two gmt files with a hyper geometric test.
 }
 \description{
 GmtFromModules
+}
+\examples{
+try(
+HyperGTestGeneEnrichment(gmtfile1, gmtfile2,
+runname1, runname2,NrCores, ref.numb.genes=45956)
+)
 }

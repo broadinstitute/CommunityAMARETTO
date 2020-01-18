@@ -9,14 +9,18 @@ ExtractGenesInfo(AMARETTOresults, run)
 \arguments{
 \item{AMARETTOresults}{AMARETTOreults object from an AMARETTO run.}
 
-\item{run}{the run-name string , for example :"TCGA_LIHC", associated with the AMARETTOreults run.}
+\item{run}{the run-name string , for example :"TCGA_LIHC",
+associated with the AMARETTOreults run.}
 }
 \value{
-returns a dataframe with columns of runname, module-number, genename, gene-types, and weights of the driver genes.
+returns a dataframe with columns of runname,
+module-number, genename, gene-types, and weights of the driver genes.
 }
 \description{
 Title  ExtractGenesInfo
 }
 \examples{
-try(ExtractGenesInfo(AMARETTOresults,"TCGA-LIHC"))
+try(
+ExtractGenesInfo(AMARETTOresults,"TCGA-LIHC")
+)
 }

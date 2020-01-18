@@ -22,7 +22,8 @@ CreateHyperGeoTestAll(
 
 \item{hyper_geo_reference}{a vector address for the gmt files.}
 
-\item{driverGSEA}{TRUE for inclusion of driver genes in hypergeomertic test}
+\item{driverGSEA}{TRUE for inclusion of driver genes
+in hypergeomertic test}
 
 \item{NrCores}{Nr of core for parallel processing}
 }

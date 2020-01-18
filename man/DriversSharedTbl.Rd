@@ -14,7 +14,8 @@ DriversSharedTbl(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)
 \item{cAMARETTOnetworkC}{cAMARETTOnetworkC object}
 }
 \value{
-Frequency of driver genes across different communities and datasets
+Frequency of driver genes across different communities and
+datasets
 }
 \description{
 DriversSharedTbl

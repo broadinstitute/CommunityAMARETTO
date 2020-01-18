@@ -19,15 +19,21 @@ InitialCheckInputs(
 
 \item{output_address}{output_address}
 
-\item{HTMLsAMARETTOlist}{A list with AMARETTO reports to link with the Community AMARETTO report. If NULL, no links are added.}
+\item{HTMLsAMARETTOlist}{A list with AMARETTO reports to link
+with the Community AMARETTO report. If NULL, no links are added.}
 
-\item{CopyAMARETTOReport}{Boolean to indicate if the AMARETTO reports needs to be copied in the AMARETTO report directory. In this way links are contained when moving the HTML directory.}
+\item{CopyAMARETTOReport}{Boolean to indicate if the AMARETTO reports
+needs to be copied in the AMARETTO report directory.
+In this way links are contained when moving the HTML directory.}
 
-\item{hyper_geo_reference}{comupted tables or addresses to gmt files for functional enrichment}
+\item{hyper_geo_reference}{comupted tables or addresses to gmt files
+for functional enrichment}
 
-\item{hyper_geo_reference_gp}{comupted tables or addresses to gmt files for genetic perturbation}
+\item{hyper_geo_reference_gp}{comupted tables or addresses to gmt files
+for genetic perturbation}
 
-\item{hyper_geo_reference_cp}{comupted tables or addresses to gmt files for chemical perturbation}
+\item{hyper_geo_reference_cp}{comupted tables or addresses to gmt files
+for chemical perturbation}
 }
 \value{
 RunInfo dataframe

@@ -24,12 +24,14 @@ cAMARETTO_ModuleNetwork(
 
 \item{color_list}{An optional list with colors}
 
-\item{edge_method}{Define edge weights based p-values or overlap between the gene sets.}
+\item{edge_method}{Define edge weights based
+p-values or overlap between the gene sets.}
 
 \item{plot_network}{If TRUE, plots the Community Network at the end.}
 }
 \value{
-a list with the module network, layout for the network, used p-value, used overlap en colors
+a list with the module network, layout for the network,
+used p-value, used overlap en colors
 }
 \description{
 cAMARETTO_ModuleNetwork

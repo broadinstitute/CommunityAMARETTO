@@ -8,7 +8,8 @@
 #'
 #' @return None
 #' 
-#' @importFrom igraph as_data_frame degree E graph_from_data_frame layout_with_fr V graph.data.frame norm_coords edge.betweenness.community
+#' @importFrom igraph as_data_frame degree E graph_from_data_frame
+#'  layout_with_fr V graph.data.frame norm_coords edge.betweenness.community
 #' @importFrom graphics legend plot
 #' @importFrom tibble add_row tibble column_to_rownames rownames_to_column
 #' @examples
@@ -16,11 +17,15 @@
 #' cAMARETTO_ColorOneModule(cAMARETTOnetworkM, cAMARETTOnetworkC, 2)
 #' )
 #' @export
-cAMARETTO_ColorOneModule <- function(cAMARETTOnetworkM, cAMARETTOnetworkC, ModuleNr) {
+cAMARETTO_ColorOneModule <- function(cAMARETTOnetworkM,
+                                     cAMARETTOnetworkC, ModuleNr) {
 
-  selected_group <- cAMARETTOnetworkC$community_list[names(cAMARETTOnetworkC$community_list)==ModuleNr]
-  color_group <- cAMARETTOnetworkC$color_list[names(cAMARETTOnetworkC$color_list)==ModuleNr]
-  Nodes_Mnetwork <- igraph::as_data_frame(cAMARETTOnetworkM$module_network, what="vertices")
+  selected_group <- cAMARETTOnetworkC$community_list[
+    names(cAMARETTOnetworkC$community_list)==ModuleNr]
+  color_group <- cAMARETTOnetworkC$color_list[
+    names(cAMARETTOnetworkC$color_list)==ModuleNr]
+  Nodes_Mnetwork <- igraph::as_data_frame(cAMARETTOnetworkM$module_network,
+                                          what="vertices")
   
   
   plot(cAMARETTOnetworkC$CommGraph,layout=cAMARETTOnetworkM$layoutMN,

@@ -17,9 +17,12 @@ RunHyperLink(
 
 \item{AMARETTOres}{list of AMARETTOres object}
 
-\item{HTMLsAMARETTOlist}{A list with AMARETTO reports to link with the Community AMARETTO report. If NULL, no links are added.}
+\item{HTMLsAMARETTOlist}{A list with AMARETTO reports to link
+with the Community AMARETTO report. If NULL, no links are added.}
 
-\item{CopyAMARETTOReport}{Boolean to indicate if the AMARETTO reports needs to be copied in the AMARETTO report directory. In this way links are contained when moving the HTML directory.}
+\item{CopyAMARETTOReport}{Boolean to indicate if the AMARETTO reports
+needs to be copied in the AMARETTO report directory.
+In this way links are contained when moving the HTML directory.}
 
 \item{page}{1 for index page and 2 for community page}
 }
@@ -30,6 +33,7 @@ Hyperlinks for Run Names
 RunHyperLink
 }
 \examples{
-try(RunHyperLink(Run_Names, AMARETTOres, HTMLsAMARETTOlist, CopyAMARETTOReport, page=1))
+try(RunHyperLink(Run_Names, AMARETTOres,
+ HTMLsAMARETTOlist, CopyAMARETTOReport, page=1))
 
 }

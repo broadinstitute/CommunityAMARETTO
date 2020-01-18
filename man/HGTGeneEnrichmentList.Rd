@@ -4,18 +4,21 @@
 \alias{HGTGeneEnrichmentList}
 \title{HGTGeneEnrichmentList
 
-Calculates the p-values for unranked gene set enrichment based on two gmt files as input and the hyper geometric test.}
+Calculates the p-values for unranked gene set enrichment
+based on two gmt files as input and the hyper geometric test.}
 \usage{
 HGTGeneEnrichmentList(genelist, gmtfile, NrCores, ref.numb.genes = 45956)
 }
 \arguments{
 \item{genelist}{The gmt file with reference gene set.}
 
-\item{gmtfile}{The gmt file with gene sets to test. In our case, the gmt file of the modules.}
+\item{gmtfile}{The gmt file with gene sets to test.
+In our case, the gmt file of the modules.}
 
 \item{NrCores}{Number of cores used for parallelization.}
 
-\item{ref.numb.genes}{The total number of genes teste, standard equal to 45956 (MSIGDB standard).}
+\item{ref.numb.genes}{The total number of genes teste,
+standard equal to 45956 (MSIGDB standard).}
 }
 \value{
 a list a dataframe for Hypergeometric test
@@ -23,10 +26,14 @@ a list a dataframe for Hypergeometric test
 \description{
 HGTGeneEnrichmentList
 
-Calculates the p-values for unranked gene set enrichment based on two gmt files as input and the hyper geometric test.
+Calculates the p-values for unranked gene set enrichment
+based on two gmt files as input and the hyper geometric test.
 }
 \examples{
-try(HGTGeneEnrichmentList(genelist, gmtfile, NrCores, ref.numb.genes = 45956))
+try(HGTGeneEnrichmentList(genelist,
+  gmtfile,
+  NrCores,
+  ref.numb.genes = 45956))
 
 }
 \keyword{internal}

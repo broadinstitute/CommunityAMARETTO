@@ -14,15 +14,17 @@ ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)
 \item{cAMARETTOnetworkC}{cAMARETTOnetworkC object}
 }
 \value{
-a dataframe contaning all communities, runname, and modules relationships.
+a dataframe contaning all communities, runname, and
+modules relationships.
 }
 \description{
 ComRunModGenInfo
 }
 \examples{
-
 try(
-df<-ComRunModGenInfo(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC)
+df<-ComRunModGenInfo(cAMARETTOresults,
+ cAMARETTOnetworkM,
+ cAMARETTOnetworkC)
 )
 
 }
