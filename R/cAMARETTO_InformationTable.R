@@ -16,27 +16,27 @@
 #' )
 #' @export
 cAMARETTO_InformationTable <- function(cAMARETTOnetworkM, cAMARETTOnetworkC) {
-  to<-from<-NULL
-  Nodes_Cnetwork <- igraph::as_data_frame(cAMARETTOnetworkC$CommGraph,
-                                          what="vertices")
-  Edges_Cnetwork <- igraph::as_data_frame(cAMARETTOnetworkC$CommGraph,
-                                          what="edges")
-  Comm_Info <- tibble::tibble(community_numb = as.numeric(),
-                              included_nodes = as.character(),
-                              overlapping_genes = as.character())
-  i=1
-  for (comm in cAMARETTOnetworkC$community_list) {
-    Edges_Cnetwork_comm <- Edges_Cnetwork %>% 
-      filter(from %in% comm & to %in% comm)
-    all_overlapping_genes <- unique(unlist(strsplit(
-      Edges_Cnetwork_comm$Overlapping_genes,", ")))
-    Comm_Info <- add_row(Comm_Info,
-                         community_numb = as.numeric(
-                           names(cAMARETTOnetworkC$community_list[i])),
-                         included_nodes = paste(comm,collapse=", "),
-                         overlapping_genes = paste(all_overlapping_genes,
-                                                   collapse=", "))
-    i = i + 1
-  }
-  return(Comm_Info)
+    to<-from<-NULL
+    Nodes_Cnetwork <- igraph::as_data_frame(cAMARETTOnetworkC$CommGraph,
+                                            what="vertices")
+    Edges_Cnetwork <- igraph::as_data_frame(cAMARETTOnetworkC$CommGraph,
+                                            what="edges")
+    Comm_Info <- tibble::tibble(community_numb = as.numeric(),
+                                included_nodes = as.character(),
+                                overlapping_genes = as.character())
+    i=1
+    for (comm in cAMARETTOnetworkC$community_list) {
+        Edges_Cnetwork_comm <- Edges_Cnetwork %>% 
+            filter(from %in% comm & to %in% comm)
+        all_overlapping_genes <- unique(unlist(strsplit(
+            Edges_Cnetwork_comm$Overlapping_genes,", ")))
+        Comm_Info <- add_row(Comm_Info,
+                            community_numb = as.numeric(
+                                names(cAMARETTOnetworkC$community_list[i])),
+                            included_nodes = paste(comm,collapse=", "),
+                            overlapping_genes = paste(all_overlapping_genes,
+                            collapse=", "))
+        i = i + 1
+    }
+    return(Comm_Info)
 }

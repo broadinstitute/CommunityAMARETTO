@@ -28,7 +28,7 @@ cAMARETTO_ExportResults
 }
 \examples{
 try(
-cAMARETTO_ExportResults(cAMARETTOresults,cAMARETTOnetworkM,
-cAMARETTOnetworkC, output_address="./")
+cAMARETTO_ExportResults(  cAMARETTOresults,  cAMARETTOnetworkM,
+  cAMARETTOnetworkC,   output_address="./")
 )
 }
