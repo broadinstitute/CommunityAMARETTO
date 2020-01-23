@@ -12,6 +12,6 @@
 MsigdbMapping
 }
 \description{
-A dataframe containing of MSIGDB geneset names, their urls and descriptions.
+Complementary data providing hyperlinks of Msigdb pages
 }
 \keyword{datasets}
