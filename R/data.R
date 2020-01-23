@@ -1,47 +1,27 @@
+#' TCGA_LIHC_data
+#'
+#' A list containing data from an analysis for TCGA-LIHC.
+#' The list include following objects: 1) AMARETTO_result calculated 
+#' from AMARETTO analysis. 2) Phenotype Association analysis table. 
+#'
+#' @format List
+#' @source \url{CommunityAMARETTO}
+"TCGA_LIHC_data"
+
+#' CCLE_Liver_data
+#'
+#' A list containing data from an analysis for CCLE-Liver.
+#' The list include AMARETTO_result object calculated from AMARETTO
+#' analysis.
+#' 
+#' @format List
+#' @source \url{CommunityAMARETTO}
+"CCLE_Liver_data"
+
 #' MsigdbMapping
 #'
-#' A dataframe containing of MSIGDB geneset names, their urls and descriptions.
-#'
+#' Complementary data providing hyperlinks of Msigdb pages
+#' 
 #' @format List
 #' @source \url{CommunityAMARETTO}
 "MsigdbMapping"
-
-#' AMARETTOinit_all
-#'
-#' A dataframe containing of MSIGDB geneset names, their urls and descriptions.
-#'
-#' @format List
-#' @source \url{CommunityAMARETTO}
-"AMARETTOinit_all"
-
-#' AMARETTOresults_all
-#'
-#' A dataframe containing of MSIGDB geneset names, their urls and descriptions.
-#'
-#' @format List
-#' @source \url{CommunityAMARETTO}
-"AMARETTOresults_all"
-
-#' Driver_Genes
-#'
-#' A dataframe containing of MSIGDB geneset names, their urls and descriptions.
-#'
-#' @format List
-#' @source \url{CommunityAMARETTO}
-"Driver_Genes"
-
-#' ProcessedDataTCGA
-#'
-#' A list of dataframes of processed toy example dataset from TCGA-LIHC.
-#'
-#' @format List
-#' @source \url{CommunityAMARETTO}
-"ProcessedDataTCGA"
-
-#' ProcessedDataCCLE
-#'
-#' A list of dataframes of processed toy example dataset from CCLE-LIVER.
-#'
-#' @format List
-#' @source \url{CommunityAMARETTO}
-"ProcessedDataCCLE"
