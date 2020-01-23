@@ -4,8 +4,6 @@ The goal of the Community-AMARETTO algorithm (Champion et al., EBioMedicine 2018
 
 REFERENCES
 
-Champion M., Brennan K., Croonenborghs T., Gentles A.J., Pochet N., Gevaert O. (2018) Module analysis captures pancancer genetically and epigenetically deregulated cancer driver genes for smoking and antiviral response. EBioMedicine, 27:156-166. https://www.ebiomedicine.com/article/S2352-3964(17)30472-3/fulltext
-
 GitHub:<br/>
 AMARETTO: https://github.com/gevaertlab/AMARETTO<br/>
 Community-AMARETTO: https://github.com/broadinstitute/CommunityAMARETTO
