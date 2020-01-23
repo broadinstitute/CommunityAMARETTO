@@ -364,8 +364,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults,
     # cleaning memory, avoiding memory to be overloaded
     knitr::knit_meta(class=NULL, clean = TRUE)  
     rmarkdown::render(
-        system.file("templates/community_page_template/
-                    TemplateCommunityPage.Rmd",
+    system.file("templates/community_page_template/TemplateCommunityPage.Rmd",
         package = "CommunityAMARETTO"),
         output_dir = paste0(full_path, "/communities"),
         output_file = paste0("Community_",ComNr,".html"),
@@ -964,31 +963,31 @@ InitialCheckInputs<-function(cAMARETTOresults,output_address,
             }
         }
     }
-
-    i=1
-    if(is.null(HTMLsAMARETTOlist)==FALSE){
-    if(!all(names(HTMLsAMARETTOlist) %in% cAMARETTOresults$runnames)==TRUE){
-        stop("The RUN names don't match those of the cAMARETTOresults")
-    }
+    if(!is.null(HTMLsAMARETTOlist)){
+        if(!all(names(HTMLsAMARETTOlist) %in% cAMARETTOresults$runnames)){
+            stop("The RUN names don't match those of the cAMARETTOresults")
+        }
+        i<-1
         for(htmldir in HTMLsAMARETTOlist){
             if(!file.exists(htmldir)){
                 stop(paste0("The AMARETTO ",names(HTMLsAMARETTOlist)[i],
                     " html directory is not existing."))
             }
-        htmldir<-normalizePath(file.path(htmldir,"/AMARETTOhtmls/"))
-        if (CopyAMARETTOReport==TRUE){
-            dir.create(file.path(full_path,names(HTMLsAMARETTOlist)[i]),
-                showWarnings = FALSE)
-        file.copy(htmldir, file.path(full_path,names(HTMLsAMARETTOlist)[i]),
-            recursive = TRUE)
-        htmldir<-file.path(".",names(HTMLsAMARETTOlist)[i],"AMARETTOhtmls")
-        }
-    HTMLsAMARETTOlist[i]<-htmldir
-    i=i+1
+            htmldir<-normalizePath(file.path(htmldir,"/AMARETTOhtmls/"))
+            if (CopyAMARETTOReport==TRUE){
+                dir.create(file.path(full_path,names(HTMLsAMARETTOlist)[i]),
+                    showWarnings = FALSE)
+                file.copy(htmldir, file.path(full_path,
+                        names(HTMLsAMARETTOlist)[i]),recursive = TRUE)
+                htmldir<-file.path(".",names(HTMLsAMARETTOlist)[i],
+                                   "AMARETTOhtmls")
+            }
+            HTMLsAMARETTOlist[i]<-htmldir
+            i=i+1
         }
     }
     else{
-        HTMLsAMARETTOlist=NULL
+        HTMLsAMARETTOlist<-NULL
     }
     return(list(full_path=full_path,HTMLsAMARETTOlist=HTMLsAMARETTOlist))
 }

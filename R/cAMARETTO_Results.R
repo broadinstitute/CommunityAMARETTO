@@ -47,7 +47,7 @@ cAMARETTO_Results <- function(AMARETTOresults_all,
 
     for (run in runnames){
         gmt_file <- file.path(output_dir,
-                              "gmt_files",paste0(run, "_modules.gmt"))
+                    "gmt_files",paste0(run, "_modules.gmt"))
         GmtFromModules(AMARETTOresults_all[[run]], gmt_file, run,
                         Drivers = drivers)
         create_gmt_filelist <- c(create_gmt_filelist,gmt_file)
