@@ -67,11 +67,11 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults,
     ModuleName <- Run <- Genes <- q.value<-NULL
     #####################################
 
-    RunInfoList<-InitialCheckInputs(cAMARETTOresults,
-                                    output_address,
-                                    HTMLsAMARETTOlist,
-                                    CopyAMARETTOReport,
-                                    hyper_geo_reference,
+    RunInfoList<-InitialCheckInputs(cAMARETTOresults=cAMARETTOresults,
+                                    output_address=output_address,
+                                    HTMLsAMARETTOlist=HTMLsAMARETTOlist,
+                                    CopyAMARETTOReport=CopyAMARETTOReport,
+                                    hyper_geo_reference=hyper_geo_reference,
                                     hyper_geo_reference_gp,
                                     hyper_geo_reference_cp)
     RunInfo<-RunInfoList$RunInfo
@@ -80,11 +80,11 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults,
     HTMLsAMARETTOlist<-RunInfoList$HTMLsAMARETTOlist
     #====================================================================
     # Extract main dataframes
-    com_gene_df<-suppressWarnings(ComRunModGenInfo(cAMARETTOresults, 
-    cAMARETTOnetworkM, 
-    cAMARETTOnetworkC))
-    comm_info <-suppressWarnings(cAMARETTO_InformationTable(cAMARETTOnetworkM,
-                                                        cAMARETTOnetworkC))
+    com_gene_df<-suppressWarnings(
+        ComRunModGenInfo(cAMARETTOresults,cAMARETTOnetworkM,
+                        cAMARETTOnetworkC))
+    comm_info <-suppressWarnings(
+        cAMARETTO_InformationTable(cAMARETTOnetworkM,cAMARETTOnetworkC))
     #====================================================================
     Runs_AMARETTOs_info<-com_gene_df%>%
         dplyr::select(Run_Names,AMARETTOres)%>%
@@ -94,10 +94,10 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults,
                         filter(AMARETTOres==1)%>%select(Run_Names)
     #====================================================================
     ComModulesLink<-CommunityModuleTableCreate(cAMARETTOresults,
-                                                cAMARETTOnetworkM, 
-                                                cAMARETTOnetworkC,
-                                                HTMLsAMARETTOlist,
-                                                CopyAMARETTOReport)
+                                cAMARETTOnetworkM,
+                                cAMARETTOnetworkC,
+                                HTMLsAMARETTOlist,
+                                CopyAMARETTOReport)
     #====================================================================
     com_gene_df<-com_gene_df%>%
         dplyr::mutate(Color=sapply(as.numeric(Weights), function(x){
@@ -926,10 +926,13 @@ CreateHyperGeoTestAll<-function(cAMARETTOresults,cAMARETTOnetworkM,
 #'  CopyAMARETTOReport=FALSE,
 #'  hyper_geo_reference)
 #' )
-InitialCheckInputs<-function(cAMARETTOresults,output_address,
-                                HTMLsAMARETTOlist,CopyAMARETTOReport,
-                                hyper_geo_reference,hyper_geo_reference_gp,
-                                hyper_geo_reference_cp){
+InitialCheckInputs<-function(cAMARETTOresults,
+                            output_address,
+                            HTMLsAMARETTOlist,
+                            CopyAMARETTOReport,
+                            hyper_geo_reference,
+                            hyper_geo_reference_gp,
+                            hyper_geo_reference_cp){
     if (!dir.exists(output_address)) {
         stop("Output directory is not existing.")
     } else {
@@ -980,7 +983,7 @@ InitialCheckInputs<-function(cAMARETTOresults,output_address,
                 file.copy(htmldir, file.path(full_path,
                         names(HTMLsAMARETTOlist)[i]),recursive = TRUE)
                 htmldir<-file.path(".",names(HTMLsAMARETTOlist)[i],
-                                   "AMARETTOhtmls")
+                                    "AMARETTOhtmls")
             }
             HTMLsAMARETTOlist[i]<-htmldir
             i=i+1

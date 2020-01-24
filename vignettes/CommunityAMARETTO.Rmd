@@ -1,47 +1,97 @@
 
-<!-- title: "Introduction to _CommunityAMARETTO_" -->
-<!-- author: -->
-<!--   - name: Mohsen Nabian -->
-<!--     affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA -->
-<!--   - name: Celine Everaert -->
-<!--     affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA -->
-<!--   - name: Artur Manukiyan -->
-<!--     affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA -->
-<!--   - name: Shaimaa Bakr -->
-<!--     affiliation: Stanford Center for Biomedical Informatics Research (BMIR), Department of Medicine and Biomedical Data Science, 1265 Welch Rd, Stanford, CA, USA -->
-<!--   - name: Jishu Xu -->
-<!--     affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA -->
-<!--   - name: Vincent Carey -->
-<!--     affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA -->
-<!--     footnote: Corresponding Author -->
-<!--   - name: Olivier Gevaert -->
-<!--     affiliation: Stanford Center for Biomedical Informatics Research (BMIR), Department of Medicine and Biomedical Data Science, 1265 Welch Rd, Stanford, CA, USA -->
-<!--     email: olivier.gevaert@stanford.edu -->
-<!--     footnote: Corresponding Author -->
-<!--   - name: Nathalie Pochet -->
-<!--     affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA -->
-<!--     email: npochet@broadinstitute.org -->
+title: "Introduction to _CommunityAMARETTO_"
+author:
+  - name: Mohsen Nabian
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
+  - name: Celine Everaert
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
+  - name: Artur Manukiyan
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
+  - name: Shaimaa Bakr
+    affiliation: Stanford Center for Biomedical Informatics Research (BMIR), Department of Medicine and Biomedical Data Science, 1265 Welch Rd, Stanford, CA, USA
+  - name: Jishu Xu
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
+  - name: Vincent Carey
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
+    footnote: Corresponding Author
+  - name: Olivier Gevaert
+    affiliation: Stanford Center for Biomedical Informatics Research (BMIR), Department of Medicine and Biomedical Data Science, 1265 Welch Rd, Stanford, CA, USA
+    email: olivier.gevaert@stanford.edu
+    footnote: Corresponding Author
+  - name: Nathalie Pochet
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
+    email: npochet@broadinstitute.org
 
 
-<!-- date: "`r BiocStyle::doc_date()`" -->
-<!-- output: -->
-<!--   BiocStyle::pdf_document: -->
-<!--       toc_newpage: true -->
-<!-- geometry: margin = 1in -->
-<!-- fontsize: 8pt -->
-<!-- papersize: a4 -->
-<!-- graphics: yes -->
-<!-- fig_caption: yes -->
-<!-- abstract: | -->
-<!--      Integrating an increasing number of available multi-omics cancer data remains one of the main challenges to improve our understanding of cancer. One of the main challenges is using multi-omics data for identifying novel cancer driver genes. We have developed an algorithm, called AMARETTO, that integrates copy number, DNA methylation and gene expression data to identify a set of driver genes by analyzing cancer samples and connects them to clusters of co-expressed genes, which we define as modules. We applied AMARETTO in a pancancer setting to identify cancer driver genes and their modules on multiple cancer sites. AMARETTO captures modules enriched in angiogenesis, cell cycle and EMT, and modules that accurately predict survival and molecular subtypes. This allows AMARETTO to identify novel cancer driver genes directing canonical cancer pathways. -->
+date: "`r BiocStyle::doc_date()`"
+output:
+  BiocStyle::pdf_document:
+      toc_newpage: true
+geometry: margin = 1in
+fontsize: 8pt
+papersize: a4
+graphics: yes
+fig_caption: yes
+abstract: |
+     Integrating an increasing number of available multi-omics cancer data remains one of the main challenges to improve our understanding of cancer. One of the main challenges is using multi-omics data for identifying novel cancer driver genes. We have developed an algorithm, called AMARETTO, that integrates copy number, DNA methylation and gene expression data to identify a set of driver genes by analyzing cancer samples and connects them to clusters of co-expressed genes, which we define as modules. We applied AMARETTO in a pancancer setting to identify cancer driver genes and their modules on multiple cancer sites. AMARETTO captures modules enriched in angiogenesis, cell cycle and EMT, and modules that accurately predict survival and molecular subtypes. This allows AMARETTO to identify novel cancer driver genes directing canonical cancer pathways.
 
-<!-- package: Report issues on [https://github.com/broadinstitute/CommunityAMARETTO/](https://github.com/broadinstitute/CommunityAMARETTO/) -->
-<!-- vignette: | -->
-<!--   %\VignetteIndexEntry{CommunityAMARETTO.Rmd} -->
-<!--   %\VignetteEngine{knitr::rmarkdown} -->
-<!--   %\VignetteEncoding{UTF-8} -->
-<!--   \usepackage[utf8]{BiocStyle} -->
+package: Report issues on [https://github.com/broadinstitute/CommunityAMARETTO/](https://github.com/broadinstitute/CommunityAMARETTO/)
+vignette: |
+  %\VignetteIndexEntry{CommunityAMARETTO.Rmd}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  \usepackage[utf8]{BiocStyle}
+
+
+```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
+install.packages("/Users/mohsennabian/Documents/GitHub/CommunityAMARETTO",repos = NULL, type = "source")
+library(CommunityAMARETTO)
+
+#Load data
+TCGA_LIHC_data<-CommunityAMARETTO::TCGA_LIHC_data
+CCLE_Liver_data<-CommunityAMARETTO::CCLE_Liver_data
+
+
+AMARETTOresults_all<-list(TCGA_LIHC=TCGA_LIHC_data$AMARETTO_Results,
+                          CCLE_Liver=CCLE_Liver_data$AMARETTO_Results)
+
+
+PhenotypeTablesList<-list(TCGA_LIHC=TCGA_LIHC_data$Phenotype_Association_table,
+                          CCLE_Liver=NULL)
 
 
 
+cAMARETTOresults<-CommunityAMARETTO::cAMARETTO_Results(AMARETTOresults_all,
+                                                       gmt_filelist=NULL,
+                                                       NrCores = 4,
+                                                       output_dir = ".",
+                                                       drivers=TRUE)
+cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,0.10,5)
+cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
+
+
+geneset_file_address<-system.file("extdata",
+                                  "sample_genesets.gmt",
+                                  package = "CommunityAMARETTO")
+
+cAMARETTO_hgtest_tbl<-CommunityAMARETTO::CreateHyperGeoTestAll(cAMARETTOresults,
+                                                               cAMARETTOnetworkM,
+                                                               cAMARETTOnetworkC,
+                                        hyper_geo_reference=geneset_file_address,
+                                                               driverGSEA=TRUE,
+                                                               NrCores=1)
+
+
+cAMARETTO_HTMLreport(cAMARETTOresults,
+                     cAMARETTOnetworkM,
+                     cAMARETTOnetworkC,
+                     hyper_geo_reference = cAMARETTO_hgtest_tbl,
+                     output_address= "./",
+                     PhenotypeTablesList=PhenotypeTablesList)
+
+
+
+
+
+```
 
