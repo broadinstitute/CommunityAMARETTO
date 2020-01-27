@@ -1,39 +1,39 @@
-devtools::install_github("broadinstitute/CommunityAMARETTO",ref="develop")
-library(CommunityAMARETTO)
-context("CommunityAMARETTO output data objects testing")
-
-data("TCGA_LIHC_data")
-data("CCLE_Liver_data")
-
-
-
-AMARETTOresults_all<-list(TCGA_LIHC=TCGA_LIHC_data$AMARETTO_Results,
-                          CCLE_Liver=CCLE_Liver_data$AMARETTO_Results)
-
-
-cAMARETTOresults<-CommunityAMARETTO::cAMARETTO_Results(AMARETTOresults_all,
-                                                       gmt_filelist=NULL,
-                                                       NrCores = 4,
-                                                       output_dir = ".",
-                                                       drivers=TRUE)
-
-cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,0.10,5)
-
-cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
-
-
-#Identify significantly connected subnetworks using
-#the Girvan-Newman algorithm
-cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,
-                                         filterComm = FALSE,
-                                         ratioCommSize = 0.01,
-                                         MinRuns = 2,
-                                         ratioRunSize = 0.1,
-                                         ratioEdgesInOut = 0.5,
-                                         plot_network = FALSE)
-
-
-
+# devtools::install_github("broadinstitute/CommunityAMARETTO",ref="develop")
+# library(CommunityAMARETTO)
+# context("CommunityAMARETTO output data objects testing")
+# 
+# data("TCGA_LIHC_data")
+# data("CCLE_Liver_data")
+# 
+# 
+# 
+# AMARETTOresults_all<-list(TCGA_LIHC=TCGA_LIHC_data$AMARETTO_Results,
+#                           CCLE_Liver=CCLE_Liver_data$AMARETTO_Results)
+# 
+# 
+# cAMARETTOresults<-CommunityAMARETTO::cAMARETTO_Results(AMARETTOresults_all,
+#                                                        gmt_filelist=NULL,
+#                                                        NrCores = 4,
+#                                                        output_dir = ".",
+#                                                        drivers=TRUE)
+# 
+# cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,0.10,5)
+# 
+# cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
+# 
+# 
+# #Identify significantly connected subnetworks using
+# #the Girvan-Newman algorithm
+# cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,
+#                                          filterComm = FALSE,
+#                                          ratioCommSize = 0.01,
+#                                          MinRuns = 2,
+#                                          ratioRunSize = 0.1,
+#                                          ratioEdgesInOut = 0.5,
+#                                          plot_network = FALSE)
+# 
+# 
+# 
 
 
 
