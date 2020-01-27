@@ -2,13 +2,14 @@ devtools::install_github("broadinstitute/CommunityAMARETTO",ref="develop")
 library(CommunityAMARETTO)
 context("CommunityAMARETTO output data objects testing")
 
+data("TCGA_LIHC_data")
+data("CCLE_Liver_data")
 
-TCGA_LIHC_data<-CommunityAMARETTO::TCGA_LIHC_data
-CCLE_Liver_data<-CommunityAMARETTO::CCLE_Liver_data
 
 
 AMARETTOresults_all<-list(TCGA_LIHC=TCGA_LIHC_data$AMARETTO_Results,
                           CCLE_Liver=CCLE_Liver_data$AMARETTO_Results)
+
 
 cAMARETTOresults<-CommunityAMARETTO::cAMARETTO_Results(AMARETTOresults_all,
                                                        gmt_filelist=NULL,
