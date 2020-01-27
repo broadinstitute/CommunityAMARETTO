@@ -57,7 +57,7 @@ We used the igraph R package to visualize the network and the edge.betweenness.c
 
 Computational inference of regulatory networks underlying complex human diseases is one of the fundamental goals of systems biology and has shown great promise for deciphering the regulatory cell circuits driving complex disease biology, especially in cancer. The availability of increasing volumes of multimodal data ranging from multi-omics to imaging and clinical data across multiscale systems promises to improve our understanding of the regulatory mechanisms underlying complex human diseases. The main challenges are to integrate the multiple levels of multimodal data within biological systems and to translate them across multiscale biological systems to decipher the underpinnings of human diseases.
 
-Here we introduce the *AMARETTO framework as a toolbox for learning how regulatory networks - cell circuits and their drivers - are shared or distinct within and across biological systems with a broad range of applications, from disease subtyping to driver and drug discovery in studies of human disease such as cancer. The *AMARETTO toolbox currently consists of two algorithmic tools:
+Here we introduce the AMARETTO framework as a toolbox for learning how regulatory networks - cell circuits and their drivers - are shared or distinct within and across biological systems with a broad range of applications, from disease subtyping to driver and drug discovery in studies of human disease such as cancer. The AMARETTO toolbox currently consists of two algorithmic tools:
 
 (1) The AMARETTO algorithm facilitates multimodal inference of regulatory networks within one biological system via multi-omics data fusion (e.g., genetic, epigenetic, transcriptomic, proteomic) and association with phenotypes derived from clinical (e.g., diagnostic and prognostic) and imaging (e.g., histopathology and radiographic) data.
 
@@ -69,10 +69,11 @@ Community-AMARETTO learns communities or subnetworks by connecting regulatory ne
 
 # Installation Instructions
 
-```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
+```{r Installations, message= FALSE,warning=FALSE,results='hide'}
 #-------------------------------------------------------------------------------
 
-install.packages("/Users/mohsennabian/Documents/GitHub/CommunityAMARETTO",repos = NULL, type = "source")
+#install.packages("/Users/mohsennabian/Documents/GitHub/CommunityAMARETTO",repos = NULL, type = "source")
+library(devtools)
 devtools::install_github("broadinstitute/CommunityAMARETTO",ref="develop")
 library(CommunityAMARETTO)
 
@@ -81,7 +82,7 @@ library(CommunityAMARETTO)
 
 # Data Input
 
-```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
+```{r LoadData, message= FALSE,warning=FALSE,results='hide'}
 #-------------------------------------------------------------------------------
 #Load data
 
@@ -102,7 +103,7 @@ PhenotypeTablesList<-list(TCGA_LIHC=TCGA_LIHC_data$Phenotype_Association_table,
 
 	If it is set to â??yesâ??, communities (subnetworks) that do not satisfy all these following conditions will be filtered out: 1- Number of nodes in the community to be larger than the 1% of the total number of nodes in the network, 2- Number of represented cancers in the community to be larger than the 10% of the subnetwork size (and at least, larger than 2), 3- Ratio between edges inside/outside the community to be larger than 0.5.
 
-```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
+```{r cAMARETTOanalysis , message= FALSE,warning=FALSE,results='hide'}
 #-------------------------------------------------------------------------------
 cAMARETTOresults<-CommunityAMARETTO::cAMARETTO_Results(AMARETTOresults_all,
                                                        gmt_filelist=NULL,
@@ -118,7 +119,7 @@ cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
 
 # Performing Functional Enrichment Analysis for Communities
 
-```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
+```{r FuntionalEnrichment, message= FALSE,warning=FALSE,results='hide'}
 geneset_file_address<-system.file("extdata",
                                   "sample_genesets.gmt",
                                   package = "CommunityAMARETTO")
@@ -133,7 +134,7 @@ cAMARETTO_hgtest_tbl<-CommunityAMARETTO::CreateHyperGeoTestAll(cAMARETTOresults,
 
 # HTML-Report for Community AMARETTO
 
-```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
+```{r HTMLreport, message= FALSE,warning=FALSE,results='hide'}
 cAMARETTO_HTMLreport(cAMARETTOresults,
                      cAMARETTOnetworkM,
                      cAMARETTOnetworkC,
