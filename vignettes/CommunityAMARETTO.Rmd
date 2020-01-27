@@ -1,4 +1,4 @@
-
+---
 title: "Introduction to _CommunityAMARETTO_"
 author:
   - name: Mohsen Nabian
@@ -22,7 +22,6 @@ author:
     affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
     email: npochet@broadinstitute.org
 
-
 date: "`r BiocStyle::doc_date()`"
 output:
   BiocStyle::pdf_document:
@@ -33,6 +32,7 @@ papersize: a4
 graphics: yes
 fig_caption: yes
 abstract: |
+
      Integrating an increasing number of available multi-omics cancer data remains one of the main challenges to improve our understanding of cancer. One of the main challenges is using multi-omics data for identifying novel cancer driver genes. We have developed an algorithm, called AMARETTO, that integrates copy number, DNA methylation and gene expression data to identify a set of driver genes by analyzing cancer samples and connects them to clusters of co-expressed genes, which we define as modules. We applied AMARETTO in a pancancer setting to identify cancer driver genes and their modules on multiple cancer sites. AMARETTO captures modules enriched in angiogenesis, cell cycle and EMT, and modules that accurately predict survival and molecular subtypes. This allows AMARETTO to identify novel cancer driver genes directing canonical cancer pathways.
 
 package: Report issues on [https://github.com/broadinstitute/CommunityAMARETTO/](https://github.com/broadinstitute/CommunityAMARETTO/)
@@ -41,13 +41,50 @@ vignette: |
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   \usepackage[utf8]{BiocStyle}
+  
+---
 
+# Introduction
+
+Here, we present an extension of AMARETTO to a pancancer application using multi-omics data of eleven cancer sites from TCGA. We show that AMARETTO captures modules enriched in major pathways of cancers and modules that accurately predict molecular subtypes. Next, we connect the modules of co-expressed genes in a pancancer module network. We show that this allows the identification of major oncogenic pathways and cancer driver genes involved in multiple cancers. More specifically, we identified a pancancer driver gene that is involved in smoking induced cancers and a pancancer driver gene that is involved in antiviral IFN modulated immune response. Overall, our results show the potential of pancancer multi-omics data fusion to identify cancer drivers that are high within the causal hierarchy of cancer development and associated with common pathways across different types of tumors that eventually can lead to the identification of pancancer drug targets. The AMARETTO algorithm and its pancancer application are publicly available.
+
+
+2.3 Pancancer Module Network
+After running AMARETTO on each cancer site individually, the modules are connected in a pancancer network. Specifically, we evaluate whether there is a significant association between all pairs of modules through a hyper-geometric test. We correct for multiple hypothesis testing using the false discovery rate (Benjamini and Hochberg, 1995). We consider the association to be significant if both of the following conditions are satisfied: (i) the adjusted p-value is smaller than 0.05 and (ii) the overlap between two modules is larger than 5 genes. This defines a module network where each edge is scored based on the negative log-transformed adjusted p-value.
+We cluster the weighted module network to identify significantly connected subnetworks using the Girvan-Newman algorithm (Newman and Girvan, 2004). This algorithm is a divisive method, which aims at detecting subnetworks by progressively removing edges from the module network according to a score. The original proposed score is based on the betweenness of edges, where betweenness is a measure that favors edges that are between subnetworks, and thus responsible for connecting many pairs of others.
+We used the igraph R package to visualize the network and the edge.betweenness.community function (implementation of the Girvan-Newman algorithm) to detect subnetworks. We only focus on subnetworks that satisfy the following conditions: number of nodes larger than the 1% of the total number of nodes in the network, number of represented cancers larger than the 10% of the subnetwork size (and at least, larger than 2) and finally, ratio between edges inside/outside the subnetwork larger than ½.
+
+
+Computational inference of regulatory networks underlying complex human diseases is one of the fundamental goals of systems biology and has shown great promise for deciphering the regulatory cell circuits driving complex disease biology, especially in cancer. The availability of increasing volumes of multimodal data ranging from multi-omics to imaging and clinical data across multiscale systems promises to improve our understanding of the regulatory mechanisms underlying complex human diseases. The main challenges are to integrate the multiple levels of multimodal data within biological systems and to translate them across multiscale biological systems to decipher the underpinnings of human diseases.
+
+Here we introduce the *AMARETTO framework as a toolbox for learning how regulatory networks - cell circuits and their drivers - are shared or distinct within and across biological systems with a broad range of applications, from disease subtyping to driver and drug discovery in studies of human disease such as cancer. The *AMARETTO toolbox currently consists of two algorithmic tools:
+
+(1) The AMARETTO algorithm facilitates multimodal inference of regulatory networks within one biological system via multi-omics data fusion (e.g., genetic, epigenetic, transcriptomic, proteomic) and association with phenotypes derived from clinical (e.g., diagnostic and prognostic) and imaging (e.g., histopathology and radiographic) data.
+
+(2) The Community-AMARETTO algorithm enables multiscale inference to learn how these regulatory networks are shared or distinct across biological systems (e.g., across diseases, across cohorts, across model systems and patient studies, and across in vitro and in vivo systems).
+
+
+
+Community-AMARETTO learns communities or subnetworks by connecting regulatory networks inferred from different systems using an edge betweenness community detection algorithm (i.e., Girvan Newman) to identify cell circuits and drivers that are shared and distinct across biological systems and diseases.
+
+# Installation Instructions
 
 ```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
+#-------------------------------------------------------------------------------
+
 install.packages("/Users/mohsennabian/Documents/GitHub/CommunityAMARETTO",repos = NULL, type = "source")
+devtools::install_github("broadinstitute/CommunityAMARETTO",ref="develop")
 library(CommunityAMARETTO)
 
+#-------------------------------------------------------------------------------
+```
+
+# Data Input
+
+```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
+#-------------------------------------------------------------------------------
 #Load data
+
 TCGA_LIHC_data<-CommunityAMARETTO::TCGA_LIHC_data
 CCLE_Liver_data<-CommunityAMARETTO::CCLE_Liver_data
 
@@ -58,18 +95,30 @@ AMARETTOresults_all<-list(TCGA_LIHC=TCGA_LIHC_data$AMARETTO_Results,
 
 PhenotypeTablesList<-list(TCGA_LIHC=TCGA_LIHC_data$Phenotype_Association_table,
                           CCLE_Liver=NULL)
+#-------------------------------------------------------------------------------
+```
 
+# Running Community-AMARETTO algorithm
 
+	If it is set to â??yesâ??, communities (subnetworks) that do not satisfy all these following conditions will be filtered out: 1- Number of nodes in the community to be larger than the 1% of the total number of nodes in the network, 2- Number of represented cancers in the community to be larger than the 10% of the subnetwork size (and at least, larger than 2), 3- Ratio between edges inside/outside the community to be larger than 0.5.
 
+```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
+#-------------------------------------------------------------------------------
 cAMARETTOresults<-CommunityAMARETTO::cAMARETTO_Results(AMARETTOresults_all,
                                                        gmt_filelist=NULL,
                                                        NrCores = 4,
                                                        output_dir = ".",
                                                        drivers=TRUE)
+
 cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,0.10,5)
+
 cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
+#-------------------------------------------------------------------------------
+```
 
+# Performing Functional Enrichment Analysis for Communities
 
+```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
 geneset_file_address<-system.file("extdata",
                                   "sample_genesets.gmt",
                                   package = "CommunityAMARETTO")
@@ -80,24 +129,11 @@ cAMARETTO_hgtest_tbl<-CommunityAMARETTO::CreateHyperGeoTestAll(cAMARETTOresults,
                                         hyper_geo_reference=geneset_file_address,
                                                                driverGSEA=TRUE,
                                                                NrCores=1)
-
-
-cAMARETTO_HTMLreport(cAMARETTOresults,
-                     cAMARETTOnetworkM,
-                     cAMARETTOnetworkC,
-                     hyper_geo_reference = cAMARETTO_hgtest_tbl,
-                     output_address= "./",
-                     PhenotypeTablesList=PhenotypeTablesList)
-
-
 ```
-
-
 
 # HTML-Report for Community AMARETTO
 
 ```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
-
 cAMARETTO_HTMLreport(cAMARETTOresults,
                      cAMARETTOnetworkM,
                      cAMARETTOnetworkC,
@@ -106,6 +142,7 @@ cAMARETTO_HTMLreport(cAMARETTOresults,
                      PhenotypeTablesList=PhenotypeTablesList)
 
 ```
+
 
 
 
