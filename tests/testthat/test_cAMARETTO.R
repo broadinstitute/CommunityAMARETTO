@@ -36,23 +36,23 @@
 # 
 
 
-
-testthat::test_that("Checking cAMARETTOresults object if it is
-in decent shape",{
-  expect_equal(length(cAMARETTOresults$runnames)==
-  length(AMARETTOinit_all),TRUE)
-
-})
-
-testthat::test_that("Checking cAMARETTOnetworkM object to
-be in decent shape",{
-  expect_equal(dim(cAMARETTOnetworkM$layoutMN)[1],40)
-  expect_equal(dim(cAMARETTOnetworkM$layoutMN)[2],2)
-
-})
-
-testthat::test_that("Checking cAMARETTOnetworkC object
-to be in decent shape",{
-  expect_equal(dim(cAMARETTOnetworkC$commEdgeInfo)[1],21)
-  expect_equal(dim(cAMARETTOnetworkC$commEdgeInfo)[2],9)
-})
+# 
+# testthat::test_that("Checking cAMARETTOresults object if it is
+# in decent shape",{
+#   expect_equal(length(cAMARETTOresults$runnames)==
+#   length(AMARETTOinit_all),TRUE)
+# 
+# })
+# 
+# testthat::test_that("Checking cAMARETTOnetworkM object to
+# be in decent shape",{
+#   expect_equal(dim(cAMARETTOnetworkM$layoutMN)[1],40)
+#   expect_equal(dim(cAMARETTOnetworkM$layoutMN)[2],2)
+# 
+# })
+# 
+# testthat::test_that("Checking cAMARETTOnetworkC object
+# to be in decent shape",{
+#   expect_equal(dim(cAMARETTOnetworkC$commEdgeInfo)[1],21)
+#   expect_equal(dim(cAMARETTOnetworkC$commEdgeInfo)[2],9)
+# })
