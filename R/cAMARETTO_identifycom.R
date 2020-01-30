@@ -114,7 +114,8 @@ cAMARETTO_IdentifyCom <- function(cAMARETTOnetworkM,
             nrow(commEdgeInfo) - nrow(KeepCommEdgeInfo),
             " communities to remove.")
     } else {
-        KeepCommEdgeInfo <- commEdgeInfo
+        KeepCommEdgeInfo <- commEdgeInfo %>%
+            dplyr::filter(numDatasetsPerCommunity >= MinRuns)
     }
 
     Nodes_Mnetwork <- dplyr::left_join(Nodes_Mnetwork, membership %>%
