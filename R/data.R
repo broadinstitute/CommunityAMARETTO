@@ -25,3 +25,24 @@
 #' @format List
 #' @source \url{CommunityAMARETTO}
 "MsigdbMapping"
+
+#' scHCV_data
+#'
+#' A list containing data from an analysis for single cell HCV.
+#' The list include AMARETTO_result object calculated from AMARETTO
+#' analysis.
+#' 
+#' @format List
+#' @source \url{CommunityAMARETTO}
+"scHCV_data"
+
+#' scHBV_data
+#'
+#' A list containing data from an analysis for single cell HBV.
+#' The list include AMARETTO_result object calculated from AMARETTO
+#' analysis.
+#' 
+#' @format List
+#' @source \url{CommunityAMARETTO}
+"scHBV_data"
+
