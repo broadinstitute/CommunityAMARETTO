@@ -39,9 +39,16 @@ vignette: |
 
 ---
 
+# Installing Package
+
 ```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
 install.packages("/Users/mohsennabian/Documents/GitHub/CommunityAMARETTO",repos = NULL, type = "source")
 library(CommunityAMARETTO)
+```
+
+# Loading data
+
+```{r AMARETTO_Run2, message= FALSE,warning=FALSE,results='hide'}
 #Load data
 TCGA_LIHC_data<-CommunityAMARETTO::TCGA_LIHC_data
 scHCV_data<-CommunityAMARETTO::scHCV_data
@@ -59,6 +66,12 @@ PhenotypeTablesList<-list(TCGA_LIHC=TCGA_LIHC_data$Phenotype_Association_table,
 #                           CCLE_Liver=CCLE_Liver_data$AMARETTO_Results)
 # PhenotypeTablesList<-list(TCGA_LIHC=TCGA_LIHC_data$Phenotype_Association_table,
 #                           CCLE_Liver=NULL)
+```
+
+# Running Community AMARETTO
+
+```{r AMARETTO_Run3, message= FALSE,warning=FALSE,results='hide'}
+
 cAMARETTOresults<-CommunityAMARETTO::cAMARETTO_Results(AMARETTOresults_all,
                                                        gmt_filelist=NULL,
                                                        NrCores = 4,
@@ -67,6 +80,11 @@ cAMARETTOresults<-CommunityAMARETTO::cAMARETTO_Results(AMARETTOresults_all,
 
 cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,0.10,5)
 cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
+```
+
+# Functional Enrichments of Communities
+
+```{r AMARETTO_Run4, message= FALSE,warning=FALSE,results='hide'}
 geneset_file_address<-system.file("extdata",
                                   "sample_genesets.gmt",
                                   package = "CommunityAMARETTO")
@@ -76,6 +94,13 @@ cAMARETTO_hgtest_tbl<-CommunityAMARETTO::CreateHyperGeoTestAll(cAMARETTOresults,
                                         hyper_geo_reference=geneset_file_address,
                                                                driverGSEA=TRUE,
                                                                NrCores=1)
+
+```
+
+
+# HTML-Report for Community-AMARETTO
+
+```{r AMARETTO_Run6, message= FALSE,warning=FALSE,results='hide'}
 cAMARETTO_HTMLreport(cAMARETTOresults,
                      cAMARETTOnetworkM,
                      cAMARETTOnetworkC,
@@ -83,20 +108,6 @@ cAMARETTO_HTMLreport(cAMARETTOresults,
                      output_address= "./",
                      PhenotypeTablesList=PhenotypeTablesList)
 ```
-
-
-
-# HTML-Report for Community AMARETTO
-
-```{r AMARETTO_Run2, message= FALSE,warning=FALSE,results='hide'}
-cAMARETTO_HTMLreport(cAMARETTOresults,
-                     cAMARETTOnetworkM,
-                     cAMARETTOnetworkC,
-                     hyper_geo_reference = cAMARETTO_hgtest_tbl,
-                     output_address= "./",
-                     PhenotypeTablesList=PhenotypeTablesList)
-```
-
 
 
 # References
