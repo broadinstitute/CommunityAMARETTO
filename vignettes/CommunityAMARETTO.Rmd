@@ -41,12 +41,21 @@ vignette: |
 
 # Installing Package
 
+The package  is accessible via Bioconductor as the most stable version. However, you can install the newest features from the development branch of our github. The package installation should be only done once in your system. Here is the installation code : 
+
 ```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
-install.packages("/Users/mohsennabian/Documents/GitHub/CommunityAMARETTO",repos = NULL, type = "source")
+library(devtools)
+#install.packages("/Users/mohsennabian/Documents/GitHub/CommunityAMARETTO",repos = NULL, type = "source")
+devtools::install_github("broadinstitute/CommunityAMARETTO",ref='develop',force = 'TRUE')
 library(CommunityAMARETTO)
 ```
 
 # Loading data
+
+CommunityAMARETTO is a network approach that integrates multiple individual regulatory networks inferred by AMARETTO algorithm. Therefore, the main inputs for CommunityAMARETTO algorithm are multiple AMARETTO-result objects (at least two) corresponding to individual AMARETTO (package) runs. AMARETTO-result is the output of AMARETTO package and it contains the information for the inferred regulatory network.
+
+Here we provided AMARETTO-result objects from 3 liver-related datasets : TCGA-LIHC computes resulst from LIHC cohort of TCGA. scHCV and scHBV are two other single cell studies of Hepatiet C and B respectively. These AMARETTO-result objects are derived from a small portion of the real data and are for representation only. 
+
 
 ```{r AMARETTO_Run2, message= FALSE,warning=FALSE,results='hide'}
 #Load data
@@ -57,16 +66,9 @@ scHBV_data<-CommunityAMARETTO::scHBV_data
 AMARETTOresults_all<-list(TCGA_LIHC=TCGA_LIHC_data$AMARETTO_Results,
                           scHCV=scHCV_data$AMARETTO_Results,
                           scHBV=scHBV_data$AMARETTO_Results)
-
-PhenotypeTablesList<-list(TCGA_LIHC=TCGA_LIHC_data$Phenotype_Association_table,
-                          scHCV=scHCV_data$Phenotype_Association_table,
-                          scHBV=scHBV_data$Phenotype_Association_table)
-
-# AMARETTOresults_all<-list(TCGA_LIHC=TCGA_LIHC_data$AMARETTO_Results,
-#                           CCLE_Liver=CCLE_Liver_data$AMARETTO_Results)
-# PhenotypeTablesList<-list(TCGA_LIHC=TCGA_LIHC_data$Phenotype_Association_table,
-#                           CCLE_Liver=NULL)
 ```
+
+
 
 # Running Community AMARETTO
 
