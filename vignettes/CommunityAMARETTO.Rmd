@@ -100,11 +100,14 @@ cAMARETTOresults<-CommunityAMARETTO::cAMARETTO_Results(AMARETTOresults_all,
                                                        output_dir = ".",
                                                        drivers=TRUE)
 
-cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,
+cAMARETTOnetworkM<-CommunityAMARETTO::cAMARETTO_ModuleNetwork(cAMARETTOresults,
                                            pvalue=0.10,
-                                           inter = 5)
+                                           inter = 5,
+                                           plot_network = FALSE)
 
-cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
+cAMARETTOnetworkC<-CommunityAMARETTO::cAMARETTO_IdentifyCom(cAMARETTOnetworkM,
+                                                            filterComm = FALSE,
+                                                            plot_network = FALSE)
 
 ```
 
