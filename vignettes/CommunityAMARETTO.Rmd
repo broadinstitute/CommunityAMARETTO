@@ -46,7 +46,9 @@ The package  is accessible via Bioconductor as the most stable version. However,
 ```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
 library(devtools)
 #install.packages("/Users/mohsennabian/Documents/GitHub/CommunityAMARETTO",repos = NULL, type = "source")
-devtools::install_github("broadinstitute/CommunityAMARETTO",ref='develop',force = 'TRUE')
+devtools::install_github("broadinstitute/CommunityAMARETTO",
+                         ref='develop',
+                         force = 'TRUE')
 library(CommunityAMARETTO)
 ```
 
