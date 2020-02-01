@@ -1,58 +1,43 @@
-# devtools::install_github("broadinstitute/CommunityAMARETTO",ref="develop")
-# library(CommunityAMARETTO)
-# context("CommunityAMARETTO output data objects testing")
-# 
-# data("TCGA_LIHC_data")
-# data("CCLE_Liver_data")
-# 
-# 
-# 
-# AMARETTOresults_all<-list(TCGA_LIHC=TCGA_LIHC_data$AMARETTO_Results,
-#                           CCLE_Liver=CCLE_Liver_data$AMARETTO_Results)
-# 
-# 
-# cAMARETTOresults<-CommunityAMARETTO::cAMARETTO_Results(AMARETTOresults_all,
-#                                                        gmt_filelist=NULL,
-#                                                        NrCores = 4,
-#                                                        output_dir = ".",
-#                                                        drivers=TRUE)
-# 
-# cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,0.10,5)
-# 
-# cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,filterComm = FALSE)
-# 
-# 
-# #Identify significantly connected subnetworks using
-# #the Girvan-Newman algorithm
-# cAMARETTOnetworkC<-cAMARETTO_IdentifyCom(cAMARETTOnetworkM,
-#                                          filterComm = FALSE,
-#                                          ratioCommSize = 0.01,
-#                                          MinRuns = 2,
-#                                          ratioRunSize = 0.1,
-#                                          ratioEdgesInOut = 0.5,
-#                                          plot_network = FALSE)
-# 
-# 
-# 
+library(devtools)
+#install.packages("/Users/mohsennabian/Documents/GitHub/CommunityAMARETTO",repos = NULL, type = "source")
+devtools::install_github("broadinstitute/CommunityAMARETTO",
+                         ref='develop',
+                         force = 'TRUE',
+                         upgrade='never')
+library(CommunityAMARETTO)
+context("CommunityAMARETTO output data objects testing")
+TCGA_LIHC_data<-CommunityAMARETTO::TCGA_LIHC_data
+scHCV_data<-CommunityAMARETTO::scHCV_data
+scHBV_data<-CommunityAMARETTO::scHBV_data
+#CCLE_Liver_data<-CommunityAMARETTO::CCLE_Liver_data
 
 
-# 
-# testthat::test_that("Checking cAMARETTOresults object if it is
-# in decent shape",{
-#   expect_equal(length(cAMARETTOresults$runnames)==
-#   length(AMARETTOinit_all),TRUE)
-# 
-# })
-# 
-# testthat::test_that("Checking cAMARETTOnetworkM object to
-# be in decent shape",{
-#   expect_equal(dim(cAMARETTOnetworkM$layoutMN)[1],40)
-#   expect_equal(dim(cAMARETTOnetworkM$layoutMN)[2],2)
-# 
-# })
-# 
-# testthat::test_that("Checking cAMARETTOnetworkC object
-# to be in decent shape",{
-#   expect_equal(dim(cAMARETTOnetworkC$commEdgeInfo)[1],21)
-#   expect_equal(dim(cAMARETTOnetworkC$commEdgeInfo)[2],9)
-# })
+AMARETTOresults_all<-list(TCGA_LIHC=TCGA_LIHC_data$AMARETTO_Results,
+                          scHCV=scHCV_data$AMARETTO_Results,
+                          scHBV=scHBV_data$AMARETTO_Results)
+
+
+cAMARETTOresults<-CommunityAMARETTO::cAMARETTO_Results(AMARETTOresults_all,
+                                                       gmt_filelist=NULL,
+                                                       NrCores = 4,
+                                                       output_dir = ".",
+                                                       drivers=TRUE)
+
+cAMARETTOnetworkM<-CommunityAMARETTO::cAMARETTO_ModuleNetwork(cAMARETTOresults,
+                                           pvalue=0.10,
+                                           inter = 5,
+                                           plot_network = FALSE)
+
+cAMARETTOnetworkC<-CommunityAMARETTO::cAMARETTO_IdentifyCom(cAMARETTOnetworkM,
+                                                            filterComm = FALSE,
+                                                            plot_network = FALSE)
+
+
+
+test_that("Check if results are calculated", {
+  expect_equal(is.null(cAMARETTOresults), FALSE)
+  expect_equal(is.null(cAMARETTOnetworkM), FALSE)
+  expect_equal(is.null(cAMARETTOnetworkC), FALSE)
+  expect_equal(is.null(cAMARETTOresults$hgt_modules), FALSE)
+  expect_equal(is.null(cAMARETTOresults$genelists), FALSE)
+})
