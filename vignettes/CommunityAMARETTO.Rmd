@@ -95,13 +95,13 @@ This function is implementation of the Girvan-Newman algorithm to detect communi
 ```{r AMARETTO_Run3, message= FALSE,warning=FALSE,results='hide'}
 
 cAMARETTOresults<-CommunityAMARETTO::cAMARETTO_Results(AMARETTOresults_all,
-                                                       gmt_filelist=NULL,
+                                                       gmt_filelist = NULL,
                                                        NrCores = 4,
                                                        output_dir = ".",
-                                                       drivers=TRUE)
+                                                       drivers = TRUE)
 
 cAMARETTOnetworkM<-CommunityAMARETTO::cAMARETTO_ModuleNetwork(cAMARETTOresults,
-                                           pvalue=0.10,
+                                           pvalue = 0.10,
                                            inter = 5,
                                            plot_network = FALSE)
 
@@ -123,12 +123,17 @@ geneset_file_address<-system.file("extdata",
 cAMARETTO_hgtest_tbl<-CommunityAMARETTO::CreateHyperGeoTestAll(cAMARETTOresults,
                                                                cAMARETTOnetworkM,
                                                                cAMARETTOnetworkC,
-                                        hyper_geo_reference=geneset_file_address,
-                                                               NrCores=1)
+                                        hyper_geo_reference = geneset_file_address,
+                                                               NrCores = 1)
 
 ```
 
-
+```{r AMARETTO_Run5, message= FALSE,warning=FALSE,results='hide'}
+PhenotypeTablesList<-list(TCGA_LIHC = TCGA_LIHC_data$Phenotype_Association_table,
+                          #CCLE_Liver=NULL
+                          scHCV = scHCV_data$Phenotype_Association_table,
+                          scHBV = scHBV_data$Phenotype_Association_table)
+```
 # HTML-Report for Community-AMARETTO
 
 As the last step, the following code will generate an HTML report for the entire analyis. The reprot project relationships between communities, modules and genes as well as it provides interactive result tables for the functional enrichments of communities and phenotype associations of modules.  "hyper_geo_reference" and "PhenotypeTablesList" parameters of the function are optional. 
@@ -138,8 +143,8 @@ cAMARETTO_HTMLreport(cAMARETTOresults,
                      cAMARETTOnetworkM,
                      cAMARETTOnetworkC,
                      hyper_geo_reference = cAMARETTO_hgtest_tbl,
-                     output_address= "./",
-                     PhenotypeTablesList=PhenotypeTablesList)
+                     output_address = "./",
+                     PhenotypeTablesList = PhenotypeTablesList)
 ```
 
 
