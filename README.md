@@ -3,7 +3,7 @@
 
 <p align="center">
   <a href="https://github.com/broadinstitute/CommunityAMARETTO/">
-    <img height="150" src="https://github.com/broadinstitute/CommunityAMARETTO/blob/develop/inst/extdata/CommunityAMARETTO_logo.png">
+    <img height="400" src="https://github.com/broadinstitute/CommunityAMARETTO/blob/develop/inst/extdata/CommunityAMARETTO_logo.png">
   </a>
   <h1 align="center"></h1>
 </p>
