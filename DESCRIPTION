@@ -4,7 +4,7 @@ Title: Calculating and visualising communities over AMARETTO runs and genesets
 Version: 0.99.24
 Author: Mohsen Nabian, Celine Everaert, Olivier Gevaert and Nathalie Pochet
 Maintainer: Nathalie Pochet <npochet@broadinstitute.org>
-Depends: R (>= 3.6), R.utils, igraph, randomcoloR, rlist
+Depends: R (>= 3.6)
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 LazyLoad: yes
@@ -12,7 +12,7 @@ LazyData: true
 Encoding: UTF-8
 biocViews:
         StatisticalMethod,DifferentialMethylation,GeneRegulation,GeneExpression,MethylationArray,Transcription,Preprocessing,BatchEffect,DataImport,mRNAMicroarray,MicroRNAArray,Regression,Clustering,RNASeq,CopyNumberVariation,Sequencing,Microarray,Normalization,Network,Bayesian,ExonArray,OneChannel,TwoChannel,ProprietaryPlatforms,AlternativeSplicing,DifferentialExpression,DifferentialSplicing,GeneSetEnrichment,MultipleComparison,QualityControl,TimeCourse
-Suggests: testthat, BiocStyle, knitr, rmarkdown
+Suggests: testthat, BiocStyle
 NeedsCompilation: no
 Packaged: 2016-06-08 11:54:24 UTC
 Imports:
@@ -38,7 +38,8 @@ Imports:
     purrr,
     stringr,
     tibble, 
-    tidyr
+    tidyr,
+    devtools
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.0.2
 VignetteBuilder: knitr
