@@ -1,6 +1,6 @@
 library(devtools)
 #install.packages("/Users/mohsennabian/Documents/GitHub/CommunityAMARETTO",repos = NULL, type = "source")
-devtools::install_github("broadinstitute/CommunityAMARETTO",
+install_github("broadinstitute/CommunityAMARETTO",
                          ref='develop',
                          force = 'TRUE',
                          upgrade='never')
