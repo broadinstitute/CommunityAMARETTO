@@ -156,48 +156,6 @@ cAMARETTO_HTMLreport(cAMARETTOresults,
 2.	Gevaert, O., Villalobos, V., Sikic, B. I. & Plevritis, S. K. Identification of ovarian cancer driver genes by using module network integration of multi-omics data. Interface Focus 3, 20130013–20130013 (2013).
 3.	Gevaert, O. MethylMix: an R package for identifying DNA methylation-driven genes. Bioinformatics 31, 1839–1841 (2015).
 
-# Appendix 
-
-\begin{center}
-\begin{tabular}{|l|l|l|l|}
-\hline
-Cancer code & Cancer site  \\
-\hline
-\\
-BLCA & bladder urothelial carcinoma  \\
-BRCA & breast invasive carcinoma  \\
-CESC & cervical squamous cell carcinoma and endocervical adenocarcinoma\\
-CHOL & cholangiocarcinoma\\
-COAD & colon adenocarcinoma \\
-ESCA & esophageal carcinoma\\
-GBM & glioblastoma multiforme\\
-HNSC & head and neck squamous cell carcinoma \\
-KIRC & kidney renal clear cell carcinoma  \\
-KIRP & kidney renal papillary cell carcinoma\\
-LAML & acute myeloid leukemia \\
-LGG & brain lower grade glioma\\
-LIHC & liver hepatocellular carcinoma\\
-LUAD & lung adenocarcinoma \\
-LUSC & lung squamous cell carcinoma \\
-OV & ovarian serous cystadenocarcinoma \\
-PAAD & pancreatic adenocarcinoma\\
-PCPG & pheochromocytoma and paraganglioma\\
-READ & rectum adenocarcinoma \\
-SARC & sarcoma\\
-STAD & stomach adenocarcinoma\\
-THCA & thyroid carcinoma\\
-THYM & thymoma\\
-UCEC & endometrial carcinoma \\
-\\
-%\hdashline
-COADREAD & colon cancer + rectal cancer \\
-\hline
-\end{tabular}
-\end{center}
-
-
-
-\newpage
 
 # Session info {.unnumbered}
 
