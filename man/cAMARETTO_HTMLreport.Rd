@@ -6,9 +6,9 @@
 Creates a HTMLreport for the community AMARETTO results}
 \usage{
 cAMARETTO_HTMLreport(
-  cAMARETTOresults,
-  cAMARETTOnetworkM,
-  cAMARETTOnetworkC,
+  cAMARETTOresults = list(),
+  cAMARETTOnetworkM = list(),
+  cAMARETTOnetworkC = list(),
   PhenotypeTablesList = NULL,
   output_address = "./",
   HTMLsAMARETTOlist = NULL,

@@ -47,9 +47,9 @@
 #'   output_address= "./")
 #' )
 #' @export
-cAMARETTO_HTMLreport <- function(cAMARETTOresults,
-                                cAMARETTOnetworkM,
-                                cAMARETTOnetworkC,
+cAMARETTO_HTMLreport <- function(cAMARETTOresults=list(),
+                                cAMARETTOnetworkM=list(),
+                                cAMARETTOnetworkC=list(),
                                 PhenotypeTablesList = NULL,
                                 output_address ="./",
                                 HTMLsAMARETTOlist = NULL,
@@ -72,8 +72,8 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults,
                                     HTMLsAMARETTOlist=HTMLsAMARETTOlist,
                                     CopyAMARETTOReport=CopyAMARETTOReport,
                                     hyper_geo_reference=hyper_geo_reference,
-                                    hyper_geo_reference_gp,
-                                    hyper_geo_reference_cp)
+                                    hyper_geo_reference_gp=hyper_geo_reference_gp,
+                                    hyper_geo_reference_cp=hyper_geo_reference_cp)
     RunInfo<-RunInfoList$RunInfo
     RunInfo2<-RunInfoList$RunInfo2
     full_path<-RunInfoList$full_path
@@ -81,10 +81,12 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults,
     #====================================================================
     # Extract main dataframes
     com_gene_df<-suppressWarnings(
-        ComRunModGenInfo(cAMARETTOresults,cAMARETTOnetworkM,
-                        cAMARETTOnetworkC))
+        ComRunModGenInfo(cAMARETTOresults = cAMARETTOresults,
+                         cAMARETTOnetworkM = cAMARETTOnetworkM,
+                        cAMARETTOnetworkC = cAMARETTOnetworkC))
     comm_info <-suppressWarnings(
-        cAMARETTO_InformationTable(cAMARETTOnetworkM,cAMARETTOnetworkC))
+        cAMARETTO_InformationTable(cAMARETTOnetworkM = cAMARETTOnetworkM,
+                                   cAMARETTOnetworkC = cAMARETTOnetworkC))
     #====================================================================
     Runs_AMARETTOs_info<-com_gene_df%>%
         dplyr::select(Run_Names,AMARETTOres)%>%
@@ -93,11 +95,12 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults,
                     HTMLsAMARETTOlist,CopyAMARETTOReport))%>%
                         filter(AMARETTOres==1)%>%select(Run_Names)
     #====================================================================
-    ComModulesLink<-CommunityModuleTableCreate(cAMARETTOresults,
-                                cAMARETTOnetworkM,
-                                cAMARETTOnetworkC,
-                                HTMLsAMARETTOlist,
-                                CopyAMARETTOReport)
+    ComModulesLink<-CommunityModuleTableCreate(cAMARETTOresults = 
+                                                   cAMARETTOresults,
+                                cAMARETTOnetworkM=cAMARETTOnetworkM,
+                                cAMARETTOnetworkC=cAMARETTOnetworkC,
+                                HTMLsAMARETTOlist=HTMLsAMARETTOlist,
+                                CopyAMARETTOReport=CopyAMARETTOReport)
     #====================================================================
     com_gene_df<-com_gene_df%>%
         dplyr::mutate(Color=sapply(as.numeric(Weights), function(x){
