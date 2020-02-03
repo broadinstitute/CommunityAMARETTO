@@ -381,8 +381,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults=list(),
             DTGenes = DTGenes,
             DTPhC = DTPhC,
             cAMARETTOnetworkM = cAMARETTOnetworkM,
-            cAMARETTOnetworkC = cAMARETTOnetworkC
-            ), quiet = TRUE)
+            cAMARETTOnetworkC = cAMARETTOnetworkC), quiet = TRUE)
     }
     file_remove<-suppressWarnings(
         suppressMessages(file.remove(paste0(full_path,
@@ -519,14 +518,16 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults=list(),
             cAMARETTOnetworkM = cAMARETTOnetworkM,
             cAMARETTOnetworkC = cAMARETTOnetworkC,
             DTComModulesLink = DTComModulesLink,
-            DTRunInfo =  DTRunInfo), quiet = TRUE)
+            DTRunInfo =  DTRunInfo),
+        quiet = TRUE)
 
     rmarkdown::render(
         system.file("templates/TemplateIndexPage_RunsInfo.Rmd",
                     package = "CommunityAMARETTO"),
         output_dir = full_path,
         output_file = "index_RunsInfo.html",
-        params = list(DTRunInfo =  DTRunInfo), quiet = TRUE)
+        params = list(DTRunInfo =  DTRunInfo),
+        quiet = TRUE)
 
     rmarkdown::render(
         system.file("templates/TemplateIndexPage_AllCommunities.Rmd",
@@ -547,7 +548,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults=list(),
                     package = "CommunityAMARETTO"),
         output_dir = full_path,
         output_file = "index_Drivers2.html",
-        params = list(DTComDrivers=DTComDrivers,), quiet = TRUE)
+        params = list(DTComDrivers=DTComDrivers), quiet = TRUE)
     
     rmarkdown::render(
     system.file("templates/TemplateIndexPage_AllGenes.Rmd",
