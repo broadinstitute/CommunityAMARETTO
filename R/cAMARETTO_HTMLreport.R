@@ -71,9 +71,9 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults=list(),
                                     output_address=output_address,
                                     HTMLsAMARETTOlist=HTMLsAMARETTOlist,
                                     CopyAMARETTOReport=CopyAMARETTOReport,
-                                    hyper_geo_reference=hyper_geo_reference,
-                                    hyper_geo_reference_gp=hyper_geo_reference_gp,
-                                    hyper_geo_reference_cp=hyper_geo_reference_cp)
+                                hyper_geo_reference=hyper_geo_reference,
+                                hyper_geo_reference_gp=hyper_geo_reference_gp,
+                                hyper_geo_reference_cp=hyper_geo_reference_cp)
     RunInfo<-RunInfoList$RunInfo
     RunInfo2<-RunInfoList$RunInfo2
     full_path<-RunInfoList$full_path
@@ -82,11 +82,11 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults=list(),
     # Extract main dataframes
     com_gene_df<-suppressWarnings(
         ComRunModGenInfo(cAMARETTOresults = cAMARETTOresults,
-                         cAMARETTOnetworkM = cAMARETTOnetworkM,
+                        cAMARETTOnetworkM = cAMARETTOnetworkM,
                         cAMARETTOnetworkC = cAMARETTOnetworkC))
     comm_info <-suppressWarnings(
         cAMARETTO_InformationTable(cAMARETTOnetworkM = cAMARETTOnetworkM,
-                                   cAMARETTOnetworkC = cAMARETTOnetworkC))
+                        cAMARETTOnetworkC = cAMARETTOnetworkC))
     #====================================================================
     Runs_AMARETTOs_info<-com_gene_df%>%
         dplyr::select(Run_Names,AMARETTOres)%>%
@@ -96,7 +96,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults=list(),
                         filter(AMARETTOres==1)%>%select(Run_Names)
     #====================================================================
     ComModulesLink<-CommunityModuleTableCreate(cAMARETTOresults = 
-                                                   cAMARETTOresults,
+                                                cAMARETTOresults,
                                 cAMARETTOnetworkM=cAMARETTOnetworkM,
                                 cAMARETTOnetworkC=cAMARETTOnetworkC,
                                 HTMLsAMARETTOlist=HTMLsAMARETTOlist,
