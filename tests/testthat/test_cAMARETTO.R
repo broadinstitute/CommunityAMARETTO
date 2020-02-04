@@ -33,6 +33,7 @@ cAMARETTOnetworkC<-CommunityAMARETTO::cAMARETTO_IdentifyCom(cAMARETTOnetworkM,
                                                             plot_network = FALSE)
 
 
+unlink("gmt_files", recursive = TRUE)
 
 test_that("Check if results are calculated", {
   expect_equal(is.null(cAMARETTOresults), FALSE)

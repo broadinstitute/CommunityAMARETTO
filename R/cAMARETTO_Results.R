@@ -20,6 +20,7 @@
 #' @importFrom dplyr arrange group_by left_join mutate select summarise 
 #' rename  filter everything pull distinct case_when
 #' @importFrom stats p.adjust phyper
+#' @importFrom devtools install_github
 #' @examples 
 #' try(
 #' cAMARETTOresults <- cAMARETTO_Results(AMARETTOresults_all,

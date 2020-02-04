@@ -1,42 +1,25 @@
 ---
 title: "Introduction to _CommunityAMARETTO_"
 author:
-    - name: Mohsen Nabian
-    affiliation: Brigham and Women's Hospital, Harvard Medical School,
-    Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
-
-    - name: Celine Everaert
-    affiliation: Brigham and Women's Hospital, Harvard Medical School,
-    Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
-
-    - name: Artur Manukiyan
-    affiliation: Brigham and Women's Hospital, Harvard Medical School,
-    Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
-
-    - name: Shaimaa Bakr
-    affiliation: Stanford Center for Biomedical Informatics Research (BMIR),
-    Department of Medicine and Biomedical Data Science,
-    1265 Welch Rd, Stanford, CA, USA
-
-    - name: Jishu Xu
-    affiliation: Brigham and Women's Hospital, Harvard Medical School,
-    Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
-
-    - name: Vincent Carey
-    affiliation: Brigham and Women's Hospital, Harvard Medical School,
-    Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
+  - name: Mohsen Nabian
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
+  - name: Celine Everaert
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
+  - name: Artur Manukiyan
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
+  - name: Shaimaa Bakr
+    affiliation: Stanford Center for Biomedical Informatics Research (BMIR), Department of Medicine and Biomedical Data Science, 1265 Welch Rd, Stanford, CA, USA
+  - name: Jishu Xu
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
+  - name: Vincent Carey
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
     footnote: Corresponding Author
-
-    - name: Olivier Gevaert
-    affiliation: Stanford Center for Biomedical Informatics Research (BMIR),
-    Department of Medicine and Biomedical Data Science,
-    1265 Welch Rd, Stanford, CA, USA
+  - name: Olivier Gevaert
+    affiliation: Stanford Center for Biomedical Informatics Research (BMIR), Department of Medicine and Biomedical Data Science, 1265 Welch Rd, Stanford, CA, USA
     email: olivier.gevaert@stanford.edu
     footnote: Corresponding Author
-
-    - name: Nathalie Pochet
-    affiliation: Brigham and Women's Hospital, Harvard Medical School,
-    Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
+  - name: Nathalie Pochet
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
     email: npochet@broadinstitute.org
 
 date: "`r BiocStyle::doc_date()`"
@@ -47,7 +30,7 @@ abstract: |
     The goal of the CommunityAMARETTO algorithm is to identify cell circuits
     and their drivers that are shared and distinct across biological systems.
     Specifically, CommunityAMARETTO takes as input multiple regulatory
-    networks inferred using the AMARETTO algorithm[reference] that are based
+    networks inferred using the AMARETTO algorithm[1] that are based
     on multi-omics and clinical/imaging data fusion. Next, CommunityAMARETTO
     learns communities or subnetworks, in particular, regulatory modules
     comprising of cell circuits and their drivers, that are shared and
@@ -56,8 +39,7 @@ abstract: |
     using the Girvan-Newman "edge betweenness community detection"
     algorithm (Girvan and Newman, Physical Review E. 2004).
 
-package: Report issues on [https://github.com/broadinstitute/CommunityAMARETTO/]
-(https://github.com/broadinstitute/CommunityAMARETTO/)
+package: Report issues on [https://github.com/broadinstitute/CommunityAMARETTO/] (https://github.com/broadinstitute/CommunityAMARETTO/)
 vignette: |
     %\VignetteIndexEntry{Introduction to _CommunityAMARETTO_}
     %\VignetteEngine{knitr::rmarkdown}
@@ -67,10 +49,11 @@ vignette: |
 
 # Installing Package
 
-The package is accessible via Bioconductor as the most stable version.
-However, you can install the newest features from the development branch
-of our github. The package should be installed once in your system.
-Here is the installation code : 
+The following codes shows how to install the package. The package is
+accessible via Bioconductor; Alternatively, to access
+the newest features of the pacckage, you may install it from development
+branch of github shown bellow. 
+
 
 ```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
 library(devtools)
