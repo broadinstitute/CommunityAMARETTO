@@ -47,6 +47,13 @@ vignette: |
     \usepackage[utf8]{BiocStyle}
 ---
 
+# Introduction :
+
+
+
+
+
+
 # Installing Package
 
 The following codes shows how to install the package. The package is
@@ -66,6 +73,18 @@ library(CommunityAMARETTO)
 ```
 
 
+CommunityAMARETTO is a network approach developed to integrate multiple
+regulatory networks inferred by AMARETTO algorithm. Thus, the input data
+for CommunityAMARETTO algorithm are AMARETTO-result objects (at least two),
+where each AMARETTO-result object is the output of an AMARETTO run on
+multi-omics data and contains the information for the inferred 
+regulatory network parameters. 
+
+As a sample case study, through Community-AMARETTO algorithm, we intend to
+integrate three regulatory networks, 
+
+
+
 # Example case study
 
 Here we provided AMARETTO-result objects as outputs for running AMARETTO
@@ -80,12 +99,7 @@ portion of the real data and are for representation only.
 # Loading data
 
 
-CommunityAMARETTO is a network approach developed to integrate multiple
-regulatory networks inferred by AMARETTO algorithm. Thus, the input data
-for CommunityAMARETTO algorithm are AMARETTO-result objects (at least two),
-where each AMARETTO-result object is the output of an MARETTO run on
-multi-omics data and contains the information for the inferred 
-regulatory network parameters. 
+
 
 
 ```{r AMARETTO_Run2, message= FALSE,warning=FALSE,results='hide'}
