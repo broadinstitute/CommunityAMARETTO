@@ -49,17 +49,40 @@ vignette: |
 
 # Introduction :
 
+Development of regulatory network inference algorithms using
+multi-omics data is a highly sought area of researcher[].
+These networks attemp to infer the gene regulatory circuits specific
+to biological systems and therfore lead to the enhanced understanding
+of regulatory mechanisms as well as discovering biomarkers of diseases
+and cancer systems.  
 
+These regulatory network inference algorithms are specifically applied to
+individual biological systems; Integrating multiple regulatory networks across
+biological systems allows for disocry of shared and
+distinct biological mechanism. 
 
+We developed Community-AMARETTO algorithm to integrate multiple
+regulatory networks more specifically inferred by AMARETTO algorithm.
+Community-AMARETTO detectes communities of circutis that are shared 
+across biological systems as well as highlights
+circuts that are system specific. 
 
+Here, we provided a sample case study realted to liver to demonstate
+the general steps that should be taken during Community-AMARETTO analysis. 
+Sample case study includes three biological systems of 1) Liver Cancer,
+2) Hepatite C and 3) Hepatite B, each inferred by AMARETTO algorithm
+for gene regulatory network inference. In this note, we show how to integrate
+these networks through Community-AMARETTO algorithm as well as perform
+downstream analyis such as functional enrichment of detected communities
+as well as generating HTML-report.
 
 
 # Installing Package
 
-The following codes shows how to install the package. The package is
+The following code script shows how to install the package. The package is
 accessible via Bioconductor; Alternatively, to access
-the newest features of the pacckage, you may install it from development
-branch of github shown bellow. 
+the newest features of the pacckage, you may install development
+branch of github as shown bellow. 
 
 
 ```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
@@ -73,97 +96,83 @@ library(CommunityAMARETTO)
 ```
 
 
-CommunityAMARETTO is a network approach developed to integrate multiple
-regulatory networks inferred by AMARETTO algorithm. Thus, the input data
-for CommunityAMARETTO algorithm are AMARETTO-result objects (at least two),
-where each AMARETTO-result object is the output of an AMARETTO run on
-multi-omics data and contains the information for the inferred 
-regulatory network parameters. 
-
-As a sample case study, through Community-AMARETTO algorithm, we intend to
-integrate three regulatory networks, 
 
 
 
-# Example case study
 
-Here we provided AMARETTO-result objects as outputs for running AMARETTO
-on 3 liver-related datasets : TCGA-LIHC computes resulst from LIHC cohort
-of TCGA. scHCV and scHBV are two other single cell studies of Hepatiet C
-and B respectively. These AMARETTO-result objects are derived from a small
-portion of the real data and are for representation only. 
+
 
 
 
 
 # Loading data
 
+CommunityAMARETTO is a network approach developed to integrate multiple
+regulatory networks specifically inferred by AMARETTO algorithm. Thus, the required input data
+for CommunityAMARETTO algorithm are AMARETTO-result objects (at least two); 
+where each AMARETTO-result object is the output of an AMARETTO run on
+multi-omics data and contains the information for the inferred 
+regulatory network parameters. 
+
+Here as a sample case study, we provided AMARETTO-result objects (outputs for running AMARETTO)
+for 3 liver-related datasets : TCGA-LIHC computes resulst from LIHC cohort
+of TCGA. scHCV and scHBV are two other single cell studies of Hepatiet C
+and B respectively. These sample AMARETTO-result objects can be accessed through the CommunityAMARETTO package as shown below, and are derived from a small portion of the real data, therefore are for representation only. 
 
 
-
-
-```{r AMARETTO_Run2, message= FALSE,warning=FALSE,results='hide'}
+```{r AMARETTO_Run1, message= FALSE,warning=FALSE,results='hide'}
 #Load data
 TCGA_LIHC_data<-CommunityAMARETTO::TCGA_LIHC_data
 scHCV_data<-CommunityAMARETTO::scHCV_data
 scHBV_data<-CommunityAMARETTO::scHBV_data
 #CCLE_Liver_data<-CommunityAMARETTO::CCLE_Liver_data
+```
+
+We create AMARETTOresults_all object, which is a list containing our AMARETTO_Results objects,
+in this case our 3 regulatory networks.
+Please note that the dataset names must be specified and unique. 
+
+```{r AMARETTO_Run2, message= FALSE,warning=FALSE,results='hide'}
 AMARETTOresults_all<-list(TCGA_LIHC=TCGA_LIHC_data$AMARETTO_Results,
                         scHCV=scHCV_data$AMARETTO_Results,
                         scHBV=scHBV_data$AMARETTO_Results)
 ```
 
 
+# Running Community-AMARETTO
 
-# Running Community AMARETTO
+Community-AMARETTO algorithm consists of 
+three major steps (and thus three main functions) as follows :
 
-Here, we present an extension of AMARETTO to a pancancer application
-using multi-omics data of eleven cancer sites from TCGA. 
-We show that AMARETTO captures modules enriched in major pathways of
-cancers and modules that accurately predict molecular subtypes. 
-Next,we connect the modules of co-expressed genes in a pancancer
-module network. We show that this allows the identification of major
-oncogenic pathways and cancer driver genes involved in multiple cancers.
-More specifically, we identified a pancancer driver gene that is involved
-in smoking induced cancers and a pancancer driver gene that is involved in
-antiviral IFN modulated immune response. Overall, our results show the 
-potential of pancancer multi-omics data fusion to identify cancer drivers
-that are high within the causal hierarchy of cancer development and 
-associated with common pathways across different types of tumors that
-eventually can lead to the identification of pancancer drug targets.
-The AMARETTO algorithm and its pancancer application are publicly available.
+Step 1) cAMARETTO_Results function : This function perform hypergeometric test between every module pairs across all the regulatory networks to eveluate the similarity (or distance) between all modules. For each module pair, the hypergeomteric test outputs p-value, adjusted p-value and number of overlapping genes between each module pair. 
+
+```{r AMARETTO_Run3, message= FALSE,warning=FALSE,results='hide'}
+
+cAMARETTOresults<-CommunityAMARETTO::cAMARETTO_Results(AMARETTOresults_all,
+                                                    gmt_filelist = NULL,
+                                                    NrCores = 4,
+                                                    output_dir = ".",
+                                                    drivers = TRUE)
+```
 
 
-2.3 Pancancer Module Network
-After running AMARETTO on each cancer site individually, the modules are
-connected in a pancancer network. Specifically, we evaluate whether there is
-a significant association between all pairs of modules through a 
-hyper-geometric test. We correct for multiple hypothesis testing using the
-false discovery rate (Benjamini and Hochberg, 1995). We consider 
-the association to be significant if both of the following conditions
-are satisfied: (i) the adjusted p-value is smaller than 0.05 and
-(ii) the overlap between two modules is larger than 5 genes. 
+Step 2) cAMARETTO_ModuleNetwork function :
+This function construct a network of modules (as nodes). We define an edge between each module pair if both of the following conditions are satisfied:
+(i) the adjusted p-value computed in Step 1 is smaller than pvalue (default = 0.10) 
+(ii) the overlap between two modules is larger than inter (defalut = 5 genes).
 This defines a module network where each edge is scored based on the
 negative log-transformed adjusted p-value.
 
+```{r AMARETTO_Run4, message= FALSE,warning=FALSE,results='hide'}
+
+cAMARETTOnetworkM<-CommunityAMARETTO::cAMARETTO_ModuleNetwork(cAMARETTOresults,
+                                                    pvalue = 0.10,
+                                                    inter = 5,
+                                                    plot_network = FALSE)
+```
 
 
-The communityAMARETTO algorithm comprises of three major functions :
-
-1) cAMARETTO_Results : This function performs hypergeormtric test 
-for all existing module pairs across all datasets. P-value extracted for each
-hypergeoetric test quantifies the signicance of gene overlaping 
-between each module pair.
-
-2) cAMARETTO_ModuleNetwork : This function forms a network of 
-connected modules with edges representing significant overlapping genes
-between connected modules. The thresholds for existance or non-existance of
-an edge between each module pair can be set by : a) "pvalue" computed
-between each two modules in previous step and b) "inter" which is the minimum
-number of overlapping genes requiered to consider 
-an edge between the module pairs. 
-
-3) cAMARETTOnetworkC : 
+Step 3) cAMARETTOnetworkC function :
 We cluster the weighted module network to identify significantly connected
 subnetworks using the Girvan-Newman algorithm (Newman and Girvan, 2004).
 This algorithm is a divisive method, which aims at detecting subnetworks
@@ -180,33 +189,24 @@ of the ccommunity size (and at least, larger than 2) and finally,
 ratio between edges inside/outside the subnetwork larger than 1/2.
 
 
-```{r AMARETTO_Run3, message= FALSE,warning=FALSE,results='hide'}
-
-cAMARETTOresults<-CommunityAMARETTO::cAMARETTO_Results(AMARETTOresults_all,
-                                                    gmt_filelist = NULL,
-                                                    NrCores = 4,
-                                                    output_dir = ".",
-                                                    drivers = TRUE)
-
-cAMARETTOnetworkM<-CommunityAMARETTO::cAMARETTO_ModuleNetwork(cAMARETTOresults,
-                                                    pvalue = 0.10,
-                                                    inter = 5,
-                                                    plot_network = FALSE)
-
+```{r AMARETTO_Run5, message= FALSE,warning=FALSE,results='hide'}
 cAMARETTOnetworkC<-CommunityAMARETTO::cAMARETTO_IdentifyCom(cAMARETTOnetworkM,
                                                     filterComm = FALSE,
                                                     plot_network = FALSE)
 ```
 
-# Functional Enrichments of Communities
+cAMARETTOnetworkC object provides the information for the assignment of communities to modules.
+
+
+# Functional Enrichments of Communities (Optional)
 
 After detecting communities, we now perform functional enrichment
 on each community. This is computed by performing hypergeometric test
-between the union of genes inside the community and gensets of our interests
+between the union of genes inside the community and gensets of our interest
 such as hallmark genes of cancer.
 We provided a small sample genesets to perform the test. 
 
-```{r AMARETTO_Run4, message= FALSE,warning=FALSE,results='hide'}
+```{r AMARETTO_Run6, message= FALSE,warning=FALSE,results='hide'}
 geneset_file_address<-system.file("extdata","sample_genesets.gmt",
                                     package = "CommunityAMARETTO")
 
@@ -218,24 +218,30 @@ cAMARETTO_hgtest_tbl<-
                     NrCores = 1)
 ```
 
-```{r AMARETTO_Run5, message= FALSE,warning=FALSE,results='hide'}
+
+# HTML-Report for Community-AMARETTO (optinal)
+
+As the last step, the following code will generate an HTML report
+for the entire analyis. The reprot provides relationships between
+communities, modules and genes. If corresponding tables are given, it provides interactive 
+result tables for the functional enrichments of communities and 
+phenotype associations of modules. "hyper_geo_reference" and 
+"PhenotypeTablesList" parameters of the function are optional. 
+
+Here we provided phenotype association table for each dataset to feed it to the html report. 
+However it is potional and PhenotypeTablesList can simply be assigned to NULL.
+
+```{r AMARETTO_Run7, message= FALSE,warning=FALSE,results='hide'}
 PhenotypeTablesList<-list(
                 TCGA_LIHC = TCGA_LIHC_data$Phenotype_Association_table,
                 #CCLE_Liver=NULL
                 scHCV = scHCV_data$Phenotype_Association_table,
                 scHBV = scHBV_data$Phenotype_Association_table)
 ```
-# HTML-Report for Community-AMARETTO
 
-As the last step, the following code will generate an HTML report
-for the entire analyis. The reprot project relationships between communities,
-modules and genes as well as it provides interactive result tables for
-the functional enrichments of communities and p
-henotype associations of modules.
-"hyper_geo_reference" and "PhenotypeTablesList" parameters of
-the function are optional. 
+Here we generate the html report for the entire Community-AMARETTO analysis.
 
-```{r AMARETTO_Run6, message= FALSE,warning=FALSE,results='hide'}
+```{r AMARETTO_Run8, message= FALSE,warning=FALSE,results='hide'}
 cAMARETTO_HTMLreport(cAMARETTOresults,
                     cAMARETTOnetworkM,
                     cAMARETTOnetworkC,
