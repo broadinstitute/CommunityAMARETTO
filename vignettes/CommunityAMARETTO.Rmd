@@ -30,7 +30,7 @@ abstract: |
     The goal of the CommunityAMARETTO algorithm is to identify cell circuits
     and their drivers that are shared and distinct across biological systems.
     Specifically, CommunityAMARETTO takes as input multiple regulatory
-    networks inferred using the AMARETTO algorithm[1] that are based
+    networks inferred using the AMARETTO algorithm [1] that are based
     on multi-omics and clinical/imaging data fusion. Next, CommunityAMARETTO
     learns communities or subnetworks, in particular, regulatory modules
     comprising of cell circuits and their drivers, that are shared and
@@ -49,32 +49,38 @@ vignette: |
 
 # Introduction :
 
-Development of regulatory network inference algorithms using
-multi-omics data is a highly sought area of researcher[].
-These networks attemp to infer the gene regulatory circuits specific
-to biological systems and therfore lead to the enhanced understanding
-of regulatory mechanisms as well as discovering biomarkers of diseases
-and cancer systems.  
+Uncovering gene regulatory mechanisms underlying diseases and cancer
+systems have long time been sought by many researchers. 
+This led to the development of many novel computational algorithms for
+regulatory network inference using multi-omics data such as genetics,
+epi-genetics and transcriptomics.
 
-These regulatory network inference algorithms are specifically applied to
-individual biological systems; Integrating multiple regulatory networks across
-biological systems allows for disocry of shared and
-distinct biological mechanism. 
+These networks attempt to infer system-specific gene regulatory circuits
+and thus lead to an enhanced understanding of regulatory
+mechanisms as well as discovering biomarkers of diseases and cancer systems.
 
-We developed Community-AMARETTO algorithm to integrate multiple
-regulatory networks more specifically inferred by AMARETTO algorithm.
-Community-AMARETTO detectes communities of circutis that are shared 
-across biological systems as well as highlights
-circuts that are system specific. 
+It is also believed that the integration of multiple system-specific
+regulatory networks allows for further discovery
+of shared and distinct mechanisms across biological systems. 
+To this end, we developed Community-AMARETTO algorithm to integrate multiple
+regulatory networks inferred by the AMARETTO algorithm[].
+Specifically, Community-AMARETTO algorithm consists of constructing a master network
+composed of multiple regulatory networks followed by detecting groups (communities) of circuits that
+are shared across systems as well as highliting circuits that are distinct
+and system-specific. 
 
-Here, we provided a sample case study realted to liver to demonstate
-the general steps that should be taken during Community-AMARETTO analysis. 
-Sample case study includes three biological systems of 1) Liver Cancer,
-2) Hepatite C and 3) Hepatite B, each inferred by AMARETTO algorithm
-for gene regulatory network inference. In this note, we show how to integrate
-these networks through Community-AMARETTO algorithm as well as perform
-downstream analyis such as functional enrichment of detected communities
-as well as generating HTML-report.
+As general guidelines, we here provided instruction for running Community-AMARETTO
+on a sample case study of liver cancer.
+While here we studied liver-specific data, any cohort/dataset analyzed by AMARETTO
+can be used for the Community-AMARETTO analysis. 
+
+Our sample case study includes three biological systems of 1) Liver Cancer,
+2) Hepatite C infected liver cancer and 3) Hepatite B infected liver cancer, each
+inferred by the AMARETTO algorithm for gene regulatory network inference.
+
+In this note, we show how to integrate these networks through Community-AMARETTO algorithm
+, perform downstream analysis such as functional enrichment of detected communities
+and to generate interactive HTML-report from the analysis results.
 
 
 # Installing Package
@@ -94,14 +100,6 @@ install_github("broadinstitute/CommunityAMARETTO",
                 force = 'TRUE')
 library(CommunityAMARETTO)
 ```
-
-
-
-
-
-
-
-
 
 
 
