@@ -9,12 +9,37 @@
 </p>
 
 
-
-
-# CommunityAMARETTO
+[![Version](https://img.shields.io/badge/version-0.99.1-lightgrey.svg)]()
 
 The goal of the CommunityAMARETTO algorithm (Champion et al., EBioMedicine 2018) is to identify cell circuits and their drivers that are shared and distinct across biological systems. Specifically, Community-AMARETTO takes as input multiple regulatory networks inferred using the AMARETTO algorithm that are based on multi-omics and imaging data fusion. Next, Community-AMARETTO learns communities or subnetworks, in particular, regulatory modules comprising of cell circuits and their drivers, that are shared and distinct across multiple regulatory networks derived from multiple cohorts, diseases, or biological systems more generally, using the Girvan-Newman "edge betweenness community detection" algorithm (Girvan and Newman, Physical Review E. 2004).
 
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Running Community-AMARETTO](#running-amaretto)
+- [References](#references)
+
+## Introduction
+
+Uncovering gene regulatory mechanisms underlying diseases and cancer
+systems have long time been sought by many researchers. 
+This led to the development of many novel computational algorithms for
+regulatory network inference using multiomics such as genetics,
+epigenetics and transcriptomics. These algorithms are designed to infer
+system-specific gene regulatory network, leading to the understanding
+of underlying regulatory mechanisms of the system and facilitating
+biomarker discovery.
+
+It is also believed that the integration of regulatory networks across
+multiple systems provides key information about cross-systems shared
+and distinct mechanisms. To this end, we developed *Community-AMARETTO*
+algorithm to integrate multiple regulatory networks inferred by the
+AMARETTO algorithm [1]. Specifically, Community-AMARETTO algorithm consists of
+1) constructing a master network composed of multiple regulatory networks
+followed by 2) detecting groups (communities) of circuits that are shared
+across systems as well as highliting circuits that are system-specific
+and distinct. 
 
 ## Installation
 
@@ -25,20 +50,18 @@ library(devtools)
 install_github("broadinstitute/CommunityAMARETTO")
 ```
 
-## Example
+## Running Community-AMARETTO
 
-* The vignette provides a small case study, demonstrating how to implement the workflow of CommunityAMARETTO package in R. Please try!
+* The vignettes contains an example R script for a typical AMARETTO analysis. Please try!
 
-``` r
-## basic example code
-```
-
+* Detailed information on `CommunityAMARETTO` package functions can be obtained in the help files. For example, to view the help file for the function `CommunityAMARETTO` in a R session, use `?CommunityAMARETTO`.
 
 ## References
 
-1.	Champion, M. et al. Module Analysis Captures Pancancer Genetically and Epigenetically Deregulated Cancer Driver Genes for Smoking and Antiviral Response. EBioMedicine 27, 156–166 (2018).
-2.	Gevaert, O., Villalobos, V., Sikic, B. I. & Plevritis, S. K. Identification of ovarian cancer driver genes by using module network integration of multi-omics data. Interface Focus 3, 20130013–20130013 (2013).
-3.	Gevaert, O. MethylMix: an R package for identifying DNA methylation-driven genes. Bioinformatics 31, 1839–1841 (2015).
+
+1.	Gevaert, O., Villalobos, V., Sikic, B. I. & Plevritis, S. K. Identification of ovarian cancer driver genes by using module network integration of multi-omics data. Interface Focus 3, 20130013–20130013 (2013).
+2.	Gevaert, O. MethylMix: an R package for identifying DNA methylation-driven genes. Bioinformatics 31, 1839–1841 (2015).
+3. AMARETTO package in Bioconductor.
 
 ## Useful Links
 

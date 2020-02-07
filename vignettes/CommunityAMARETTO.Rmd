@@ -136,9 +136,11 @@ We here create *AMARETTOresults_all*, a named list object with its values as
 dataset names must be specified and be unique. 
 
 ```{r AMARETTO_Run2, message= FALSE,warning=FALSE,results='hide'}
+
 AMARETTOresults_all<-list(TCGA_LIHC=TCGA_LIHC_data$AMARETTO_Results,
                         scHCV=scHCV_data$AMARETTO_Results,
                         scHBV=scHBV_data$AMARETTO_Results)
+
 ```
 
 
@@ -175,6 +177,7 @@ cAMARETTOnetworkM<-CommunityAMARETTO::cAMARETTO_ModuleNetwork(cAMARETTOresults,
                                                     pvalue = 0.10,
                                                     inter = 5,
                                                     plot_network = FALSE)
+
 ```
 
 Step 3) cAMARETTOnetworkC function :
@@ -196,9 +199,11 @@ inside/outside the subnetwork larger than 1/2.
 
 
 ```{r AMARETTO_Run5, message= FALSE,warning=FALSE,results='hide'}
+
 cAMARETTOnetworkC<-CommunityAMARETTO::cAMARETTO_IdentifyCom(cAMARETTOnetworkM,
                                                     filterComm = FALSE,
                                                     plot_network = FALSE)
+
 ```
 
 *cAMARETTOnetworkC* object provides the key information for the 
@@ -219,12 +224,14 @@ We provided a small sample genesets to perform the test.
 geneset_file_address<-system.file("extdata","sample_genesets.gmt",
                                     package = "CommunityAMARETTO")
 
+try(
 cAMARETTO_hgtest_tbl<-
     CommunityAMARETTO::CreateHyperGeoTestAll(cAMARETTOresults,
                                             cAMARETTOnetworkM,
                                             cAMARETTOnetworkC,
                     hyper_geo_reference = geneset_file_address,
                     NrCores = 1)
+)
 ```
 
 
@@ -242,23 +249,25 @@ to feed it to the html report. However it is potional and
 PhenotypeTablesList can simply be assigned to NULL.
 
 ```{r AMARETTO_Run7, message= FALSE,warning=FALSE,results='hide'}
+
 PhenotypeTablesList<-list(
                 TCGA_LIHC = TCGA_LIHC_data$Phenotype_Association_table,
                 #CCLE_Liver=NULL
                 scHCV = scHCV_data$Phenotype_Association_table,
                 scHBV = scHBV_data$Phenotype_Association_table)
+
 ```
 
 The following code generates the html report for the
 Community-AMARETTO analysis.
 
 ```{r AMARETTO_Run8, message= FALSE,warning=FALSE,results='hide'}
-cAMARETTO_HTMLreport(cAMARETTOresults,
-                    cAMARETTOnetworkM,
-                    cAMARETTOnetworkC,
-                    hyper_geo_reference = cAMARETTO_hgtest_tbl,
-                    output_address = "./",
-                    PhenotypeTablesList = PhenotypeTablesList)
+# cAMARETTO_HTMLreport(cAMARETTOresults,
+#                     cAMARETTOnetworkM,
+#                     cAMARETTOnetworkC,
+#                     hyper_geo_reference = cAMARETTO_hgtest_tbl,
+#                     output_address = "./",
+#                     PhenotypeTablesList = PhenotypeTablesList)
 ```
 
 
