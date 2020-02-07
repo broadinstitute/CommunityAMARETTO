@@ -17,7 +17,7 @@ The goal of the CommunityAMARETTO algorithm (Champion et al., EBioMedicine 2018)
 
 - [Introduction](#introduction)
 - [Installation](#installation)
-- [Running Community-AMARETTO](#running-amaretto)
+- [Running Community-AMARETTO](#running community-amaretto)
 - [References](#references)
 
 ## Introduction
