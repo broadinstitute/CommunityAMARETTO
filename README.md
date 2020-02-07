@@ -17,7 +17,7 @@ The goal of the CommunityAMARETTO algorithm (Champion et al., EBioMedicine 2018)
 
 - [Introduction](#introduction)
 - [Installation](#installation)
-- [Running Community-AMARETTO](#running community-amaretto)
+- [Running CommunityAMARETTO](#running communityamaretto)
 - [References](#references)
 
 ## Introduction
@@ -50,7 +50,7 @@ library(devtools)
 install_github("broadinstitute/CommunityAMARETTO")
 ```
 
-## Running Community-AMARETTO
+## Running CommunityAMARETTO
 
 * The vignettes contains an example R script for a typical AMARETTO analysis. Please try!
 
