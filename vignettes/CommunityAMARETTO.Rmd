@@ -118,9 +118,10 @@ TCGA-LIHC multiomics data [2] 2) scHCV_data contains AMARETTO network
 parameters infered on transcriptomics of single cell HCV virus infected
 liver samples [3], and similarly 3) scHBV_data contains AMARETTO network
 parameters infered on transcriptomics of single cell HBV virus infected
-liver samples [3]. These sample AMARETTO-result objects can be accessed through
-the CommunityAMARETTO package as shown below, and are derived from a small
-portion of the real data, therefore are for representation only. 
+liver samples [3]. These sample AMARETTO-result objects can be accessed
+through the CommunityAMARETTO package as shown below, and are derived 
+from a small portion of the real data, therefore are for representation
+only. 
 
 
 ```{r AMARETTO_Run1, message= FALSE,warning=FALSE,results='hide'}
@@ -216,8 +217,8 @@ Users may optinaly perform the following downstream analysis :
 
 After detecting communities, we now perform functional enrichment
 on each community. This is computed by performing hypergeometric test
-between the union of genes inside the community against gensets of our interest
-such as hallmark genes of cancer.
+between the union of genes inside the community against gensets of our
+interest such as hallmark genes of cancer.
 We provided a small sample genesets to perform the test. 
 
 ```{r AMARETTO_Run6, message= FALSE,warning=FALSE,results='hide'}
