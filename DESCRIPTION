@@ -1,9 +1,8 @@
 Package: CommunityAMARETTO
 Type: Package
-Title: CommunityAMARETTO: A comutational tool for the discovery of shared and distinct regulatory mechanisms across biological systems
+Title: CommunityAMARETTO: A computational tool for the discovery of shared and distinct regulatory mechanisms across biological systems
 Version: 0.99.24
-Author: Mohsen Nabian, Celine Everaert, Artur Manukiyan, Shaimaa Bakr, Jishu Xu, Mikel
-Hernaez, Vincent Carey, Olivier Gevaert and Nathalie Pochet
+Author: Mohsen Nabian, Celine Everaert, Artur Manukiyan, Shaimaa Bakr, Jishu Xu, Mikel Hernaez, Vincent Carey, Olivier Gevaert and Nathalie Pochet
 Maintainer: Nathalie Pochet <npochet@broadinstitute.org>
 Depends: R (>= 3.6)
 Description: What the package does (one paragraph).

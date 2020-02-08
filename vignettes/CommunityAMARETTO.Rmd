@@ -59,7 +59,7 @@ epigenetics and transcriptomics.
 
 These algorithms are designed to infer system-specific gene regulatory
 network, leading to the understanding of underlying regulatory mechanisms
-the system and facilitating biomarker discovery.
+of the system and facilitating biomarker discovery.
 
 It is also believed that the integration of regulatory networks across
 multiple systems provides key information about cross-systems shared
@@ -83,7 +83,7 @@ algorithm for gene regulatory network inference.
 
 In this note, we show how to integrate these networks through
 Community-AMARETTO algorithm, perform downstream analysis such as
-functional enrichment of detected communities and to generate interactive
+functional enrichment of the detected communities and to generate interactive
 HTML-report from the analysis results.
 
 # Installing Package
@@ -166,7 +166,7 @@ cAMARETTOresults<-CommunityAMARETTO::cAMARETTO_Results(AMARETTOresults_all)
 ```
 
 Step 2) *cAMARETTO_ModuleNetwork* function :
-This function construct a network with its nodes each representing a module.
+This function construct a network with its nodes representing modules.
 We define an edge between each module pair if both of the following
 conditions are met: (i) The adjusted p-value computed in Step 1 is
 smaller than *pvalue* (default = 0.10) (ii) Number of overlapping genes
@@ -248,7 +248,7 @@ phenotype associations of modules. *hyper_geo_reference* and
 *PhenotypeTablesList* parameters of the function are optional. 
 
 Here we provided phenotype association table for each dataset 
-to feed it to the html report. However it is potional and
+to feed it to the html report. However it is optional and
 PhenotypeTablesList can simply be assigned to NULL.
 
 ```{r AMARETTO_Run7, message= FALSE,warning=FALSE,results='hide'}
