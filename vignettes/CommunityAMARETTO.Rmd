@@ -10,9 +10,9 @@ author:
   - name: Shaimaa Bakr
     affiliation: Stanford Center for Biomedical Informatics Research (BMIR), Department of Medicine and Biomedical Data Science, 1265 Welch Rd, Stanford, CA, USA
   - name: Jishu Xu
-    affiliation: RUSH University Medical Center, Chicago, IL, USA, Cell Circuits Program, Broad Institute of MIT and Harvard, MA, USA
+    affiliation: RUSH University Medical Center, Chicago, IL, USA; Cell Circuits Program, Broad Institute of MIT and Harvard, MA, USA
   - name: Mikel Hernaez
-    affiliation: Carl R. Woese Institute for genomic Biology, University of Illinois, Urbana-Champaign, IL, USA
+    affiliation: CIMA, University of Navarra,Spain; Carl R. Woese Institute for genomic Biology, University of Illinois, Urbana-Champaign, IL, USA
   - name: Vincent Carey
     affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
     footnote: Corresponding Author
