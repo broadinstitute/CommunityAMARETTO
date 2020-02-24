@@ -157,9 +157,9 @@ GmtFromModules <- function(AMARETTOresults,gmt_file,run,Drivers=FALSE){
     ModuleMembers_list<-split(ModuleMembership$GeneNames,
                                 ModuleMembership$ModuleNr)
     names(ModuleMembers_list)<-paste0(run,"|Module_",names(ModuleMembers_list))
-    utils::write.table(sapply(names(ModuleMembers_list),
+    utils::write.table(unlist(lapply(names(ModuleMembers_list),
                     function(x) paste(x,paste(ModuleMembers_list[[x]],
-                    collapse="\t"),sep="\t")),
+                    collapse="\t"),sep="\t"))),
                     gmt_file,
                     quote = FALSE,
                     row.names = TRUE,
@@ -178,7 +178,7 @@ GmtFromModules <- function(AMARETTOresults,gmt_file,run,Drivers=FALSE){
 readGMT<-function(filename){
     gmtLines<-strsplit(readLines(filename),"\t")
     gmtLines_genes <- lapply(gmtLines, tail, -2)
-    names(gmtLines_genes) <- sapply(gmtLines, head, 1)
+    names(gmtLines_genes) <- unlist(lapply(gmtLines, head, 1))
     return(gmtLines_genes)
 }
 
