@@ -103,7 +103,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults=list(),
                                 CopyAMARETTOReport=CopyAMARETTOReport)
     #====================================================================
     com_gene_df<-com_gene_df%>%
-        dplyr::mutate(Color=unlist(lapply(as.numeric(Weights), function(x){
+        dplyr::mutate(Color=sapply(as.numeric(Weights), function(x){
         if(is.na(x)){
             return("")
         }
@@ -116,7 +116,7 @@ cAMARETTO_HTMLreport <- function(cAMARETTOresults=list(),
         else {
             return("darkgreen")
         }
-    })))%>%dplyr::mutate(TypeColored=paste0('<font color=',
+    }))%>%dplyr::mutate(TypeColored=paste0('<font color=',
                                             Color,
                                             '>',
                                             Type,
@@ -723,7 +723,7 @@ ComRunModGenInfo<-function(cAMARETTOresults,
             Community_key=seq_len(length(unique(ComModulesLink$Community)))),
             by="Community"))
     ComModulesLink<-ComModulesLink%>%
-        mutate(Community_type=unlist(lapply(Community, function(x){
+        mutate(Community_type=sapply(Community, function(x){
             if (grepl("Not in Network", x)){
                 return(1)
             }
@@ -733,7 +733,7 @@ ComRunModGenInfo<-function(cAMARETTOresults,
             else{
                 return(0)
             }
-        })))
+        }))
     #ComModulesLink<-ComModulesLink%>%select(-Community) 
     return(ComModulesLink)
 }
