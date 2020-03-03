@@ -51,25 +51,24 @@ vignette: |
 
 # Introduction :
 
-Uncovering gene regulatory mechanisms underlying diseases and cancer
-systems have long time been sought by many researchers. 
-This led to the development of many novel computational algorithms for
-regulatory network inference using multiomics such as genetics,
-epigenetics and transcriptomics.
+Uncovering gene regulatory mechanisms underlying diseases and cancer 
+systems have long been sought by many researchers. This led to the development
+of many novel computational algorithms for regulatory network inference using
+multi-omics such as genetics, epigenetics and transcriptomics.
 
 These algorithms are designed to infer system-specific gene regulatory
-network, leading to the understanding of underlying regulatory mechanisms
+networks, leading to the understanding of underlying regulatory mechanisms
 of the system and facilitating biomarker discovery.
 
-It is also believed that the integration of regulatory networks across
-multiple systems provides key information about cross-systems shared
-and distinct mechanisms. To this end, we developed *Community-AMARETTO*
-algorithm to integrate multiple regulatory networks inferred by the
-AMARETTO algorithm [1]. Specifically, Community-AMARETTO algorithm consists of
-1) constructing a master network composed of multiple regulatory networks
-followed by 2) detecting groups (communities) of circuits that are shared
-across systems as well as highliting circuits that are system-specific
-and distinct. 
+ It is also believed that the integration of regulatory networks across
+ multiple systems provides key information about cross-systems shared and
+ distinct mechanisms. To this end, we developed *Community-AMARETTO* algorithm
+ to integrate multiple regulatory networks inferred by the AMARETTO
+ algorithm [1]. Specifically, Community-AMARETTO algorithm consists of
+ 1) constructing a master network composed of multiple regulatory networks
+ followed by 2) detecting groups (communities) of circuits that are shared
+ across systems as well as highlighting circuits that are 
+ system-specific and distinct. 
 
 As general guidelines, here we provided instruction for running
 Community-AMARETTO on a sample case study of liver cancer.

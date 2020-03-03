@@ -11,7 +11,7 @@ LazyLoad: yes
 LazyData: true
 Encoding: UTF-8
 biocViews:
-        StatisticalMethod,DifferentialMethylation,GeneRegulation,GeneExpression,MethylationArray,Transcription,Preprocessing,BatchEffect,DataImport,mRNAMicroarray,MicroRNAArray,Regression,Clustering,RNASeq,CopyNumberVariation,Sequencing,Microarray,Normalization,Network,Bayesian,ExonArray,OneChannel,TwoChannel,ProprietaryPlatforms,AlternativeSplicing,DifferentialExpression,DifferentialSplicing,GeneSetEnrichment,MultipleComparison,QualityControl,TimeCourse
+        StatisticalMethod,DifferentialMethylation,GeneRegulation,GeneExpression,MethylationArray,Transcription,Preprocessing,mRNAMicroarray,Regression,Clustering,RNASeq,CopyNumberVariation,Sequencing,Microarray,Network,Bayesian,ProprietaryPlatforms,DifferentialExpression,GeneSetEnrichment,MultipleComparison,TimeCourse,PhenotypeAssociation,CommunityDetection,HtmlReport
 Suggests: testthat, BiocStyle
 NeedsCompilation: no
 Packaged: 2016-06-08 11:54:24 UTC
