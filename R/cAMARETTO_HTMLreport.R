@@ -1377,6 +1377,50 @@ create_hgt_datatable<-function(output_hgt,
     return(DTGSEAall)
     }
 }
+
+#' Title drivers_communities_summary
+#'
+#' @param cAMARETTOresults cAMARETTOresults object
+#' @param cAMARETTOnetworkM  cAMARETTOnetworkM object
+#' @param cAMARETTOnetworkC  cAMARETTOnetworkC object
+#'
+#' @return a list containing 3 tables summarising drivers-comunities relationships.
+#' @export
+#'
+#' @examples try(drivers_communities_summary(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC))
+drivers_communities_summary<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC){
+    com_run_mod_gene<-CommunityAMARETTO::ComRunModGenInfo(cAMARETTOresults,
+                                                          cAMARETTOnetworkM,
+                                                          cAMARETTOnetworkC)
+    tbl_freq<-com_run_mod_gene%>%filter(Type=="Driver")%>%
+        group_by(GeneNames)%>%
+        summarise(freq=length(ModuleNr))%>%
+        arrange(-freq)
+    high_genes<-tbl_freq$GeneNames
+
+    tbl1<-com_run_mod_gene%>%
+        filter(Type=="Driver")%>%
+        mutate(ModuleNr=gsub("Module_","",ModuleNr))%>%
+        select(GeneNames,Run_Names,ModuleNr,Type,Weights,Community)
+    tbl2<-com_run_mod_gene%>%
+        filter(Type=="Driver")%>%
+        group_by(GeneNames,Run_Names)%>%
+        summarise(freq=length(ModuleNr),modules=paste(ModuleNr,collapse = ","),communities=paste(Community,collapse = ","))%>%
+        mutate(modules=gsub("Module_","",modules))%>%
+        arrange(factor(GeneNames, levels = high_genes))
+    tbl3<-com_run_mod_gene%>%
+        filter(Type=="Driver")%>%
+        mutate(modules=gsub("Module_","",ModuleNr))%>%
+        mutate(driver_summary=paste0("[",Run_Names,", "," M",modules,", ","C",Community,", W=",signif(Weights,1),"]"))%>%
+        select(GeneNames,driver_summary)%>%
+        group_by(GeneNames)%>%
+        summarise(freq=length(driver_summary),summary=paste(driver_summary,collapse = ","))%>%
+        arrange(factor(GeneNames, levels = high_genes))
+    return(list(tbl1=tbl1,
+                tbl2=tbl2,
+                tbl3=tbl3))
+}
+
 #' ########
 #' 
 #' # try(
