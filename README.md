@@ -29,20 +29,19 @@ for regulatory network inference using multiomics such as
 genetics, epigenetics and transcriptomics. 
 
 We developed *Community-AMARETTO* to integrate multiple
-regulatory networks across multiple systems to provide key
+regulatory networks inferred by the AMARETTO
+algorithm [1] across multiple systems to highlight key
 information about cross-systems shared
-and distinct mechanisms. More specifically *Community-AMARETTO*
-algorithm integrates multiple regulatory networks inferred by the
-AMARETTO algorithm [1]. Community-AMARETTO algorithm
-consists of 1) constructing a master network composed of
-multiple regulatory networks followed by 2) detecting
-groups (communities) of circuits that are shared across systems
-as well as highliting circuits that are system-specific and distinct. 
+and distinct mechanisms.  More specifically,
+Community-AMARETTO algorithm consists of 1) constructing
+a master network composed of multiple regulatory networks
+followed by 2) detecting groups (communities) of circuits
+that are shared across systems as well as highliting circuits
+that are system-specific and distinct.
 
 ## Installation
 
 Install from the GitHub repository using devtools:
-
 ``` r
 library(devtools)
 install_github("broadinstitute/CommunityAMARETTO")
