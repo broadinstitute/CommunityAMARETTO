@@ -6,11 +6,17 @@
 
 Creates a module network.}
 \usage{
-cAMARETTO_ModuleNetwork(cAMARETTOresults, pvalue = 0.05, inter = 5,
-  color_list = NULL, edge_method = "pvalue")
+cAMARETTO_ModuleNetwork(
+  cAMARETTOresults,
+  pvalue = 0.05,
+  inter = 5,
+  color_list = NULL,
+  edge_method = "pvalue",
+  plot_network = TRUE
+)
 }
 \arguments{
-\item{cAMARETTOresults}{}
+\item{cAMARETTOresults}{cAMARETTOresults object}
 
 \item{pvalue}{pvalue cut-off for each gene set}
 
@@ -18,10 +24,14 @@ cAMARETTO_ModuleNetwork(cAMARETTOresults, pvalue = 0.05, inter = 5,
 
 \item{color_list}{An optional list with colors}
 
-\item{edge_method}{Define edge weights based p-values or overlap between the gene sets.}
+\item{edge_method}{Define edge weights based
+p-values or overlap between the gene sets.}
+
+\item{plot_network}{If TRUE, plots the Community Network at the end.}
 }
 \value{
-a list with the module network, layout for the network, used p-value, used overlap en colors
+a list with the module network, layout for the network,
+used p-value, used overlap en colors
 }
 \description{
 cAMARETTO_ModuleNetwork
@@ -29,7 +39,7 @@ cAMARETTO_ModuleNetwork
 Creates a module network.
 }
 \examples{
-
+try(
 cAMARETTOnetworkM<-cAMARETTO_ModuleNetwork(cAMARETTOresults,0.10,5)
-
+)
 }

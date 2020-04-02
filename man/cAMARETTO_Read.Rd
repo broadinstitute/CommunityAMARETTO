@@ -4,14 +4,15 @@
 \alias{cAMARETTO_Read}
 \title{cAMARETTO_Read
 
-Reads the AMARETTOinit and AMARETTOresults from (zipped) AMARETTO directories. The names of the list are assigned as run names.}
+Reads the AMARETTOinit and AMARETTOresults from (zipped)
+AMARETTO directories. The names of the list are assigned as run names.}
 \usage{
 cAMARETTO_Read(AMARETTOdirectories, unzipParentDirectory = getwd())
 }
 \arguments{
 \item{AMARETTOdirectories}{a list of AMARETTO directories}
 
-\item{unzipParentDirectory}{the address where the files are unzipped to}
+\item{unzipParentDirectory}{the address where the files are unzipped in}
 }
 \value{
 a list with the AMARETTOinit and AMARETTOresults
@@ -19,12 +20,11 @@ a list with the AMARETTOinit and AMARETTOresults
 \description{
 cAMARETTO_Read
 
-Reads the AMARETTOinit and AMARETTOresults from (zipped) AMARETTO directories. The names of the list are assigned as run names.
+Reads the AMARETTOinit and AMARETTOresults from (zipped)
+AMARETTO directories. The names of the list are assigned as run names.
 }
 \examples{
-AMARETTOdirectories <- list(LIHC="AMARETTOresults_20181102_142532.zip",BLCA="AMARETTOresults_20181102_142602.zip",GBM="AMARETTOresults_20181102_142636.zip")
-AMARETTO_all <- cAMARETTO_Read(AMARETTOdirectories)
-AMARETTOinit_all <- AMARETTO_all$AMARETTOinit_all
-AMARETTOresults_all <- AMARETTO_all$AMARETTOresults_all
-
+try(
+ AMARETTO_all <- cAMARETTO_Read(list(LIHC="LIHC.zip",BLCA="BLCA.zip"))
+ )
 }

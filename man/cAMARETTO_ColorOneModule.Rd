@@ -24,5 +24,7 @@ cAMARETTO_ColorOneModule
 Creates a network with one (or none) colored modules
 }
 \examples{
+try(
 cAMARETTO_ColorOneModule(cAMARETTOnetworkM, cAMARETTOnetworkC, 2)
+)
 }

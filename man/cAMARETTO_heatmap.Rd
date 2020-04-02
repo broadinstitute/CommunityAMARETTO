@@ -4,7 +4,8 @@
 \alias{cAMARETTO_heatmap}
 \title{cAMARETTO_heatmap
 
-Constructs a heatmap with the comparison between modules of two runs based on a hyper geometric test}
+Constructs a heatmap with the comparison between
+modules of two runs based on a hyper geometric test}
 \usage{
 cAMARETTO_heatmap(cAMARETTOresults, run1, run2)
 }
@@ -21,9 +22,11 @@ None
 \description{
 cAMARETTO_heatmap
 
-Constructs a heatmap with the comparison between modules of two runs based on a hyper geometric test
+Constructs a heatmap with the comparison between
+modules of two runs based on a hyper geometric test
 }
 \examples{
+try(
 cAMARETTO_heatmap(cAMARETTOresults, "LIHC", "GBM")
-
+)
 }

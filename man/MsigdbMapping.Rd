@@ -4,7 +4,7 @@
 \name{MsigdbMapping}
 \alias{MsigdbMapping}
 \title{MsigdbMapping}
-\format{An object of class \code{data.frame} with 17810 rows and 3 columns.}
+\format{List}
 \source{
 \url{CommunityAMARETTO}
 }
@@ -12,6 +12,6 @@
 MsigdbMapping
 }
 \description{
-A dataframe containing of MSIGDB geneset names, their urls and descriptions.
+Complementary data providing hyperlinks of Msigdb pages
 }
 \keyword{datasets}

@@ -7,9 +7,11 @@
 cAMARETTO_HTML_Read(HTMLsAMARETTOZips, unzipParentDirectory = getwd())
 }
 \arguments{
-\item{HTMLsAMARETTOZips}{a list of directories for each AMARETTO HTML.zip report, the output of AMARETTO.}
+\item{HTMLsAMARETTOZips}{a list of directories for each
+AMARETTO HTML.zip report, the output of AMARETTO.}
 
-\item{unzipParentDirectory}{a directory address where the html report files are unzipped to}
+\item{unzipParentDirectory}{a directory address
+where the html report files are unzipped to}
 }
 \value{
 a named vector with directories of unzipped HTML reprorts.
@@ -18,5 +20,8 @@ a named vector with directories of unzipped HTML reprorts.
 Title cAMARETTO_HTML_Read
 }
 \examples{
-cAMARETTO_HTML_Read(list(TCGA_LIHC="TCGA_LIHC_report.zip",TCGA_GBM="TCGA_GBM_report.zip"))
+try(
+cAMARETTO_HTML_Read(list(TCGA_LIHC="TCGA_LIHC_report.zip",
+TCGA_GBM="TCGA_GBM_report.zip"))
+)
 }

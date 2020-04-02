@@ -12,13 +12,14 @@ cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC)
 \item{cAMARETTOnetworkC}{The output of the Identify Communities function.}
 }
 \value{
-an information table about the communities containing the included nodes and overlapping genes per community.
+an information table about the communities
+containing the included nodes and overlapping genes per community.
 }
 \description{
 cAMARETTO_InformationTable
 }
 \examples{
-
+try(
 cAMARETTO_InformationTable(cAMARETTOnetworkM, cAMARETTOnetworkC)
-
+)
 }

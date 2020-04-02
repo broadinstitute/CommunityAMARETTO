@@ -1,19 +1,45 @@
 Package: CommunityAMARETTO
 Type: Package
-Title: Calculating and visualising communities over AMARETTO runs and genesets.
-Version: 0.0.0.9000
-Author: Celine Everaert, Mohsen Nabian, Olivier Gevaert and Nathalie Pochet
+Title: CommunityAMARETTO: A Computational Tool for the Discovery of Shared and Distinct Regulatory Mechanisms Across Biological Systems
+Version: 0.99.24
+Author: Mohsen Nabian, Celine Everaert, Artur Manukiyan, Shaimaa Bakr, Jishu Xu, Mikel Hernaez, Vincent Carey, Olivier Gevaert and Nathalie Pochet
 Maintainer: Nathalie Pochet <npochet@broadinstitute.org>
-Depends: R (>= 3.5), tidyverse, ComplexHeatmap, circlize, doParallel, gtools, igraph, randomcoloR, DT, reshape2, rmarkdown, rlist
+Depends: R (>= 3.6)
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 LazyLoad: yes
-Encoding: UTF-8
-NeedsCompilation: no
 LazyData: true
+Encoding: UTF-8
+biocViews:
+        StatisticalMethod,DifferentialMethylation,GeneRegulation,GeneExpression,MethylationArray,Transcription,Preprocessing,mRNAMicroarray,Regression,Clustering,RNASeq,CopyNumberVariation,Sequencing,Microarray,Network,Bayesian,ProprietaryPlatforms,DifferentialExpression,GeneSetEnrichment,MultipleComparison,TimeCourse,PhenotypeAssociation,CommunityDetection,HtmlReport
+Suggests: testthat, BiocStyle
+NeedsCompilation: no
+Packaged: 2016-06-08 11:54:24 UTC
+Imports:
+    R.utils,
+    ComplexHeatmap,
+    circlize,
+    doParallel,
+    gtools,
+    igraph,
+    randomcoloR,
+    DT,
+    reshape2,
+    rmarkdown,
+    rlist,
+    dplyr, 
+    foreach,
+    graphics,
+    grid,
+    parallel,
+    stats,
+    utils,
+    knitr,
+    purrr,
+    stringr,
+    tibble, 
+    tidyr,
+    devtools
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1.9000
-LinkingTo: 
-    Rcpp
-Imports: 
-    Rcpp
+RoxygenNote: 7.0.2
+VignetteBuilder: knitr

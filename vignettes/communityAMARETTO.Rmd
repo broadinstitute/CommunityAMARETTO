@@ -1,248 +1,290 @@
 ---
-title: "Introduction to _community-AMARETTO_"
+title: "Introduction to _CommunityAMARETTO_"
 author:
-  - name: Jayendra Shinde
-    affiliation: Stanford Center for Biomedical Informatics Research (BMIR), Department of Medicine and Biomedical Data Science, 1265 Welch Rd, Stanford, CA, USA
+  - name: Mohsen Nabian
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
   - name: Celine Everaert
-    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Cambridge, MA, USA
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
+  - name: Artur Manukiyan
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
   - name: Shaimaa Bakr
     affiliation: Stanford Center for Biomedical Informatics Research (BMIR), Department of Medicine and Biomedical Data Science, 1265 Welch Rd, Stanford, CA, USA
-  - name: Mohsen Nabian
-    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Cambridge, MA, USA
   - name: Jishu Xu
-    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Cambridge, MA, USA
-  - name: Nathalie Pochet
-    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Cambridge, MA, USA
-    email: npochet@broadinstitute.org
+    affiliation: RUSH University Medical Center, Chicago, IL, USA; Cell Circuits Program, Broad Institute of MIT and Harvard, MA, USA
+  - name: Mikel Hernaez
+    affiliation: CIMA, University of Navarra,Spain; Carl R. Woese Institute for genomic Biology, University of Illinois, Urbana-Champaign, IL, USA
+  - name: Vincent Carey
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
     footnote: Corresponding Author
   - name: Olivier Gevaert
     affiliation: Stanford Center for Biomedical Informatics Research (BMIR), Department of Medicine and Biomedical Data Science, 1265 Welch Rd, Stanford, CA, USA
     email: olivier.gevaert@stanford.edu
     footnote: Corresponding Author
+  - name: Nathalie Pochet
+    affiliation: Brigham and Women's Hospital, Harvard Medical School, Broad Institute of MIT and Harvard, Boston and Cambridge, MA, USA
+    email: npochet@broadinstitute.org
 
-
-date: "`r doc_date()`"
+date: "`r BiocStyle::doc_date()`"
 output:
-  BiocStyle::pdf_document:
-      toc_newpage: true
-geometry: margin = 1in
-fontsize: 8pt
-papersize: a4
-graphics: yes
-fig_caption: yes
-abstract: |
-     The goal of the Community-AMARETTO algorithm (Champion et al., EBioMedicine 2018) is to identify cell circuits and their drivers that are shared and distinct across biological systems. Specifically, Community-AMARETTO takes as input multiple regulatory networks inferred using the AMARETTO algorithm that are based on multi-omics and imaging data fusion. Next, Community-AMARETTO learns communities or subnetworks, in particular, regulatory modules comprising of cell circuits and their drivers, that are shared and distinct across multiple regulatory networks derived from multiple cohorts, diseases, or biological systems more generally, using the Girvan-Newman "edge betweenness community detection" algorithm (Girvan and Newman, Physical Review E. 2004).
+    BiocStyle::html_document
 
-package: Report issues on [https://github.com/broadinstitute/CommunityAMARETTO](https://github.com/broadinstitute/CommunityAMARETTO)
+abstract: |
+    The goal of the CommunityAMARETTO algorithm is to identify cell circuits
+    and their drivers that are shared and distinct across biological systems.
+    Specifically, CommunityAMARETTO takes as input multiple regulatory
+    networks inferred using the AMARETTO algorithm [1] that are based
+    on multi-omics and clinical/imaging data fusion. Next, CommunityAMARETTO
+    learns communities or subnetworks, in particular, regulatory modules
+    comprising of cell circuits and their drivers, that are shared and
+    distinct across multiple regulatory networks derived from 
+    multiple cohorts, diseases, or biological systems more generally,
+    using the Girvan-Newman "edge betweenness community detection"
+    algorithm (Girvan and Newman, Physical Review E. 2004).
+
+package: Report issues on [https://github.com/broadinstitute/CommunityAMARETTO/] (https://github.com/broadinstitute/CommunityAMARETTO/)
 vignette: |
-  %\VignetteIndexEntry{communityAMARETTO.Rmd}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
-  
-  
+    %\VignetteIndexEntry{Introduction to _CommunityAMARETTO_}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+    \usepackage[utf8]{BiocStyle}
 ---
 
+# Introduction :
 
-# Introduction
-The package *AMARETTO* contains functions to use the statistical algorithm AMARETTO, an algorithm to identify cancer drivers by integrating a variety of omics data from cancer and normal tissue. Due to the increasing availability of multi-omics data sets, there is a need for computational methods that integrate multi-omics data set and create knowl-edge. Especially in the field of cancer research, large international projects such as The Cancer Genome Atlas (TCGA) and the International Cancer Genome Consortium (ICGC) are producing large quantities of multi-omics data for each cancer site. However it remains unknown which profile is the most meaningful and how to effciently integrate different omics profiles. AMARETTO is an algorithm to unravel cancer drivers by reducing the data dimensionality into cancer modules. AMARETTO first models the effects of genomic/epigenomic data on disease specific gene expression. AMARETTO's second step involves constructing co-expressed modules to connect the cancer drivers with their downstream targets. We applied AMARETTO to several cancer sites of the TCGA project allowing to identify several cancer driver genes of interest, including novel genes in addition to known drivers of cancer. This package also includes functionality to access TCGA data directly so the user can immediately run AMARETTO on the most recent version of the data.
+Uncovering gene regulatory mechanisms underlying diseases and cancer 
+systems have long been sought by many researchers. This led to the development
+of many novel computational algorithms for regulatory network inference using
+multi-omics such as genetics, epigenetics and transcriptomics.
 
+These algorithms are designed to infer system-specific gene regulatory
+networks, leading to the understanding of underlying regulatory mechanisms
+of the system and facilitating biomarker discovery.
 
+ It is also believed that the integration of regulatory networks across
+ multiple systems provides key information about cross-systems shared and
+ distinct mechanisms. To this end, we developed *Community-AMARETTO* algorithm
+ to integrate multiple regulatory networks inferred by the AMARETTO
+ algorithm [1]. Specifically, Community-AMARETTO algorithm consists of
+ 1) constructing a master network composed of multiple regulatory networks
+ followed by 2) detecting groups (communities) of circuits that are shared
+ across systems as well as highlighting circuits that are 
+ system-specific and distinct. 
 
-# Installation Instructions
+As general guidelines, here we provided instruction for running
+Community-AMARETTO on a sample case study of liver cancer.
+While here we studied liver-specific data, any cohort/dataset analyzed
+by AMARETTO can be used for the Community-AMARETTO analysis. 
 
-To install AMARETTO is to first download the appropriate file for your platform from the Bioconductor
-website http://www.bioconductor.org/. For Windows, start R and select the Packages menu, then Install package from local zip file. Find and highlight the location of the zip file and click on open. For Linux/Unix, use the usual command R CMD INSTALL or install from bioconductor
+Our sample case study consists of three biological systems of
+1) Liver Cancer, 2) Hepatite C virus-infected liver cancer and 
+3) Hepatite B virus-infected liver cancer, each inferred by the AMARETTO 
+algorithm for gene regulatory network inference.
 
-The package can be installed from the GitHub repository :
+In this note, we show how to integrate these networks through
+Community-AMARETTO algorithm, perform downstream analysis such as
+functional enrichment of the detected communities and to generate interactive
+HTML-report from the analysis results.
 
-```{r setup1, message= FALSE,results='hide',eval=FALSE}
-#-------------------------------------------------------------------------------
+# Installing Package
 
-install.packages("BiocManager",repos = "http://cran.us.r-project.org")
-BiocManager::install("gevaertlab/AMARETTO")
+The following code script shows how to install the package. The package is
+accessible via Bioconductor; Alternatively, to access the newest features
+of the pacckage, you may install the development branch of github
+as shown bellow. 
 
-#-------------------------------------------------------------------------------
-```
-
-Help files. Detailed information on AMARETTO package functions can be obtained in the help files. For example, to view the help file for the function AMARETTO in an R session, use ?AMARETTO.
-
-# Data Input
-
-
-
-## Data Access
-
-
-
-\begin{center}
-\begin{tabular}{|l|l|l|l|}
-\hline
-Cancer code & Cancer site  \\
-\hline
-\\
-BLCA & bladder urothelial carcinoma  \\
-BRCA & breast invasive carcinoma  \\
-CESC & cervical squamous cell carcinoma and endocervical adenocarcinoma\\
-CHOL & cholangiocarcinoma\\
-COAD & colon adenocarcinoma \\
-ESCA & esophageal carcinoma\\
-GBM & glioblastoma multiforme\\
-HNSC & head and neck squamous cell carcinoma \\
-KIRC & kidney renal clear cell carcinoma  \\
-KIRP & kidney renal papillary cell carcinoma\\
-LAML & acute myeloid leukemia \\
-LGG & brain lower grade glioma\\
-LIHC & liver hepatocellular carcinoma\\
-LUAD & lung adenocarcinoma \\
-LUSC & lung squamous cell carcinoma \\
-OV & ovarian serous cystadenocarcinoma \\
-PAAD & pancreatic adenocarcinoma\\
-PCPG & pheochromocytoma and paraganglioma\\
-READ & rectum adenocarcinoma \\
-SARC & sarcoma\\
-STAD & stomach adenocarcinoma\\
-THCA & thyroid carcinoma\\
-THYM & thymoma\\
-UCEC & endometrial carcinoma \\
-\\
-%\hdashline
-COADREAD & colon cancer + rectal cancer \\
-\hline
-\end{tabular}
-\end{center}
-
-
-\newpage
-
-We also added COADREAD as a combination of colon and rectal cancer, as reports have shown that both can be seen as
-a single disease. The cancer code is needed to download data from TCGA and one needs to decide on a target location
-to save the data locally in the TargetDirectory, e.g. the /Downloads/ folder on a mac.
-
-```{r AMARETTO_Download1, message= FALSE,results='hide',eval=FALSE}
-#-------------------------------------------------------------------------------
-#Load AMARETTO output files on the two runs 
-library(CommunityAMARETTO)
-data(AMARETTOinit1_tutorial)
-data(AMARETTOresults1_tutorial)
-data(AMARETTOinit2_tutorial)
-data(AMARETTOresults2_tutorial)
-
-#-------------------------------------------------------------------------------
-```
-
-
-We recommend to use one TargetDirectory for all cancer sites, as this will save all data in one hierarchy is convenient
-when revisting results later on. The directory structure that is created will also include the data version history, so it is
-easy to report what version of the data is used. AMARETTO_Download() downloads the data, extracts archives and provides
-the paths to the downloaded folder for preprocessing. AMARETTO_Download() can also be run without actually downloading
-the data as follows:
-
-```{r AMARETTO_Download2, message= FALSE,results='hide',eval=FALSE}
-#-------------------------------------------------------------------------------
-
-
-
-#-------------------------------------------------------------------------------
-```
-
-This is convenient when revisiting a data set because you want to redo-downstream analysis, but not the actual downloading. Running this way, will only set the data paths. The next step is preprocessing.
-
-## DNA Methylation Data
-DNA methylation data has to be run by MethylMix which is also computationally intensive and therefore we have chosen to provide add the MethylMix output to the AMARETTO package instead of processing the raw DNA methylation data. This functionality is available in the [MethylMix package](https://www.bioconductor.org/packages/release/bioc/html/MethylMix.html)
-
-\newpage
-
-## Data Preprocessing
-
-The data preprocessing step will take care of preprocessing the gene expression and DNA copy number data. Data preprocessing is done by Preprocess CancerSite which takes the CancerSite and the data set directories as parameters:
-
-
-
-```{r AMARETTO_Preprocess, message= FALSE,results='hide',eval=FALSE}
-#-------------------------------------------------------------------------------
-
-
-#-------------------------------------------------------------------------------
-```    
-
-This function preprocessed the gene expression data and the DNA copy number data. For the gene expression data, different preprocessing is done for microarray and RNA sequencing data. This involves missing value estimation using K-nearest neighbors. Also genes or patients that have more than 10% missing values are removed. Next, batch correction is done using the Combat method. For certain cancer sites, the gene expression data is split up in separate sub-data sets. This function first uses the preprocessing pipeline on each sub-data set separately and combines the data afterwards. For the DNA copy number data, the GISTIC algorithm output data is used. All genes that are in amplifications or deletions based on GISTIC output are extracted and the segmented DNA copy number data is stored. The segmented DNA copy number data is also batch corrected using Combat.
-
-
-
-```{r ProcessedDataLIHC, message= FALSE,results='hide', echo=FALSE}
-#library(AMARETTO)
-
-```   
-
-# Running AMARETTO
-
-In the case that you run AMARETTO with your own data, three data matrices are needed with preprocessed gene expression, DNA copy number and DNA methylation data, where genes are in the rows and patients are in the columns. Once you have your own data in this format or using a previously downloaded TCGA data set, you can start doing analysis with AMARETTO. First, we need to initialize the algorithm by clustering the gene expression data and creating the regulator data object. This is done by the AMARETTO Initialize function and the TCGA LIHC data set:
-
-
-```{r AMARETTO_Initialize, message= FALSE,results='hide'}
-#-------------------------------------------------------------------------------
-
-
-
-#-------------------------------------------------------------------------------
-```    
-
-
-Besides the three data sets, you need to decide how many modules to build and how much of the gene expression data is going to be used. For a first run we recommend 100 modules and to use the top 25% most varying genes. The AMARETTOinit object now contains cluster information to initialize an AMARETTO run and also stores the parameters that are required for AMARETTO.
-Now we can run AMARETTO as follows:
 ```{r AMARETTO_Run, message= FALSE,warning=FALSE,results='hide'}
-#-------------------------------------------------------------------------------
+library(devtools)
+#install.packages("/Users/mohsennabian/Documents/GitHub/CommunityAMARETTO",
+#repos = NULL, type = "source")
+install_github("broadinstitute/CommunityAMARETTO",
+                ref='develop',
+                force = 'TRUE')
+library(CommunityAMARETTO)
+```
 
 
-#-------------------------------------------------------------------------------
-```    
-This can take anywhere from 10 minutes up to 1 hour to build the modules for the TCGA cohorts depending on the number of genes that is modeled and the number of patients that is available. The breast cancer data set (BRCA) is the largest data set and will take the longest time to converge. AMARETTO will stop when less than 1% of the genes are reassigned to other modules. Next, one can test the AMARETTO model on the training set by calculating the Rsquare
-for each module using the AMARETTO EvaluateTestSet function:
+# Loading data
+
+CommunityAMARETTO is a network approach developed to integrate multiple
+regulatory networks specifically networks inferred by AMARETTO algorithm.
+Thus,the required input data for the CommunityAMARETTO algorithm are
+AMARETTO-result objects (at least two); where each AMARETTO-result object
+is the output of an AMARETTO run on multi-omics data and contains 
+the information for the inferred regulatory network parameters.
+
+Here as a sample case study, we provided AMARETTO-result objects 
+(outputs of AMARETTO runs) for 3 liver-related datasets :
+1) TCGA_LIHC_data contains AMARETTO network parameters infered on
+TCGA-LIHC multiomics data [2] 2) scHCV_data contains AMARETTO network
+parameters infered on transcriptomics of single cell HCV virus infected
+liver samples [3], and similarly 3) scHBV_data contains AMARETTO network
+parameters infered on transcriptomics of single cell HBV virus infected
+liver samples [3]. These sample AMARETTO-result objects can be accessed
+through the CommunityAMARETTO package as shown below, and are derived 
+from a small portion of the real data, therefore are for representation
+only. 
 
 
-```{r AMARETTO_EvaluateTestSet, message= FALSE,results='hide'}
-#-------------------------------------------------------------------------------
+```{r AMARETTO_Run1, message= FALSE,warning=FALSE,results='hide'}
+#Load data
+TCGA_LIHC_data<-CommunityAMARETTO::TCGA_LIHC_data
+scHCV_data<-CommunityAMARETTO::scHCV_data
+scHBV_data<-CommunityAMARETTO::scHBV_data
+#CCLE_Liver_data<-CommunityAMARETTO::CCLE_Liver_data
+```
+
+We here create *AMARETTOresults_all*, a named list object with its values as
+*AMARETTO_Results* objects corresponding to each dataset. Please note that the
+dataset names must be specified and be unique. 
+
+```{r AMARETTO_Run2, message= FALSE,warning=FALSE,results='hide'}
+
+AMARETTOresults_all<-list(TCGA_LIHC=TCGA_LIHC_data$AMARETTO_Results,
+                        scHCV=scHCV_data$AMARETTO_Results,
+                        scHBV=scHBV_data$AMARETTO_Results)
+
+```
 
 
+# Running Community-AMARETTO
 
-#-------------------------------------------------------------------------------
-```    
+Community-AMARETTO algorithm consists of three major steps
+(and thus three main functions) as follows :
 
-This function will use the training data to calculate the performance for predicting genes expression values based on the selected regulators. Of course, it is more interesting to use an independent test set. In this case only a gene expression data set is needed, for example from the GEO database. This will allow to check how well the AMARETTO modules are generalizing to new data. Take care that the an independent data set needs to be centered and scaled to unit variance. The AMARETTOtestReport will also give information of how many regulators and cluster members are actually present. The Rsquare performance has to be interpreted in this context as if many regulators are absent in the test data set due to platform limitations, the performance will be adversely affected.
-Finally, modules can be visualized using the AMARETTO VisualizeModule function:
+Step 1) *cAMARETTO_Results* function :
+This function perform hypergeometric test between every module pairs
+across all the input regulatory networks to eveluate the similarity
+(or distance) between every module pairs. For each module pair,
+the hypergeomteric test outputs p-value, adjusted p-value and
+number of overlapping genes. 
 
-```{r AMARETTO_VisualizeModule, message= FALSE, fig.height=5, fig.width=5, retina=1}
-#-------------------------------------------------------------------------------
+```{r AMARETTO_Run3, message= FALSE,warning=FALSE,results='hide'}
+
+cAMARETTOresults<-CommunityAMARETTO::cAMARETTO_Results(AMARETTOresults_all)
+
+```
+
+Step 2) *cAMARETTO_ModuleNetwork* function :
+This function construct a network with its nodes representing modules.
+We define an edge between each module pair if both of the following
+conditions are met: (i) The adjusted p-value computed in Step 1 is
+smaller than *pvalue* (default = 0.10) (ii) Number of overlapping genes
+between two modules is larger than *inter* (defalut = 5 genes). This defines
+a module network where each edge is scored based on the negative 
+log-transformed adjusted p-value.
+
+```{r AMARETTO_Run4, message= FALSE,warning=FALSE,results='hide'}
+
+cAMARETTOnetworkM<-CommunityAMARETTO::cAMARETTO_ModuleNetwork(cAMARETTOresults,
+                                                    pvalue = 0.10,
+                                                    inter = 5,
+                                                    plot_network = FALSE)
+
+```
+
+Step 3) cAMARETTOnetworkC function :
+We cluster the weighted module network to identify significantly connected
+subnetworks using the Girvan-Newman algorithm (Newman and Girvan, 2004).
+This algorithm is a divisive method, which aims at detecting subnetworks
+by progressively removing edges from the module network according to a score.
+The original proposed score is based on the betweenness of edges,
+where betweenness is a measure that favors edges that are between
+subnetworks, and thus responsible for connecting many pairs of others.
+
+This function implementats the Girvan-Newman algorithm to detect
+communities. If *filterComm = TRUE*,  only communities that satisfy the
+following conditions will be preserved: number of modules larger than
+the 1% of the total number of modules in the network, number of 
+represented datasets larger than 10% of the ccommunity size
+(and at least, larger than 2) and finally, ratio between edges
+inside/outside the subnetwork larger than 1/2.
 
 
-```    
+```{r AMARETTO_Run5, message= FALSE,warning=FALSE,results='hide'}
 
-Additionaly, to a standard version of the heatmap, one can add sample annotations to interogate biological phenotypes.
+cAMARETTOnetworkC<-CommunityAMARETTO::cAMARETTO_IdentifyCom(cAMARETTOnetworkM,
+                                                    filterComm = FALSE,
+                                                    plot_network = FALSE)
 
-\newpage
+```
 
-# HTML Report of AMARETTO
+*cAMARETTOnetworkC* object provides the key information for the 
+assignment of communities to modules across different datasets.
 
-To retrieve heatmaps for all of the modules and additional tables with gene set enrichment data one can run a HTML report. 
-
-
-
-```{r AMARETTO_HTMLreport, message= FALSE,results='hide', eval=FALSE}
-#-------------------------------------------------------------------------------
+Users may optinaly perform the following downstream analysis :
 
 
+# Functional Enrichments of Communities (Optional)
 
-#-------------------------------------------------------------------------------
-```    
+After detecting communities, we now perform functional enrichment
+on each community. This is computed by performing hypergeometric test
+between the union of genes inside the community against gensets of our
+interest such as hallmark genes of cancer.
+We provided a small sample genesets to perform the test. 
+
+```{r AMARETTO_Run6, message= FALSE,warning=FALSE,results='hide'}
+geneset_file_address<-system.file("extdata","sample_genesets.gmt",
+                                    package = "CommunityAMARETTO")
+
+try(
+cAMARETTO_hgtest_tbl<-
+    CommunityAMARETTO::CreateHyperGeoTestAll(cAMARETTOresults,
+                                            cAMARETTOnetworkM,
+                                            cAMARETTOnetworkC,
+                    hyper_geo_reference = geneset_file_address,
+                    NrCores = 1)
+)
+```
+
+
+# HTML-Report for Community-AMARETTO (optinal)
+
+As the last step, the following code will generate an HTML report
+for the entire analyis. The reprot provides relationships between
+communities, modules and genes.It also provides interactive 
+result tables for the functional enrichments of communities and 
+phenotype associations of modules. *hyper_geo_reference* and 
+*PhenotypeTablesList* parameters of the function are optional. 
+
+Here we provided phenotype association table for each dataset 
+to feed it to the html report. However it is optional and
+PhenotypeTablesList can simply be assigned to NULL.
+
+```{r AMARETTO_Run7, message= FALSE,warning=FALSE,results='hide'}
+
+PhenotypeTablesList<-list(
+                TCGA_LIHC = TCGA_LIHC_data$Phenotype_Association_table,
+                #CCLE_Liver=NULL
+                scHCV = scHCV_data$Phenotype_Association_table,
+                scHBV = scHBV_data$Phenotype_Association_table)
+
+```
+
+The following code generates the html report for the
+Community-AMARETTO analysis.
+
+```{r AMARETTO_Run8, message= FALSE,warning=FALSE,results='hide'}
+# cAMARETTO_HTMLreport(cAMARETTOresults,
+#                     cAMARETTOnetworkM,
+#                     cAMARETTOnetworkC,
+#                     hyper_geo_reference = cAMARETTO_hgtest_tbl,
+#                     output_address = "./",
+#                     PhenotypeTablesList = PhenotypeTablesList)
+```
+
 
 # References
 
-1.	Champion, M. et al. Module Analysis Captures Pancancer Genetically and Epigenetically Deregulated Cancer Driver Genes for Smoking and Antiviral Response. EBioMedicine 27, 156–166 (2018).
-2.	Gevaert, O., Villalobos, V., Sikic, B. I. & Plevritis, S. K. Identification of ovarian cancer driver genes by using module network integration of multi-omics data. Interface Focus 3, 20130013–20130013 (2013).
-3.	Gevaert, O. MethylMix: an R package for identifying DNA methylation-driven genes. Bioinformatics 31, 1839–1841 (2015).
+1. AMARETTO package, availble in Biocondutor.
+2. Ally, Adrian, et al. "Comprehensive and integrative genomic
+characterization of hepatocellular carcinoma."
+Cell 169.7 (2017): 1327-1341.
+3.    Gevaert, O., Villalobos, V., Sikic, B. I. & Plevritis,
+S. K. Identification of ovarian cancer driver genes by
+using module network integration of multi-omics data.
+Interface Focus 3, 20130013–20130013 (2013).
 
 
-\newpage
 
 # Session info {.unnumbered}
 

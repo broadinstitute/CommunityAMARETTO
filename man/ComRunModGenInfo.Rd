@@ -2,21 +2,29 @@
 % Please edit documentation in R/cAMARETTO_HTMLreport.R
 \name{ComRunModGenInfo}
 \alias{ComRunModGenInfo}
-\title{Title ComRunModGenInfo}
+\title{ComRunModGenInfo}
 \usage{
-ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkC)
+ComRunModGenInfo(cAMARETTOresults, cAMARETTOnetworkM, cAMARETTOnetworkC)
 }
 \arguments{
-\item{cAMARETTOresults}{}
+\item{cAMARETTOresults}{cAMARETTOresults object}
 
-\item{cAMARETTOnetworkC}{}
+\item{cAMARETTOnetworkM}{cAMARETTOnetworkM object}
+
+\item{cAMARETTOnetworkC}{cAMARETTOnetworkC object}
 }
 \value{
-a dataframe contaning all communities, runname, and modules relationships.
+a dataframe contaning all communities, runname, and
+modules relationships.
 }
 \description{
-Title ComRunModGenInfo
+ComRunModGenInfo
 }
 \examples{
-ComRunModGenInfo(cAMARETTOresults,cAMARETTOnetworkC)
+try(
+df<-ComRunModGenInfo(cAMARETTOresults,
+ cAMARETTOnetworkM,
+ cAMARETTOnetworkC)
+)
+
 }
