@@ -1,5 +1,6 @@
 ---
 title: <center>Community-AMARETTO Report</center>
+pagetitle: Community-AMARETTO Report
 output: 
   html_document:
     theme: cerulean
