@@ -261,6 +261,7 @@ ExtractGenesInfo<-function(AMARETTOresults,run){
         Targets<- names(
         AMARETTOresults$ModuleMembership[which(
         AMARETTOresults$ModuleMembership==ModuleNr),1])
+        if (is.null(Targets)){next}
         Target_df<-data.frame(Run_Names=run,
                                 ModuleNr=ModuleNr,
                                 GeneNames=Targets,

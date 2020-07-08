@@ -1421,6 +1421,45 @@ drivers_communities_summary<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARET
                 tbl3=tbl3))
 }
 
+
+#' Title HubAuthority_scores_CommunityAMARETTO
+#'
+#' @param cAMARETTOresults cAMARETTOresults object
+#' @param cAMARETTOnetworkM cAMARETTOnetworkM object
+#' @param cAMARETTOnetworkC cAMARETTOnetworkC object
+#'
+#' @return a list containing Hub-score authority-score of genes and modules.
+#' @importFrom igraph hub_score authority_score
+#' @export
+#' @examples try(Hubscore_CommunityAMARETTO(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC))
+HubAuthority_scores_CommunityAMARETTO<-function(cAMARETTOresults,cAMARETTOnetworkM,cAMARETTOnetworkC){
+    ComRunModGenTbl<-CommunityAMARETTO::ComRunModGenInfo(cAMARETTOresults,
+                                                         cAMARETTOnetworkM,
+                                                         cAMARETTOnetworkC)
+    from<-ComRunModGenTbl$GeneNames
+    to<-paste0(ComRunModGenTbl$Run_Names,"&",ComRunModGenTbl$ModuleNr)
+    weight<-ComRunModGenTbl$Weights
+    df<-data.frame(from=from,to=to,weight=abs(weight))
+    g <- graph_from_data_frame(df, directed=TRUE)
+    ## calculate hub score
+    hub_scores_vector<-hub_score(g, scale = TRUE)
+    hub_scores_vector<-sort(hub_scores_vector$vector,decreasing = TRUE)
+    hub_scores_df<-data.frame(genes=names(hub_scores_vector),
+                              hub_score=hub_scores_vector,
+                              rank=c(1:length(hub_scores_vector)))
+    rownames(hub_scores_df)<-NULL
+    ## calculate authority score
+    authority_scores_vector<-authority_score(g, scale = TRUE)
+    authority_scores_vector<-sort(authority_scores_vector$vector,decreasing = TRUE)
+    authority_scores_df<-data.frame(genes=names(authority_scores_vector),
+                                    hub_score=authority_scores_vector,
+                                    rank=c(1:length(authority_scores_vector)))
+
+    return(list("hub_score"=hub_scores_df,
+                "authority_score"=authority_scores_df))
+}
+
+
 #' ########
 #' 
 #' # try(
